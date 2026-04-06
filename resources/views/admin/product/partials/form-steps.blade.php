@@ -85,17 +85,25 @@
                         <div x-data="{ 
                                 open: false, 
                                 selectedId: @entangle('category_id').live, 
-                                get selectedTitle() {
-                                    if(!this.selectedId) return 'No Category';
-                                    let el = this.$refs.listbox.querySelector(`li[data-id='${this.selectedId}']`);
-                                    return el ? el.dataset.title : 'No Category';
+                                get selectedTitleHTML() {
+                                    if(!this.selectedId) return '<span class=\'text-gray-500\'>Select Category... <span class=\'text-xs italic text-gray-400 ml-1\'>(Optional)</span></span>';
+                                    let el = this.$refs.listbox.querySelector('li[data-id=\'' + this.selectedId + '\']');
+                                    if(el) {
+                                        let p = el.dataset.parent;
+                                        let s = el.dataset.self;
+                                        if(p) {
+                                            return '<span class=\'text-gray-500 font-normal\'>' + p + '</span><i class=\'ri-arrow-right-s-line text-gray-400 mx-1.5 text-sm\'></i><span class=\'font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded\'>' + s + '</span>';
+                                        }
+                                        return '<span class=\'font-bold text-gray-800\'>' + s + '</span>';
+                                    }
+                                    return '<span class=\'text-gray-500\'>Select Category...</span>';
                                 }
                             }" 
                             @click.outside="open = false" 
                             class="relative min-w-full z-20">
 
                             <button @click="open = !open" type="button" class="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-gray-50/50 px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-white hover:border-blue-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                                <span x-text="selectedTitle" class="truncate line-clamp-1"></span>
+                                <span x-html="selectedTitleHTML" class="truncate line-clamp-1 flex items-center"></span>
                                 <i class="ri-arrow-down-s-line text-lg text-gray-400 transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                             </button>
                             
@@ -105,9 +113,14 @@
                                  style="display: none;"
                                  x-ref="listbox">
                                 <ul role="listbox" class="text-sm text-gray-700">
-                                    <li data-id="" data-title="No Category" class="cursor-pointer select-none px-4 py-2.5 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors" @click="selectedId = ''; open = false">
-                                        <div class="flex items-center gap-2">
-                                            <i class="ri-forbid-line text-slate-400"></i> No Category
+                                    <li data-id="" data-self="No Category" class="cursor-pointer select-none px-4 py-2.5 font-medium transition-colors border-b border-gray-50" 
+                                        :class="selectedId == '' ? 'bg-red-50 text-red-600' : 'hover:bg-slate-50 text-gray-500'" 
+                                        @click="selectedId = ''; open = false">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <i class="ri-forbid-line"></i> Unassign Category
+                                            </div>
+                                            <i class="ri-check-line text-lg" x-show="selectedId == ''"></i>
                                         </div>
                                     </li>
                                     
@@ -116,10 +129,15 @@
                                     @endphp
 
                                     @foreach($parents as $parent)
-                                        <li data-id="{{ $parent->id }}" data-title="{{ $parent->title }}" class="cursor-pointer select-none px-4 py-2.5 hover:bg-blue-50 hover:text-blue-700 font-bold transition-colors bg-slate-50/50 border-t border-slate-100 mt-1" @click="selectedId = '{{ $parent->id }}'; open = false">
+                                        <li data-id="{{ $parent->id }}" data-self="{{ addslashes($parent->title) }}" 
+                                            class="cursor-pointer select-none px-4 py-2.5 font-bold transition-colors bg-slate-50/50 mt-1 flex items-center justify-between group border-l-2"
+                                            :class="selectedId == '{{ $parent->id }}' ? 'bg-blue-50/80 text-blue-700 border-blue-500' : 'border-transparent hover:bg-slate-50 hover:text-blue-600 hover:border-blue-300'"
+                                            @click="selectedId = '{{ $parent->id }}'; open = false">
                                             <div class="flex items-center gap-2">
-                                                <i class="ri-folder-3-line text-blue-500"></i> {{ $parent->title }}
+                                                <i class="ri-folder-3-fill text-blue-500 group-hover:scale-110 transition-transform"></i> 
+                                                <span>{{ $parent->title }}</span>
                                             </div>
+                                            <i class="ri-check-line text-lg text-blue-600" x-show="selectedId == '{{ $parent->id }}'"></i>
                                         </li>
                                         
                                         @php
@@ -127,9 +145,16 @@
                                         @endphp
                                         
                                         @foreach($children as $child)
-                                            <li data-id="{{ $child->id }}" data-title="{{ $parent->title }} — {{ $child->title }}" class="cursor-pointer select-none px-4 flex items-center py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors" @click="selectedId = '{{ $child->id }}'; open = false">
-                                                <div class="w-4 flex justify-center text-slate-300 ml-1 mr-2 border-l-2 border-b-2 border-slate-200 h-4 -mt-4 rounded-bl-md"></div> 
-                                                <span class="text-slate-600 font-medium">{{ $child->title }}</span>
+                                            <li data-id="{{ $child->id }}" data-parent="{{ addslashes($parent->title) }}" data-self="{{ addslashes($child->title) }}" 
+                                                class="cursor-pointer select-none pr-4 pl-6 flex items-center justify-between py-2.5 transition-colors group relative"
+                                                :class="selectedId == '{{ $child->id }}' ? 'bg-blue-50 text-blue-800' : 'hover:bg-blue-50/50 text-slate-600 hover:text-blue-700'"
+                                                @click="selectedId = '{{ $child->id }}'; open = false">
+                                                <div class="flex items-center flex-1">
+                                                    <div class="w-5 flex justify-center text-slate-300 ml-1 mr-3 border-l-2 border-b-2 h-5 -mt-5 rounded-bl-lg transition-colors"
+                                                         :class="selectedId == '{{ $child->id }}' ? 'border-blue-400' : 'border-slate-200 group-hover:border-blue-300'"></div> 
+                                                    <span class="font-medium" :class="selectedId == '{{ $child->id }}' ? 'text-blue-800' : ''">{{ $child->title }}</span>
+                                                </div>
+                                                <i class="ri-check-line text-lg text-blue-600 transform scale-110" x-show="selectedId == '{{ $child->id }}'"></i>
                                             </li>
                                         @endforeach
                                     @endforeach
