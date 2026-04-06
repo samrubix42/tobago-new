@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/techldjy/test.smartadvagency.com/
+    - /bin/cp -R * $DEPLOYPATH 
