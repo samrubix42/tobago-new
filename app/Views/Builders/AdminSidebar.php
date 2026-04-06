@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Builders;
+namespace App\Views\Builders;
 
 use Illuminate\Support\Collection;
 
@@ -23,28 +23,21 @@ class AdminSidebar
         $menu = collect([
             (object)[
                 'title' => 'Dashboard',
-                'icon' => 'ti ti-home',
+                'icon' => 'ri-home-5-line',
                 'url' => route('admin.dashboard'),
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
             (object)[
                 'title' => 'Categories',
-                'icon' => 'ti ti-list-details',
+                'icon' => 'ri-folder-3-line',
                 'url' => route('admin.categories'),
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
             (object)[
-                'title' => 'Brands',
-                'icon' => 'ti ti-tags',
-                'url' => route('admin.brands'),
-                'hasSubmenu' => false,
-                'submenu' => [],
-            ],
-            (object)[
                 'title' => 'Products',
-                'icon' => 'ti ti-package',
+                'icon' => 'ri-shopping-bag-3-line',
                 'url' => route('admin.products.index'),
                 'hasSubmenu' => false,
                 'submenu' => [],

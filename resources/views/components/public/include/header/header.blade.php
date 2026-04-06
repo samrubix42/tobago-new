@@ -1,4 +1,4 @@
-<div x-data="{ open: false, dropdown: null }">
+<div x-data="{ open: false, dropdown: null, userMenu: false }">
 
     <!-- 🔝 HEADER -->
     <header class="sticky top-0 z-50 border-b border-subtle bg-[#050607]/80 backdrop-blur-xl">
@@ -26,12 +26,60 @@
             <!-- 👤 LOGIN + 🛒 CART -->
             <div class="hidden lg:flex items-center gap-4">
 
-                <!-- LOGIN -->
-                <a href="/login" class="group">
-                    <div class="w-10 h-10 rounded-full bg-white/5 border border-subtle flex items-center justify-center hover:border-white/20 transition">
-                        <i class="ri-user-line text-white/80"></i>
+                @php
+                    $user = auth()->user();
+                @endphp
+
+                @guest
+                    <!-- LOGIN -->
+                    <a href="{{ route('login') }}" class="group" aria-label="Login">
+                        <div class="w-10 h-10 rounded-full bg-white/5 border border-subtle flex items-center justify-center hover:border-white/20 transition">
+                            <i class="ri-user-line text-white/80"></i>
+                        </div>
+                    </a>
+
+                    <!-- REGISTER -->
+                    <a href="{{ route('register') }}"
+                       class="px-4 py-2 rounded-full border border-subtle bg-white/5 text-xs text-white/80 hover:border-white/20 transition">
+                        Register
+                    </a>
+                @else
+                    @if ($user?->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" class="group" aria-label="Admin dashboard">
+                            <div class="w-10 h-10 rounded-full bg-white/5 border border-subtle flex items-center justify-center hover:border-white/20 transition">
+                                <i class="ri-settings-3-line text-white/80"></i>
+                            </div>
+                        </a>
+                    @endif
+
+                    <div class="relative" @click.outside="userMenu=false">
+                        <button type="button" @click="userMenu=!userMenu"
+                            class="w-10 h-10 rounded-full bg-white/5 border border-subtle flex items-center justify-center hover:border-white/20 transition"
+                            aria-label="Account">
+                            <span class="text-xs font-semibold text-white">
+                                {{ strtoupper(substr($user?->name ?? 'U', 0, 1)) }}
+                            </span>
+                        </button>
+
+                        <div x-show="userMenu" x-transition
+                             class="absolute right-0 mt-3 w-52 rounded-xl border border-subtle bg-[#0b0d0f] p-2">
+
+                            <div class="px-3 py-2">
+                                <p class="text-xs text-white/50">Signed in as</p>
+                                <p class="text-sm text-white truncate">{{ $user?->email }}</p>
+                            </div>
+
+                            <div class="h-px bg-white/5 my-1"></div>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-3 py-2 rounded hover:bg-white/5 text-sm text-white/80">
+                                    <i class="ri-logout-box-r-line mr-2"></i> Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </a>
+                @endguest
 
                 <!-- CART -->
                 <a href="/cart" class="relative group">
@@ -142,10 +190,32 @@
                 <!-- Actions -->
                 <div class="pt-4 flex flex-col gap-3">
 
-                    <a href="/login"
-                       class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
-                        Login
-                    </a>
+                    @guest
+                        <a href="{{ route('login') }}"
+                           class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
+                            Login
+                        </a>
+
+                        <a href="{{ route('register') }}"
+                           class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
+                            Register
+                        </a>
+                    @else
+                        @if (auth()->user()?->is_admin)
+                            <a href="{{ route('admin.dashboard') }}"
+                               class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
+                                Admin Dashboard
+                            </a>
+                        @endif
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
+                                Logout
+                            </button>
+                        </form>
+                    @endguest
 
                     <a href="/cart"
                        class="w-full text-center py-2 rounded-full border border-subtle hover:border-white transition text-sm">
