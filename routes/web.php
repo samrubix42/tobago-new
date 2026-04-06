@@ -35,5 +35,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::livewire('/categories', 'admin::category-list')->name('admin.categories');
 
     Route::view('/brands', 'welcome')->name('admin.brands');
-    Route::view('/products', 'welcome')->name('admin.products.index');
+    Route::livewire('/products', 'admin::product.product-list')->name('admin.products.index');
+    Route::livewire('/products/add', 'admin::product.add-product')->name('admin.products.add');
+    Route::livewire('/products/edit/{id}', 'admin::product.update-product')->name('admin.products.edit');
 });

@@ -3,16 +3,22 @@
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new class extends Component
+new #[Layout('layouts::admin')] class extends Component
 {
     use WithFileUploads;
 
     public string $search = '';
     public ?int $categoryId = null;
     public ?int $deleteId = null;
+    public $categories = [];
+    public $parentCategories = [];
+
+
 
     public string $title = '';
     public string $slug = '';
@@ -28,13 +34,10 @@ new class extends Component
     public ?string $meta_description = null;
     public ?string $meta_keywords = null;
 
+    #[On('refresh-category-list')]
     public function mount(): void
     {
         $this->resetForm();
-    }
-
-    public function render()
-    {
         $categories = Category::query()
             ->with('parent')
             ->when($this->search !== '', function ($query) {
@@ -50,17 +53,15 @@ new class extends Component
 
         $parentCategories = Category::query()
             ->whereNull('parent_id')
-            ->when($this->categoryId, fn ($query) => $query->where('id', '!=', $this->categoryId))
+            ->when($this->categoryId, fn($query) => $query->where('id', '!=', $this->categoryId))
             ->orderBy('title')
             ->get();
 
-        return view('admin.category-list.category-list', [
-            'categories' => $categories,
-            'parentCategories' => $parentCategories,
-        ])->layout('layouts.admin', [
-            'title' => 'Categories',
-        ]);
+        $this->categories = $categories;
+        $this->parentCategories = $parentCategories;
     }
+
+
 
     public function updatedTitle(string $value): void
     {
@@ -153,7 +154,14 @@ new class extends Component
 
         $category->save();
 
+        $this->dispatch('toast-show', [
+            'message' => 'Category saved successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
         $this->dispatch('close-modal');
+        $this->dispatch('refresh-category-list');
         $this->resetForm();
     }
 
@@ -167,11 +175,27 @@ new class extends Component
 
         $category = Category::findOrFail($id);
 
-        if ($category->image && Storage::disk('public')->exists($category->image)) {
-            Storage::disk('public')->delete($category->image);
+        if ($category->children()->exists()) {
+            $this->dispatch('toast-show', [
+                'message' => 'Delete Its subcategories first Before deleting this category.',
+                'type' => 'warning',
+                'position' => 'top-right',
+            ]);
+
+            $this->dispatch('close-delete-modal');
+            $this->deleteId = null;
+            return;
         }
 
         $category->delete();
+
+        $this->dispatch('toast-show', [
+            'message' => 'Category deleted successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
+        $this->dispatch('refresh-category-list');
 
         $this->dispatch('close-delete-modal');
         $this->deleteId = null;
@@ -186,5 +210,13 @@ new class extends Component
         }
 
         $category->update(['order' => (int) $position]);
+
+        $this->dispatch('refresh-category-list');
+
+        $this->dispatch('toast-show', [
+            'message' => 'Category order updated successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
     }
 };
