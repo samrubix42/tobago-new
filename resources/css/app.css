@@ -1,11 +1,244 @@
-@import 'tailwindcss';
+/* ===============================
+   🔤 GOOGLE FONTS (SANS ONLY)
+================================= */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* ===============================
+   ⚡ TAILWIND
+================================= */
+@import "tailwindcss";
+
+/* ===============================
+   📂 SOURCES
+================================= */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* ===============================
+   🎨 THEME (MODERN HOOKAH UI)
+================================= */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+    /* 🌑 Base */
+    --bg: #050607;
+    --surface: #0b0d0f;
+    --surface-light: #121417;
+
+    /* 🪶 Text */
+    --text: #f8f5f0;
+    --muted: #a89f93;
+
+    /* 🔥 Accent */
+    --accent: #ff7a18;
+
+    /* 🌈 MAIN GRADIENT (buttons) */
+    --gradient-main: linear-gradient(135deg, #ff512f 0%, #ff7a18 50%, #ffc371 100%);
+
+    /* 🌈 NAV / CATEGORY GRADIENT (YOUR STYLE) */
+    --gradient-acrylic: linear-gradient(
+        135deg,
+        #00c6ff 0%,
+        #0072ff 30%,
+        #6a5cff 55%,
+        #c23fff 75%,
+        #ff00cc 100%
+    );
+
+    /* Glow */
+    --glow-accent: rgba(255, 122, 24, 0.35);
+
+    /* Border */
+    --border: rgba(255, 255, 255, 0.06);
+}
+
+/* ===============================
+   🌐 BASE
+================================= */
+:root {
+    --bg: #050607;
+    --text: #f8f5f0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===============================
+   💨 SMOKE EFFECT
+================================= */
+.smoke-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.smoke-bg::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+    animation: smokeMove 20s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes smokeMove {
+    0% { transform: translate(-20%, -20%) rotate(0deg); }
+    100% { transform: translate(20%, 20%) rotate(360deg); }
+}
+
+/* ===============================
+   🌈 MULTI COLOR GLOW (NEW)
+================================= */
+.glow-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.glow-blue {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #00c6ff, transparent 60%);
+    filter: blur(120px);
+    opacity: 0.25;
+}
+
+.glow-purple {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #6a5cff, transparent 60%);
+    filter: blur(120px);
+    opacity: 0.25;
+}
+
+.glow-pink {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    background: radial-gradient(circle, #ff00cc, transparent 60%);
+    filter: blur(140px);
+    opacity: 0.25;
+}
+
+/* ===============================
+   🧩 COMPONENTS
+================================= */
+@layer components {
+
+    /* 🔠 HEADINGS (SANS ONLY) */
+    .heading {
+        font-family: var(--font-sans);
+        letter-spacing: 0.03em;
+        font-weight: 600;
+    }
+
+    /* 🌈 TEXT GRADIENT */
+    .text-gradient {
+        background: var(--gradient-acrylic);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* 🔘 BUTTON */
+    .btn-primary {
+        background: var(--gradient-main);
+        @apply rounded-full px-6 py-3 text-sm font-semibold text-black transition;
+
+        box-shadow:
+            0 10px 30px rgba(255, 122, 24, 0.35),
+            inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        filter: brightness(1.1);
+    }
+
+    /* 🪟 CARD */
+    .card {
+        @apply rounded-2xl border p-5;
+        border-color: var(--border);
+        background: rgba(255,255,255,0.02);
+        backdrop-filter: blur(10px);
+    }
+
+    /* 🌈 GRADIENT CARD */
+    .gradient-card {
+        background: var(--gradient-acrylic);
+        @apply rounded-2xl p-6 text-white transition;
+    }
+
+    .gradient-card:hover {
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    /* 🛍 PRODUCT CARD */
+    .ecom-product-card {
+        @apply rounded-2xl border p-5 transition;
+        border-color: var(--border);
+
+        background:
+            radial-gradient(circle at top, rgba(255,122,24,0.15), transparent 40%),
+            linear-gradient(180deg, #0d0e10 0%, #050506 100%);
+    }
+
+    .ecom-product-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(255, 122, 24, 0.4);
+
+        box-shadow:
+            0 20px 60px rgba(0,0,0,0.4),
+            0 0 25px rgba(255,122,24,0.2);
+    }
+
+    /* 🏷 BADGE */
+    .product-badge {
+        @apply inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase;
+        background: rgba(255,255,255,0.05);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* 🧾 CATEGORY */
+    .category-card {
+        @apply rounded-2xl border p-6 transition;
+        border-color: var(--border);
+        background: rgba(255,255,255,0.03);
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+    }
+
+}
+
+/* ===============================
+   🧰 UTILITIES
+================================= */
+@layer utilities {
+
+    .bg-surface {
+        background: var(--surface);
+    }
+
+    .text-muted {
+        color: var(--muted);
+    }
+
+    .border-subtle {
+        border-color: var(--border);
+    }
 }
