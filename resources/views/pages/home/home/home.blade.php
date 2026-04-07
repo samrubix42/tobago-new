@@ -1,110 +1,190 @@
 <div>
     <section class="relative overflow-hidden">
 
-        <!-- 🌈 MULTI COLOR GLOW -->
-        <div class="absolute inset-0 pointer-events-none">
-
-            <!-- Blue -->
-            <div class="absolute top-[-10%] left-[10%] w-[400px] h-[400px] opacity-25 blur-[120px]"
-                style="background: radial-gradient(circle, #00c6ff, transparent 60%);">
+        <!-- 🌈 SUBTLE AMBIENT GLOW -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute -top-[10%] -left-[5%] w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] opacity-20 blur-[100px] sm:blur-[120px]"
+                style="background: radial-gradient(circle, #00c6ff, transparent 70%);">
             </div>
-
-            <!-- Purple -->
-            <div class="absolute top-[10%] right-[10%] w-[400px] h-[400px] opacity-25 blur-[120px]"
-                style="background: radial-gradient(circle, #6a5cff, transparent 60%);">
+            <div class="absolute top-[10%] -right-[5%] w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] opacity-20 blur-[100px] sm:blur-[120px]"
+                style="background: radial-gradient(circle, #6a5cff, transparent 70%);">
             </div>
-
-            <!-- Pink -->
-            <div class="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[500px] h-[400px] opacity-25 blur-[140px]"
-                style="background: radial-gradient(circle, #ff00cc, transparent 60%);">
-            </div>
-
         </div>
 
         <!-- CONTENT -->
-        <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
+        <div class="relative max-w-7xl mx-auto px-6 pt-10 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
 
             <!-- 🔥 LEFT -->
             <div>
 
                 <!-- Badge -->
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-subtle bg-white/5 text-xs text-muted mb-6 backdrop-blur">
-                    <span class="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500 animate-pulse"></span>
                     Premium Hookah Collection
                 </div>
 
                 <!-- Heading -->
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-6">
-                    Elevate Your <br>
-                    <span class="text-gradient">Hookah Experience</span>
+                <h1 class="text-3xl sm:text-5xl lg:text-5xl font-bold leading-[1.1] mb-6 tracking-tight">
+                    Buy Hookah Online <br>
+                    <span class="text-transparent text-bold bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+                        in India
+                    </span>
                 </h1>
 
                 <!-- Description -->
-                <p class="text-muted text-base max-w-lg mb-8">
-                    Discover premium hookahs, flavors, and accessories crafted for smooth,
-                    rich, and unforgettable sessions.
-                </p>
+                <div class="space-y-4 mb-8">
+                    <p class="text-muted text-sm max-w-lg">
+                        We started Tobacgo to make buying a premium hookah online simple and stress free. Instead of 
+                        scrolling through endless options, you’ll find a carefully chosen range from our own brand and other 
+                        trusted names. This makes it easy to pick the right hookah for your style and budget.
+                    </p>
+                    <p class="text-white/80 text-sm font-medium">
+                        Explore our collection below and choose a hookah that fits your style, space, and budget.
+                    </p>
+                </div>
+
+                <!-- Buyer Types -->
+                <div class="mb-10 space-y-4">
+                    <h2 class="text-xl font-semibold text-white/90">Made for Every Type of Hookah Buyer</h2>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <li class="flex items-center gap-2 text-sm text-muted">
+                            <i class="ri-checkbox-circle-fill text-blue-500"></i> First-time buyers who want guidance
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-muted">
+                            <i class="ri-checkbox-circle-fill text-blue-500"></i> Daily home users looking for reliability
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-muted">
+                            <i class="ri-checkbox-circle-fill text-blue-500"></i> Gift buyers searching premium hookahs
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-muted">
+                            <i class="ri-checkbox-circle-fill text-blue-500"></i> Collectors wanting luxury pieces
+                        </li>
+                    </ul>
+                </div>
 
                 <!-- CTA -->
-                <div class="flex flex-wrap gap-4">
-
+                <div class="flex flex-col sm:flex-row gap-4">
                     <a href="#featured-products"
-                        class="px-6 py-3 rounded-full text-sm font-semibold text-black"
+                        class="px-8 py-3.5 rounded-full text-sm font-bold text-black text-center shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
                         style="background: var(--gradient-acrylic);">
                         Shop Now
                     </a>
-
                     <a href="#categories"
-                        class="px-6 py-3 rounded-full border border-subtle text-sm text-white hover:border-white transition">
+                        class="px-8 py-3.5 rounded-full border border-white/10 text-sm text-white/80 text-center hover:border-white/20 hover:bg-white/5 active:scale-95 transition-all">
                         Explore Collection
                     </a>
-
                 </div>
 
                 <!-- Stats -->
-                <div class="flex gap-10 mt-12 text-sm text-muted">
-
-                    <div>
-                        <p class="text-white font-semibold text-xl">500+</p>
-                        Products
+                <div class="mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-2xl shadow-black/20">
+                    <div class="relative px-4 py-5 text-center">
+                        <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
+                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">500+</p>
+                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Products</p>
                     </div>
-
-                    <div>
-                        <p class="text-white font-semibold text-xl">4.8★</p>
-                        Rating
+                    <div class="relative px-4 py-5 text-center">
+                        <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
+                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">4.3<span class="text-sm sm:text-base text-amber-300 align-super">★</span></p>
+                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Rating</p>
                     </div>
-
-                    <div>
-                        <p class="text-white font-semibold text-xl">10k+</p>
-                        Customers
+                    <div class="px-4 py-5 text-center">
+                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">10k+</p>
+                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Customers</p>
                     </div>
-
                 </div>
 
             </div>
 
             <!-- 💨 RIGHT -->
-            <div class="relative flex justify-center items-center">
-
-                <!-- Glow behind product -->
-                <div class="absolute w-[350px] h-[350px] rounded-full blur-[100px] opacity-30"
+            <div class="relative flex justify-center lg:justify-end items-center group">
+                <!-- Inner Blur Base -->
+                <div class="absolute w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full blur-[80px] sm:blur-[120px] opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity"
                     style="background: radial-gradient(circle, #6a5cff, transparent 70%);">
                 </div>
 
-                <!-- Product Card -->
-                <div class="relative rounded-2xl border border-subtle bg-white/5 backdrop-blur-xl p-8">
-
-                    <img src="{{ asset('hookah.png') }}"
-                        alt="Hookah"
-                        class="max-h-[340px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] transition hover:scale-105 duration-300">
-
+                <div class="relative w-full max-w-[320px] sm:max-w-[450px]">
+                    <img src="{{ asset('images/hero.png') }}"
+                        alt="Premium Modern Hookah"
+                        class="w-[90%] h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-2">
+                    
+                    <!-- Decorative Floating Element -->
+                    <div class="absolute -bottom-10 -right-4 sm:-right-8 p-4 sm:p-6 rounded-2xl bg-[#0d0f11]/40 border border-white/10 backdrop-blur-md hidden sm:block animate-bounce shadow-2xl" style="animation-duration: 3s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <i class="ri-medal-line text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-white/40 uppercase font-bold tracking-widest">Quality Guarantee</p>
+                                <p class="text-sm text-white font-semibold">100% Authentic</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
         </div>
 
     </section>
+
+    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 -mt-2 lg:-mt-12">
+        <div class="relative overflow-hidden rounded-2xl border border-subtle bg-[#0b0d0f]/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
+            <div class="absolute -top-20 left-10 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl"></div>
+            <div class="absolute -bottom-20 right-10 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl"></div>
+
+            <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+                <div class="flex items-center gap-4 px-6 py-5 border-b sm:border-r lg:border-b-0 border-subtle">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-orange-400/20 bg-orange-500/10 text-orange-300">
+                        <i class="ri-truck-line text-2xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Free Shipping</h3>
+                        <p class="mt-1 text-xs text-muted">On orders above ₹999</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 px-6 py-5 border-b sm:border-r lg:border-b-0 border-subtle">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-400/20 bg-sky-500/10 text-sky-300">
+                        <i class="ri-refresh-line text-2xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">10-Day Returns</h3>
+                        <p class="mt-1 text-xs text-muted">No questions asked</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 px-6 py-5 border-b sm:border-r lg:border-b-0 border-subtle">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-500/10 text-emerald-300">
+                        <i class="ri-shield-check-line text-2xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">100% Original</h3>
+                        <p class="mt-1 text-xs text-muted">All products are genuine</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 px-6 py-5 border-b sm:border-r lg:border-b-0 border-subtle">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-violet-400/20 bg-violet-500/10 text-violet-300">
+                        <i class="ri-secure-payment-line text-2xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Secure Checkout</h3>
+                        <p class="mt-1 text-xs text-muted">UPI, Cards, Net Banking</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 px-6 py-5">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-400/20 bg-amber-500/10 text-amber-300">
+                        <i class="ri-customer-service-2-line text-2xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">WhatsApp Support</h3>
+                        <p class="mt-1 text-xs text-muted">+91 78384 49604</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="shop-by-price" class="relative max-w-7xl mx-auto px-6 py-24 overflow-hidden">
 
         <!-- 🌈 MULTI COLOR GLOW -->
@@ -249,7 +329,7 @@
             <div class="relative rounded-2xl bg-[#0b0d0f] border border-subtle p-6 text-center overflow-hidden">
 
                 <!-- Image -->
-                <img src="{{ asset('hookah.png') }}"
+                <img src="{{ asset('images/hero.png') }}"
                      class="h-32 mx-auto mb-4 object-contain transition group-hover:scale-110 duration-300">
 
                 <!-- Text -->

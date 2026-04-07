@@ -1,5 +1,38 @@
 <div x-data="{ mobileOpen: false, dropdown: null, userMenu: false }">
 
+    {{-- ── TOP TICKER ── --}}
+    <div class="bg-[#0b0d0f] border-b border-white/[0.04] overflow-hidden"
+         x-data="{ 
+            messages: [
+                { text: 'Free shipping on orders Rs. 3000+', icon: 'ri-truck-line' },
+                { text: 'Premium Hookahs | 500+ Selection', icon: 'ri-fire-line' },
+                { text: '10k+ Trust Tobac-Go Hookah Lovers', icon: 'ri-user-heart-line' }
+            ],
+            current: 0,
+            init() {
+                setInterval(() => {
+                    this.current = (this.current + 1) % this.messages.length;
+                }, 5000);
+            }
+         }">
+        <div class="max-w-7xl mx-auto px-4 h-10 flex items-center justify-center relative">
+            <template x-for="(msg, i) in messages" :key="i">
+                <div x-show="current === i" 
+                     x-transition:enter="transition ease-out duration-700"
+                     x-transition:enter-start="opacity-0 translate-y-3"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-500"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 -translate-y-3"
+                     class="absolute flex items-center gap-2.5 text-[10px] font-bold tracking-[0.1em] text-white/90 uppercase"
+                >
+                    <i :class="msg.icon" class="text-blue-500 text-sm"></i>
+                    <span x-text="msg.text"></span>
+                </div>
+            </template>
+        </div>
+    </div>
+
     {{-- ── HEADER BAR ── --}}
     <header class="sticky top-0 z-50 bg-[#07080a]/90 backdrop-blur-xl border-b border-white/[0.06]">
 

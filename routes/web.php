@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\GoogleController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::home')->name('home');
 Route::livewire('/product/{id}', 'pages::product.product-view')->name('product');
@@ -62,3 +63,11 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::livewire('/blogs/edit/{id}', 'admin::blog.update-blog')->name('blogs.edit');
     Route::livewire('/blogs/categories', 'admin::blog.blog-category-list')->name('blogs.categories');
 });
+
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return "Cache cleared!";
+})->name('clear.cache');
