@@ -16,6 +16,7 @@
 
     <!-- 🔷 Assets -->
     @vite(['resources/css/admin.css', 'resources/js/app.js'])
+    <script src="{{ asset('tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 
     @livewireStyles
     <meta name="robots" content="noindex, nofollow">

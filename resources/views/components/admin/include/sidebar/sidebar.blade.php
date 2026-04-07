@@ -18,7 +18,7 @@
 
             <!-- 🔷 Logo Section -->
             <div class="flex items-center justify-between px-5 h-14 lg:h-16 border-b border-slate-200">
-                <a href="{{ route('home') }}" wire:navigate class="flex-shrink-0">
+                <a href="{{ route('home') }}"  class="flex-shrink-0">
                     <img src="{{ asset('logo.webp') }}" class="h-7 w-auto" alt="Logo">
                 </a>
 
@@ -64,7 +64,7 @@
                                     <div x-show="open" x-collapse class="mt-1 ml-4 pl-4 border-l border-slate-200 space-y-1">
                                         @foreach($menu->submenu as $sub)
                                             @php $isSubActive = url()->current() === $sub->url; @endphp
-                                            <a href="{{ $sub->url }}" wire:navigate class="flex items-center gap-3 px-3 py-1.5 rounded-md text-[13px] transition
+                                            <a href="{{ $sub->url }}"  class="flex items-center gap-3 px-3 py-1.5 rounded-md text-[13px] transition
                                                 {{ $isSubActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                                                 <span class="h-1.5 w-1.5 rounded-full {{ $isSubActive ? 'bg-blue-600' : 'bg-slate-300' }}"></span>
                                                 <span class="truncate">{{ $sub->title }}</span>
@@ -73,7 +73,7 @@
                                     </div>
 
                                 @else
-                                    <a href="{{ $menu->url }}" wire:navigate
+                                    <a href="{{ $menu->url }}" 
                                        class="group flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
                                        {{ $isActive ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
 

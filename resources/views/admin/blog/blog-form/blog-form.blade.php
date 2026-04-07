@@ -33,8 +33,35 @@
 
         <div>
             <label class="text-xs font-medium text-gray-600">Content</label>
-            <div wire:ignore x-data="tinymceLivewire({ model: 'content' })" x-init="init()">
+            <div
+                wire:ignore
+                x-data="{
+                    editor: null,
+                    init() {
+                        const textarea = this.$refs.textarea;
+                        const existing = window.tinymce?.get(textarea.id);
+                        if (existing) existing.remove();
+
+                        window.tinymce.init({
+                            target: textarea,
+                            height: 320,
+                            menubar: false,
+                            plugins: 'lists link image paste help wordcount',
+                            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+                            setup: (editor) => {
+                                this.editor = editor;
+                                editor.on('init', () => editor.setContent(textarea.value || ''));
+                                editor.on('Change KeyUp Undo Redo', () => this.$wire.set('content', editor.getContent()));
+                            },
+                        });
+                    },
+                    destroy() {
+                        if (this.editor) this.editor.remove();
+                    },
+                }"
+            >
                 <textarea
+                    id="{{ $blogId ? 'blog-update-content' : 'blog-add-content' }}"
                     x-ref="textarea"
                     class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
                     placeholder="Write your post..."
@@ -66,4 +93,3 @@
         </div>
     </div>
 </div>
-

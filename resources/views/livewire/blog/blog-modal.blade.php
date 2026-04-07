@@ -65,9 +65,31 @@
                             <label class="text-xs font-medium text-gray-600">Content</label>
                             <div
                                 wire:ignore
-                                x-data="tinymceLivewire({ model: 'content' })"
-                                x-init="init()"
-                                x-on:open-modal.window="init().then(() => { if ($data.editor) { $data.editor.setContent($wire.content || '') } })"
+                                x-data="{
+                                    editor: null,
+                                    init() {
+                                        const textarea = this.$refs.textarea;
+                                        const existing = window.tinymce?.get(textarea.id);
+                                        if (existing) existing.remove();
+
+                                        window.tinymce.init({
+                                            target: textarea,
+                                            height: 320,
+                                            menubar: false,
+                                            plugins: 'lists link image paste help wordcount',
+                                            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+                                            setup: (editor) => {
+                                                this.editor = editor;
+                                                editor.on('init', () => editor.setContent(textarea.value || ''));
+                                                editor.on('Change KeyUp Undo Redo', () => this.$wire.set('content', editor.getContent()));
+                                            },
+                                        });
+                                    },
+                                    destroy() {
+                                        if (this.editor) this.editor.remove();
+                                    },
+                                }"
+                                x-on:open-modal.window="if (editor) editor.setContent($wire.content || '')"
                             >
                                 <textarea
                                     id="blog-content"
