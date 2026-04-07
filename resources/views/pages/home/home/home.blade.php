@@ -12,9 +12,8 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="relative max-w-7xl mx-auto px-6 pt-10 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 lg:py-32 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
-            <!-- ðŸ”¥ LEFT -->
             <div>
 
                 <!-- Badge -->
@@ -35,7 +34,7 @@
                 <div class="space-y-4 mb-8">
                     <p class="text-muted text-sm max-w-lg">
                         We started Tobacgo to make buying a premium hookah online simple and stress free. Instead of 
-                        scrolling through endless options, youâ€™ll find a carefully chosen range from our own brand and other 
+                        scrolling through endless options, you’ll find a carefully chosen range from our own brand and other 
                         trusted names. This makes it easy to pick the right hookah for your style and budget.
                     </p>
                     <p class="text-white/80 text-sm font-medium">
@@ -64,7 +63,7 @@
 
                 <!-- CTA -->
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#featured-products"
+                    <a href="#collection"
                         class="px-8 py-3.5 rounded-full text-sm font-bold text-black text-center shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
                         style="background: var(--gradient-acrylic);">
                         Shop Now
@@ -84,7 +83,7 @@
                     </div>
                     <div class="relative px-4 py-5 text-center">
                         <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
-                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">4.3<span class="text-sm sm:text-base text-amber-300 align-super">â˜…</span></p>
+                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">4.3<span class="text-sm sm:text-base text-amber-300 align-super">★</span></p>
                         <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Rating</p>
                     </div>
                     <div class="px-4 py-5 text-center">
@@ -137,7 +136,7 @@
                     </span>
                     <div>
                         <h3 class="text-sm font-bold text-white">Free Shipping</h3>
-                        <p class="mt-1 text-xs text-muted">On orders above â‚¹999</p>
+                        <p class="mt-1 text-xs text-muted">On orders above ₹999</p>
                     </div>
                 </div>
 
@@ -711,5 +710,4 @@ function testimonialSlider() {
 }
 </script>
 </div>
-
 
