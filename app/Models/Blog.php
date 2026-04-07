@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Blog extends Model
 {
@@ -20,4 +21,18 @@ class Blog extends Model
         'featured_image',
         'is_published',
     ];
+
+    protected $casts = [
+        'is_published' => 'bool',
+    ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }

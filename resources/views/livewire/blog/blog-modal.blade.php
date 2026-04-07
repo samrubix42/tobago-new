@@ -47,9 +47,10 @@
                             <select wire:model.live="category_id" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none text-gray-900">
                                 <option value="">Select Category</option>
                                 @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    <option value="{{ $cat->id }}">{{ $cat->title }}</option>
                                 @endforeach
                             </select>
+                            @error('category_id')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <div>
@@ -62,7 +63,19 @@
 
                         <div class="sm:col-span-2">
                             <label class="text-xs font-medium text-gray-600">Content</label>
-                            <textarea id="blog-content" placeholder="Write content..." class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none text-gray-900">{{ $content }}</textarea>
+                            <div
+                                wire:ignore
+                                x-data="tinymceLivewire({ model: 'content' })"
+                                x-init="init()"
+                                x-on:open-modal.window="init().then(() => { if ($data.editor) { $data.editor.setContent($wire.content || '') } })"
+                            >
+                                <textarea
+                                    id="blog-content"
+                                    x-ref="textarea"
+                                    placeholder="Write content..."
+                                    class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none text-gray-900"
+                                >{{ $content }}</textarea>
+                            </div>
                             @error('content')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
                         </div>
 
@@ -87,51 +100,3 @@
         </div>
     </template>
 </div>
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        // Initialize TinyMCE when available
-        const initTiny = () => {
-            if (!window.tinymce) return;
-            if (tinymce.get('blog-content')) return;
-
-            tinymce.init({
-                selector: '#blog-content',
-                height: 300,
-                menubar: false,
-                plugins: 'lists link image paste help wordcount',
-                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-                setup: function (editor) {
-                    editor.on('Change KeyUp', function () {
-                        const content = editor.getContent();
-                        const textarea = document.getElementById('blog-content');
-                        textarea.value = content;
-                        textarea.dispatchEvent(new Event('input', { bubbles: true }));
-                    });
-
-                    document.addEventListener('open-modal', () => {
-                        setTimeout(() => {
-                            editor.setContent(document.getElementById('blog-content').value || '');
-                        }, 200);
-                    });
-                }
-            });
-        };
-
-        // Try to initialize periodically until TinyMCE is loaded (CDN)
-        const interval = setInterval(() => {
-            if (window.tinymce) {
-                initTiny();
-                clearInterval(interval);
-            }
-        }, 500);
-
-        // Load TinyMCE from CDN if not present
-        if (!window.tinymce) {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js';
-            script.referrerPolicy = 'origin';
-            document.head.appendChild(script);
-        }
-    });
-</script>

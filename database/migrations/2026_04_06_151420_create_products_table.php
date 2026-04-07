@@ -22,6 +22,7 @@ return new class extends Migration
                 
             $table->string('name')->comment('Product name');
             $table->string('slug')->unique()->comment('SEO-friendly unique slug');
+            $table->string('sku')->nullable()->unique()->comment('Stock Keeping Unit - unique identifier');
             $table->text('description')->nullable()->comment('Product description');
 
             // PRICING 

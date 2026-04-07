@@ -76,9 +76,7 @@ new #[Layout('layouts::admin')] class extends Component
             'is_active' => $this->status,
         ]);
 
-        if (! $testimonial->exists) {
-            $testimonial->sort_order = (int) Testimonial::max('sort_order') + 1;
-        }
+        // no ordering field used for testimonials in this deployment
 
         $testimonial->save();
 
@@ -127,7 +125,6 @@ new #[Layout('layouts::admin')] class extends Component
     {
         $query = Testimonial::query()
             ->when($this->search !== '', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
-            ->orderBy('sort_order')
             ->orderBy('name');
 
         return view('admin.testimonial-list.testimonial-list', [
@@ -135,23 +132,6 @@ new #[Layout('layouts::admin')] class extends Component
         ]);
     }
 
-    public function handleTestimonialSort($item, $position): void
-    {
-        $t = Testimonial::find($item);
-
-        if (! $t) {
-            return;
-        }
-
-        $t->update(['sort_order' => (int) $position]);
-
-        $this->dispatch('refresh-testimonial-list');
-
-        $this->dispatch('toast-show', [
-            'message' => 'Testimonial order updated successfully!',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
-    }
+    // ordering removed — no sort handler
 
 };

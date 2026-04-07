@@ -39,15 +39,11 @@
                 </tr>
             </thead>
 
-            <tbody wire:sort="handleTestimonialSort" class="divide-y divide-slate-100">
+            <tbody class="divide-y divide-slate-100">
                 @forelse($testimonials as $t)
-                    <tr
-                        wire:key="testimonial-{{ $t->id }}"
-                        wire:sort:item="{{ $t->id }}"
-                        class="hover:bg-slate-50 transition"
-                    >
+                    <tr wire:key="testimonial-{{ $t->id }}" class="hover:bg-slate-50 transition">
                         <td class="px-4 py-5 text-slate-400">
-                            <span wire:sort:handle class="cursor-move hover:text-slate-600">
+                            <span class="text-slate-400">
                                 <i class="ri-draggable text-base"></i>
                             </span>
                         </td>
@@ -84,7 +80,7 @@
                         </td>
 
                         <td class="px-6 py-5 text-right">
-                            <div wire:sort:ignore class="flex justify-end gap-2">
+                            <div class="flex justify-end gap-2">
                                 <button
                                     @click="$dispatch('open-modal'); $wire.openEditModal({{ $t->id }})"
                                     class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md text-xs"

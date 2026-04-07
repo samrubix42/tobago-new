@@ -29,12 +29,12 @@
         <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="text-xl font-semibold text-slate-900">Quick Actions</h2>
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                <a href="{{ route('admin.categories') }}" class="rounded-2xl border border-slate-200 p-5 transition hover:border-slate-300 hover:bg-slate-50">
+                <a href="{{ route('admin.categories') }}" wire:navigate class="rounded-2xl border border-slate-200 p-5 transition hover:border-slate-300 hover:bg-slate-50">
                     <i class="ri-folder-3-line text-2xl text-blue-600"></i>
                     <p class="mt-4 text-base font-semibold text-slate-900">Manage Categories</p>
                     <p class="mt-2 text-sm text-slate-500">Add, edit, delete, and arrange store categories.</p>
                 </a>
-                <a href="{{ route('home') }}" class="rounded-2xl border border-slate-200 p-5 transition hover:border-slate-300 hover:bg-slate-50">
+                <a href="{{ route('home') }}" wire:navigate class="rounded-2xl border border-slate-200 p-5 transition hover:border-slate-300 hover:bg-slate-50">
                     <i class="ri-store-2-line text-2xl text-amber-600"></i>
                     <p class="mt-4 text-base font-semibold text-slate-900">View Storefront</p>
                     <p class="mt-2 text-sm text-slate-500">Open the public website and review the shopping experience.</p>

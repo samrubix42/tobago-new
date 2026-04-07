@@ -47,7 +47,6 @@ new #[Layout('layouts::admin')] class extends Component
                         ->orWhere('meta_title', 'like', '%' . $this->search . '%');
                 });
             })
-            ->orderBy('order')
             ->orderBy('title')
             ->get();
 
@@ -148,9 +147,7 @@ new #[Layout('layouts::admin')] class extends Component
             'meta_keywords' => $validated['meta_keywords'],
         ]);
 
-        if (! $category->exists) {
-            $category->order = (int) Category::max('order') + 1;
-        }
+        // no ordering field used for categories in this deployment
 
         $category->save();
 
@@ -201,22 +198,5 @@ new #[Layout('layouts::admin')] class extends Component
         $this->deleteId = null;
     }
 
-    public function handleCategorySort($item, $position): void
-    {
-        $category = Category::find($item);
-
-        if (! $category) {
-            return;
-        }
-
-        $category->update(['order' => (int) $position]);
-
-        $this->dispatch('refresh-category-list');
-
-        $this->dispatch('toast-show', [
-            'message' => 'Category order updated successfully!',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
-    }
+    // ordering removed — no sort handler
 };

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +13,7 @@
 
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+    <meta name="robots" content="noindex, nofollow">
 
     <!-- Assets -->
     @vite(['resources/css/admin.css', 'resources/js/app.js'])
@@ -27,4 +29,5 @@
 
     @livewireScripts
 </body>
+
 </html>

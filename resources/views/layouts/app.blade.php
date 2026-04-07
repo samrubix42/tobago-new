@@ -7,6 +7,7 @@
     <meta name="description" content="Tobac-Go premium hookah ecommerce store for shoppers in India. Explore luxury hookah products, premium setups, and WhatsApp-assisted buying.">
     <meta name="keywords" content="premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store">
     <meta name="theme-color" content="#080909">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>{{ $title ?? 'Tobac-Go | Premium Hookah Store India' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">

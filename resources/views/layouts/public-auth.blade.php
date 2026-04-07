@@ -10,13 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+    <meta name="robots" content="noindex, nofollow">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    <style>[x-cloak]{display:none!important}</style>
+    <style>
+        [x-cloak] {
+            display: none !important
+        }
+    </style>
 </head>
 
-<body  class="bg-[#09090b] text-white antialiased" style="font-family: 'Inter', sans-serif;">
+<body class="bg-[#09090b] text-white antialiased" style="font-family: 'Inter', sans-serif;">
 
     <div class="flex min-h-screen w-full">
 
