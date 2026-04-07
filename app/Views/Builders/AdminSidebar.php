@@ -29,11 +29,24 @@ class AdminSidebar
                 'submenu' => [],
             ],
             (object)[
-                'title' => 'Categories',
-                'icon' => 'ri-folder-3-line',
-                'url' => route('admin.categories'),
-                'hasSubmenu' => false,
-                'submenu' => [],
+                'title' => 'Product Management',
+                'icon' => 'ri-shopping-bag-3-line',
+                'url' => '#',
+                'hasSubmenu' => true,
+                'submenu' => [
+                    (object)[
+                        'title' => 'Categories',
+                        'url' => route('admin.categories'),
+                    ],
+                    (object)[
+                        'title' => 'Products',
+                        'url' => route('admin.products.index'),
+                    ],
+                    (object)[
+                        'title' => 'Inventory',
+                        'url' => route('admin.inventory'),
+                    ],
+                ],
             ],
             (object)[
                 'title' => 'Users',
@@ -42,31 +55,17 @@ class AdminSidebar
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
-                (object)[
-                    'title' => 'Testimonials',
-                    'icon' => 'ri-chat-3-line',
-                    'url' => route('admin.testimonials'),
-                    'hasSubmenu' => false,
-                    'submenu' => [],
-                ],
-                (object)[
-                    'title' => 'Orders',
-                    'icon' => 'ri-shopping-cart-2-line',
-                    'url' => '#', // Placeholder, implement orders later
-                    'hasSubmenu' => false,
-                    'submenu' => [],
-                ],
             (object)[
-                'title' => 'Products',
-                'icon' => 'ri-shopping-bag-3-line',
-                'url' => route('admin.products.index'),
+                'title' => 'Testimonials',
+                'icon' => 'ri-chat-3-line',
+                'url' => route('admin.testimonials'),
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
             (object)[
-                'title' => 'Inventory',
-                'icon' => 'ri-archive-stack-line',
-                'url' => route('admin.inventory'),
+                'title' => 'Orders',
+                'icon' => 'ri-shopping-cart-2-line',
+                'url' => '#',
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
