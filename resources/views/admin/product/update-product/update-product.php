@@ -4,7 +4,9 @@ namespace App\Livewire\Admin\Product;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\InventoryLog;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
@@ -139,7 +141,38 @@ new #[Layout('layouts::admin')] class extends Component
             'is_out_of_stock' => $this->is_out_of_stock,
         ];
 
-        Product::findOrFail($this->productId)->update($data);
+        DB::transaction(function () use ($data) {
+            /** @var Product $product */
+            $product = Product::query()->lockForUpdate()->findOrFail($this->productId);
+
+            if (! $product->sku) {
+                $data['sku'] = Product::generateSkuFromName($this->name, $product->id);
+            }
+
+            $oldStock = (int) $product->stock;
+            $newStock = (int) $this->stock;
+            $delta = $newStock - $oldStock;
+
+            if ($delta !== 0) {
+                if ($delta > 0) {
+                    $product->stock_in = (int) $product->stock_in + $delta;
+                } else {
+                    $product->stock_out = (int) $product->stock_out + abs($delta);
+                }
+
+                InventoryLog::create([
+                    'product_id' => $product->id,
+                    'type' => 'adjust',
+                    'quantity' => $delta,
+                    'reference_type' => 'admin',
+                    'reference_id' => null,
+                    'note' => 'Stock updated from product edit',
+                ]);
+            }
+
+            $product->fill($data);
+            $product->save();
+        });
 
         $this->dispatch('toast-show', [
             'message' => 'Product updated successfully!',

@@ -64,6 +64,13 @@ class AdminSidebar
                 'submenu' => [],
             ],
             (object)[
+                'title' => 'Inventory',
+                'icon' => 'ri-archive-stack-line',
+                'url' => route('admin.inventory'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+            (object)[
                 'title' => 'Coupons',
                 'icon' => 'ri-coupon-3-line',
                 'url' => route('admin.coupons'),

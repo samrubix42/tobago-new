@@ -52,6 +52,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::livewire('/products/add', 'admin::product.add-product')->name('products.add');
     Route::livewire('/products/edit/{id}', 'admin::product.update-product')->name('products.edit');
 
+    //inventory
+    Route::livewire('/inventory', 'admin::inventory')->name('inventory');
+
     //testimonial
 
     Route::livewire('/testimonials','admin::testimonial-list')->name('testimonials');

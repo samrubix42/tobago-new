@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -12,6 +13,7 @@ class Product extends Model
         'category_id',
         'name',
         'slug',
+        'sku',
         'description',
         'cost_price',
         'selling_price',
@@ -53,5 +55,32 @@ class Product extends Model
     public function inventoryLogs(): HasMany
     {
         return $this->hasMany(InventoryLog::class);
+    }
+
+    public static function generateSkuFromName(string $name, ?int $ignoreId = null): string
+    {
+        $base = strtoupper(Str::slug($name, '-'));
+        $base = $base !== '' ? $base : 'SKU';
+        $base = Str::limit($base, 22, '');
+
+        $candidate = $base;
+        $i = 0;
+
+        while (static::query()
+            ->where('sku', $candidate)
+            ->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))
+            ->exists()
+        ) {
+            $i++;
+            $suffix = strtoupper(Str::random(4));
+            $candidate = Str::limit($base, 18, '') . '-' . $suffix;
+
+            if ($i > 25) {
+                $candidate = 'SKU-' . strtoupper(Str::random(8));
+                break;
+            }
+        }
+
+        return $candidate;
     }
 }
