@@ -18,12 +18,10 @@
     
     <div class="flex flex-col h-full">
         {{-- Logo Section --}}
-        <div class="flex items-center gap-3 px-6 h-20 border-b border-white/5">
+        <div class="flex items-center gap-3 px-8 h-20 border-b border-white/5">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
                 <img src="{{ asset('logo.webp') }}" class="h-8 w-auto filter brightness-0 invert" alt="Logo">
-                <span class="font-bold text-lg tracking-tight text-white">
-                    Technonika
-                </span>
+               
             </a>
         </div>
 
