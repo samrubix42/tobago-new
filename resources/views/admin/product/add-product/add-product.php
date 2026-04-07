@@ -35,8 +35,6 @@ new #[Layout('layouts::admin')] class extends Component
 
     // Stock
     public int $stock = 0;
-    public int $stock_in = 0;
-    public int $stock_out = 0;
     public ?int $hurry_stock = null;
     public bool $is_out_of_stock = false;
 
@@ -135,13 +133,6 @@ new #[Layout('layouts::admin')] class extends Component
                     $data['sku'] = Product::generateSkuFromName($this->name, $product->id);
                 }
 
-                if ($delta !== 0) {
-                    if ($delta > 0) {
-                        $product->stock_in = (int) $product->stock_in + $delta;
-                    } else {
-                        $product->stock_out = (int) $product->stock_out + abs($delta);
-                    }
-
                     InventoryLog::create([
                         'product_id' => $product->id,
                         'type' => 'adjust',
@@ -150,15 +141,12 @@ new #[Layout('layouts::admin')] class extends Component
                         'reference_id' => null,
                         'note' => 'Stock updated during product creation',
                     ]);
-                }
 
                 $product->fill($data);
                 $product->save();
             });
         } else {
             $data['sku'] = Product::generateSkuFromName($this->name);
-            $data['stock_in'] = max(0, (int) $this->stock);
-            $data['stock_out'] = 0;
 
             $product = Product::create($data);
             $this->newlyCreatedProductId = $product->id;
@@ -202,8 +190,6 @@ new #[Layout('layouts::admin')] class extends Component
                 'cost_price' => $this->cost_price,
                 'selling_price' => $this->selling_price,
                 'stock' => $this->stock,
-                'stock_in' => max(0, (int) $this->stock),
-                'stock_out' => 0,
             ]);
             $this->newlyCreatedProductId = $product->id;
 

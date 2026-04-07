@@ -19,8 +19,6 @@ class Product extends Model
         'selling_price',
         'compare_price',
         'stock',
-        'stock_in',
-        'stock_out',
         'hurry_stock',
         'is_out_of_stock',
         'status',

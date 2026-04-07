@@ -33,7 +33,6 @@
                     <th class="px-6 py-4 text-left">Product</th>
                     <th class="px-6 py-4 text-left">SKU</th>
                     <th class="px-6 py-4 text-left">Quantity</th>
-                    <th class="px-6 py-4 text-left">Total In/Out</th>
                     <th class="px-6 py-4 text-left">Status</th>
                     <th class="px-6 py-4 text-right w-40">Actions</th>
                 </tr>
@@ -54,11 +53,6 @@
                         <span class="font-bold {{ $product->stock <= ($product->hurry_stock ?? 5) ? 'text-rose-600' : 'text-slate-900' }}">
                             {{ (int) $product->stock }}
                         </span>
-                    </td>
-                    <td class="px-6 py-5 text-slate-500">
-                        <span class="text-emerald-600 text-xs">+{{ (int)$product->stock_in }}</span>
-                        <span class="mx-1">/</span>
-                        <span class="text-rose-600 text-xs">-{{ (int)$product->stock_out }}</span>
                     </td>
                     <td class="px-6 py-5">
                         @if((int)$product->stock <= 0)
@@ -109,11 +103,6 @@
                     <span class="font-bold {{ (int)$product->stock <= ($product->hurry_stock ?? 5) ? 'text-rose-600' : 'text-slate-900' }}">
                         {{ (int)$product->stock }}
                     </span>
-                </div>
-                <div>
-                    <span class="text-slate-400 block text-xs uppercase font-bold tracking-widest">In / Out</span>
-                    <span class="text-xs text-emerald-600">+{{ (int)$product->stock_in }}</span>
-                    <span class="text-xs text-rose-600 ml-1">-{{ (int)$product->stock_out }}</span>
                 </div>
             </div>
             <div class="flex items-center justify-between pt-2 border-t border-slate-100">

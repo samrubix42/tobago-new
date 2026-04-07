@@ -154,12 +154,6 @@ new #[Layout('layouts::admin')] class extends Component
             $delta = $newStock - $oldStock;
 
             if ($delta !== 0) {
-                if ($delta > 0) {
-                    $product->stock_in = (int) $product->stock_in + $delta;
-                } else {
-                    $product->stock_out = (int) $product->stock_out + abs($delta);
-                }
-
                 InventoryLog::create([
                     'product_id' => $product->id,
                     'type' => 'adjust',

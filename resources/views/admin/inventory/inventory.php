@@ -119,13 +119,6 @@ new #[Layout('layouts::admin')] class extends Component
 
             $product->stock = $newStock;
             
-            // Logic: track stock_in for positive changes, stock_out for negative changes
-            if ($delta > 0) {
-                $product->stock_in = (int) $product->stock_in + (int) $delta;
-            } elseif ($delta < 0) {
-                $product->stock_out = (int) $product->stock_out + (int) abs($delta);
-            }
-
             $product->save();
 
             $logNote = trim((string) $this->note);
