@@ -25,7 +25,7 @@ new #[Layout('layouts::admin')] class extends Component
     public string $type = 'in'; // in|out|sale|return|adjust|reserve|release|replace
     public int $quantity = 0; // for adjust, can be negative
     public ?string $reference_type = null;
-    public ?int $reference_id = null;
+    public $reference_id = null;
     public ?string $note = null;
 
     public int $logsPerPage = 10;
