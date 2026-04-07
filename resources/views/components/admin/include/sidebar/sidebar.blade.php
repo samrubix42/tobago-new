@@ -34,34 +34,64 @@
 
                 <nav class="space-y-1.5">
 
-                    @foreach (\App\Views\Builders\AdminSidebar::menu(user: auth()->user())->get() as $menu)
+                        @foreach (\App\Views\Builders\AdminSidebar::menu(user: auth()->user())->get() as $menu)
 
-                        @php
-                            $isActive = url()->current() === $menu->url;
-                        @endphp
+                            @php
+                                // determine if current URL matches this menu or any of its submenu URLs
+                                $isActive = url()->current() === $menu->url;
+                                $submenuUrls = collect($menu->submenu ?? [])->pluck('url')->toArray();
+                                $isActiveParent = $isActive || in_array(url()->current(), $submenuUrls);
+                            @endphp
 
-                        <a href="{{ $menu->url }}"
-                           class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200
-                           {{ $isActive 
-                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
-                                : 'text-gray-500 hover:bg-blue-50 hover:text-blue-600' }}">
+                            <div x-data="{ open: {{ $isActiveParent ? 'true' : 'false' }} }" class="">
 
-                            <!-- Icon -->
-                            <div class="flex items-center justify-center h-8 w-8 rounded-lg transition
-                                {{ $isActive 
-                                    ? 'bg-white/20 text-white' 
-                                    : 'bg-blue-50 text-blue-400 group-hover:bg-white group-hover:text-blue-600' }}">
-                                
-                                <i class="{{ $menu->icon ?? 'ri-layout-grid-line' }} text-lg"></i>
+                                @if($menu->hasSubmenu)
+                                    <button @click="open = !open"
+                                            :aria-expanded="open"
+                                            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 justify-between
+                                                {{ $isActiveParent ? 'bg-blue-600 text-white' : 'text-gray-500 hover:bg-blue-50 hover:text-blue-600' }}">
+
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex items-center justify-center h-8 w-8 rounded-lg transition
+                                                {{ $isActiveParent ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-400 group-hover:bg-white group-hover:text-blue-600' }}">
+                                                <i class="{{ $menu->icon ?? 'ri-layout-grid-line' }} text-lg"></i>
+                                            </div>
+
+                                            <span class="font-semibold">{{ $menu->title }}</span>
+                                        </div>
+
+                                        <div class="flex items-center gap-2">
+                                            <i :class="open ? 'ri-arrow-down-s-line rotate-180' : 'ri-arrow-down-s-line'" class="text-lg transition-transform"></i>
+                                        </div>
+                                    </button>
+
+                                    <div x-show="open" x-collapse class="mt-2 space-y-1 pl-12 pr-3">
+                                        @foreach($menu->submenu as $sub)
+                                            @php $isSubActive = url()->current() === $sub->url; @endphp
+                                            <a href="{{ $sub->url }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                                {{ $isSubActive ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600' }}">
+                                                <span class="truncate">{{ $sub->title }}</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+
+                                @else
+                                    <a href="{{ $menu->url }}"
+                                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200
+                                       {{ $isActive ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-500 hover:bg-blue-50 hover:text-blue-600' }}">
+
+                                        <div class="flex items-center justify-center h-8 w-8 rounded-lg transition
+                                            {{ $isActive ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-400 group-hover:bg-white group-hover:text-blue-600' }}">
+                                            <i class="{{ $menu->icon ?? 'ri-layout-grid-line' }} text-lg"></i>
+                                        </div>
+
+                                        <span class="font-semibold">{{ $menu->title }}</span>
+                                    </a>
+                                @endif
+
                             </div>
 
-                            <!-- Title -->
-                            <span class="font-semibold">
-                                {{ $menu->title }}
-                            </span>
-                        </a>
-
-                    @endforeach
+                        @endforeach
 
                 </nav>
             </div>

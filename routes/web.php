@@ -55,4 +55,10 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::livewire('/testimonials','admin::testimonial-list')->name('testimonials');
     Route::livewire('/users','admin::user.user-list')->name('users');
+
+    //blog
+    Route::livewire('/blogs', 'admin::blog.blog-list')->name('blogs');
+    Route::livewire('/blogs/add', 'admin::blog.add-blog')->name('blogs.add');
+    Route::livewire('/blogs/edit/{id}', 'admin::blog.update-blog')->name('blogs.edit');
+    Route::livewire('/blogs/categories', 'admin::blog.blog-category-list')->name('blogs.categories');
 });

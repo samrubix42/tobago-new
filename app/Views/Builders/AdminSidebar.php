@@ -63,6 +63,22 @@ class AdminSidebar
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
+            (object)[
+                'title' => 'Blog',
+                'icon' => 'ri-newspaper-line',
+                'url' => '#',
+                'hasSubmenu' => true,
+                'submenu' => [
+                    (object)[
+                        'title' => 'All Posts',
+                        'url' => route('admin.blogs'), // Placeholder, implement blog posts later
+                    ],
+                    (object)[
+                        'title' => 'Categories',
+                        'url' => route('admin.blogs.categories'), // Placeholder, implement blog categories later
+                    ],
+                ],
+            ],
            
         ]);
         return $menu;

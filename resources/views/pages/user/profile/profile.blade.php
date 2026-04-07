@@ -7,7 +7,7 @@
             <h1 class="text-xl font-semibold text-white tracking-tight">My Profile</h1>
             <p class="text-sm text-white/40 mt-0.5">Manage your personal information and security</p>
         </div>
-        <a href="{{ route('user.address') }}"
+        <a wire:navigate href="{{ route('user.address') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
             <i class="ri-map-pin-line"></i> My Addresses
         </a>
