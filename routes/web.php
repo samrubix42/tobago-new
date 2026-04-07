@@ -16,6 +16,11 @@ Route::livewire('/admin/login', 'auth::admin-login')->middleware('guest')->name(
 Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
+// User account
+Route::middleware('auth')->group(function () {
+    Route::livewire('/account/profile', 'pages::user.profile')->name('user.profile');
+    Route::livewire('/account/addresses', 'pages::user.address')->name('user.address');
+});
 
 
 Route::post('/logout', function (Request $request) {
