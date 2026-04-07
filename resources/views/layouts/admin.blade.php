@@ -19,9 +19,9 @@
     @livewireStyles
 </head>
 
-<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+<body class="min-h-screen bg-gray-50 text-gray-900  antialiased" style="font-family: 'Inter', sans-serif;">
 
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen" x-data="{ mobileMenu: false }" x-cloak>
 
         <!-- 🔷 Sidebar -->
         <livewire:admin.include.sidebar />

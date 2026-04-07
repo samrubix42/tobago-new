@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
@@ -39,13 +40,19 @@ Route::post('/admin/logout', function (Request $request) {
     return redirect()->route('admin.login');
 })->middleware('auth')->name('admin.logout');
 
-Route::middleware('admin')->prefix('admin')->group(function () {
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::redirect('/', '/admin/dashboard');
-    Route::livewire('/dashboard', 'admin::dashboard')->name('admin.dashboard');
-    Route::livewire('/categories', 'admin::category-list')->name('admin.categories');
+    Route::livewire('/dashboard', 'admin::dashboard')->name('dashboard');
+    Route::livewire('/categories', 'admin::category-list')->name('categories');
 
-    Route::view('/brands', 'welcome')->name('admin.brands');
-    Route::livewire('/products', 'admin::product.product-list')->name('admin.products.index');
-    Route::livewire('/products/add', 'admin::product.add-product')->name('admin.products.add');
-    Route::livewire('/products/edit/{id}', 'admin::product.update-product')->name('admin.products.edit');
+
+    //product
+    Route::livewire('/products', 'admin::product.product-list')->name('products.index');
+    Route::livewire('/products/add', 'admin::product.add-product')->name('products.add');
+    Route::livewire('/products/edit/{id}', 'admin::product.update-product')->name('products.edit');
+
+    //testimonial
+
+    Route::livewire('/testimonials','admin::testimonial-list')->name('testimonials');
+    Route::livewire('/users','admin::user.user-list')->name('users');
 });

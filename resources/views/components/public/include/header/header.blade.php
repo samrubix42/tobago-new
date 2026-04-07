@@ -7,14 +7,14 @@
         <div class="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center gap-4 lg:gap-6">
 
             {{-- LOGO --}}
-            <a href="{{ route('home') }}" class="flex-shrink-0">
+            <a href="{{ route('home') }}" wire:navigate class="flex-shrink-0">
                 <img src="{{ asset('logo.webp') }}" class="h-9 lg:h-10" alt="Tobac-Go">
             </a>
 
             {{-- DESKTOP NAV --}}
             <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-white/60">
 
-                <a href="{{ route('home') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                <a href="{{ route('home') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
                     Home
                 </a>
 
@@ -70,17 +70,17 @@
                 @php $user = auth()->user(); @endphp
 
                 @guest
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login') }}" wire:navigate
                        class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-white/70 hover:text-white hover:bg-white/6 border border-white/8 hover:border-white/15 transition-all">
                         <i class="ri-user-line text-base"></i> Sign In
                     </a>
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('register') }}" wire:navigate
                        class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-black hover:bg-white/90 transition-all">
                         Register
                     </a>
                 @else
                     @if ($user?->is_admin)
-                        <a href="{{ route('admin.dashboard') }}" aria-label="Admin"
+                        <a href="{{ route('admin.dashboard') }}" wire:navigate aria-label="Admin"
                            class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all">
                             <i class="ri-settings-3-line text-base"></i>
                         </a>
@@ -103,11 +103,11 @@
                                 <p class="text-xs text-white/40 truncate">{{ $user?->email }}</p>
                             </div>
                             <div class="h-px bg-white/6 mx-1 mb-1"></div>
-                            <a href="{{ route('user.profile') }}"
+                            <a href="{{ route('user.profile') }}" wire:navigate
                                class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                                 <i class="ri-user-3-line text-white/40"></i> My Profile
                             </a>
-                            <a href="{{ route('user.address') }}"
+                            <a href="{{ route('user.address') }}" wire:navigate
                                class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                                 <i class="ri-map-pin-line text-white/40"></i> My Addresses
                             </a>
@@ -124,7 +124,7 @@
                 @endguest
 
                 {{-- Cart --}}
-                <a href="/cart" class="relative" aria-label="Cart">
+                <a href="/cart" wire:navigate class="relative" aria-label="Cart">
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 transition-all">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
@@ -135,7 +135,7 @@
 
             {{-- MOBILE RIGHT ICONS --}}
             <div class="flex lg:hidden items-center gap-2">
-                <a href="/cart" class="relative" aria-label="Cart">
+                <a href="/cart" wire:navigate class="relative" aria-label="Cart">
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
@@ -187,7 +187,7 @@
 
         {{-- Drawer header --}}
         <div class="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] flex-shrink-0">
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home') }}" wire:navigate>
                 <img src="{{ asset('logo.webp') }}" class="h-8" alt="Tobac-Go">
             </a>
             <button @click="mobileOpen=false" aria-label="Close menu"
@@ -199,7 +199,7 @@
         {{-- Drawer body --}}
         <div class="flex-1 px-4 py-5 space-y-1 overflow-y-auto">
 
-            <a href="{{ route('home') }}"
+            <a href="{{ route('home') }}" wire:navigate
                class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Home
             </a>
@@ -249,11 +249,11 @@
         <div class="flex-shrink-0 px-4 py-5 border-t border-white/[0.06] space-y-2.5">
 
             @guest
-                <a href="{{ route('login') }}"
+                <a href="{{ route('login') }}" wire:navigate
                    class="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-all">
                     <i class="ri-user-line"></i> Sign In
                 </a>
-                <a href="{{ route('register') }}"
+                <a href="{{ route('register') }}" wire:navigate
                    class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all">
                     Create Account
                 </a>
@@ -273,18 +273,18 @@
                 </div>
 
                 @if(auth()->user()?->is_admin)
-                    <a href="{{ route('admin.dashboard') }}"
+                    <a href="{{ route('admin.dashboard') }}" wire:navigate
                        class="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/80 hover:text-white transition-all">
                         <i class="ri-settings-3-line"></i> Admin Dashboard
                     </a>
                 @endif
 
                 <div class="grid grid-cols-2 gap-2">
-                    <a href="{{ route('user.profile') }}"
+                    <a href="{{ route('user.profile') }}" wire:navigate
                        class="flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                         <i class="ri-user-3-line text-sm"></i> My Profile
                     </a>
-                    <a href="{{ route('user.address') }}"
+                    <a href="{{ route('user.address') }}" wire:navigate
                        class="flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                         <i class="ri-map-pin-line text-sm"></i> Addresses
                     </a>

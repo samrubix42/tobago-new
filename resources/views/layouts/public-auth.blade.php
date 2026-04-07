@@ -13,9 +13,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <style>[x-cloak]{display:none!important}</style>
 </head>
 
-<body class="bg-[#09090b] text-white antialiased" style="font-family: 'Inter', sans-serif;">
+<body  class="bg-[#09090b] text-white antialiased" style="font-family: 'Inter', sans-serif;">
 
     <div class="flex min-h-screen w-full">
 
