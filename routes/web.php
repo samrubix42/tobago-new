@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\GoogleController;
 
 Route::livewire('/', 'pages::home')->name('home');
 Route::livewire('/product/{id}', 'pages::product.product-view')->name('product');
@@ -10,6 +11,10 @@ Route::livewire('/product/{id}', 'pages::product.product-view')->name('product')
 Route::livewire('/login', 'auth::login')->middleware('guest')->name('login');
 Route::livewire('/register', 'auth::register')->middleware('guest')->name('register');
 Route::livewire('/admin/login', 'auth::admin-login')->middleware('guest')->name('admin.login');
+
+// Google OAuth
+Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 
 
