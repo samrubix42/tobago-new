@@ -77,6 +77,13 @@ class AdminSidebar
                 'submenu' => [],
             ],
             (object)[
+                'title' => 'Settings',
+                'icon' => 'ri-settings-3-line',
+                'url' => route('admin.settings'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+            (object)[
                 'title' => 'Blog',
                 'icon' => 'ri-newspaper-line',
                 'url' => '#',

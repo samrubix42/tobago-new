@@ -68,6 +68,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     //coupons
     Route::livewire('/coupons', 'admin::coupon-list')->name('coupons');
+
+    //settings
+    Route::livewire('/settings', 'admin::setting.setting-list')->name('settings');
 });
 
 Route::get('/clear-cache', function() {
