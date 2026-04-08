@@ -23,6 +23,9 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name
 Route::middleware('auth')->group(function () {
     Route::livewire('/account/profile', 'pages::user.profile')->name('user.profile');
     Route::livewire('/account/addresses', 'pages::user.address')->name('user.address');
+    Route::livewire('/account/orders', 'pages::order.my-order')->name('user.orders');
+    Route::livewire('/account/orders/{orderId}', 'pages::order.order-info')->name('user.orders.info');
+    Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');
 });
 
 

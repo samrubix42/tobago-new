@@ -26,6 +26,8 @@ new #[Layout('layouts::public-auth')] class extends Component
 
     public function login()
     {
+        $sessionId = session()->getId();
+
         $this->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6'],
@@ -39,6 +41,8 @@ new #[Layout('layouts::public-auth')] class extends Component
             $this->addError('email', 'Invalid credentials');
             return;
         }
+
+        merge_guest_cart_for_user((int) Auth::id(), $sessionId);
 
         session()->regenerate();
 

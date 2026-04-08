@@ -1,7 +1,12 @@
-<div x-data="{ mobileOpen: false, dropdown: null, userMenu: false }">
+@php
+    $headerCartCount = current_cart_items_count();
+@endphp
+
+<div x-data="{ mobileOpen: false, dropdown: null, userMenu: false, cartCount: {{ $headerCartCount }} }"
+     x-on:cart-updated.window="cartCount = Number($event.detail?.count ?? 0)">
 
     {{-- ── TOP TICKER ── --}}
-    <div class="bg-[#0b0d0f] border-b border-white/[0.04] overflow-hidden"
+    <div class="bg-[#0b0d0f] border-b border-white/5 overflow-hidden"
          x-data="{ 
             messages: [
                 { text: 'Free shipping on orders Rs. 3000+', icon: 'ri-truck-line' },
@@ -24,7 +29,7 @@
                      x-transition:leave="transition ease-in duration-500"
                      x-transition:leave-start="opacity-100 translate-y-0"
                      x-transition:leave-end="opacity-0 -translate-y-3"
-                     class="absolute flex items-center gap-2.5 text-[10px] font-bold tracking-[0.1em] text-white/90 uppercase"
+                     class="absolute flex items-center gap-2.5 text-[10px] font-bold tracking-widest text-white/90 uppercase"
                 >
                     <i :class="msg.icon" class="text-blue-500 text-sm"></i>
                     <span x-text="msg.text"></span>
@@ -34,13 +39,13 @@
     </div>
 
     {{-- ── HEADER BAR ── --}}
-    <header class="sticky top-0 z-50 bg-[#07080a]/90 backdrop-blur-xl border-b border-white/[0.06]">
+    <header class="sticky top-0 z-50 bg-[#07080a]/90 backdrop-blur-xl border-b border-white/10">
 
         {{-- Main row --}}
         <div class="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center gap-4 lg:gap-6">
 
             {{-- LOGO --}}
-            <a href="{{ route('home') }}" wire:navigate class="flex-shrink-0">
+            <a href="{{ route('home') }}" wire:navigate class="shrink-0">
                 <img src="{{ asset('logo.webp') }}" class="h-9 lg:h-10" alt="Tobac-Go">
             </a>
 
@@ -144,6 +149,10 @@
                             class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                             <i class="ri-map-pin-line text-white/40"></i> My Addresses
                         </a>
+                        <a href="{{ route('user.orders') }}" wire:navigate
+                            class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
+                            <i class="ri-shopping-bag-3-line text-white/40"></i> My Orders
+                        </a>
                         <div class="h-px bg-white/6 mx-1 my-1"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -161,7 +170,7 @@
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 transition-all">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
-                    <span class="absolute -top-1.5 -right-1.5 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                    <span class="absolute -top-1.5 -right-1.5 bg-white text-black text-[9px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center" x-text="cartCount"></span>
                 </a>
 
             </div>
@@ -172,7 +181,7 @@
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
-                    <span class="absolute -top-1.5 -right-1.5 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                    <span class="absolute -top-1.5 -right-1.5 bg-white text-black text-[9px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center" x-text="cartCount"></span>
                 </a>
 
                 <button @click="mobileOpen = true" aria-label="Open menu"
@@ -184,7 +193,7 @@
         </div>
 
         {{-- MOBILE SEARCH BAR (always visible below header on phones) --}}
-        <div class="lg:hidden border-t border-white/[0.05] px-4 py-2.5 bg-[#07080a]/90">
+        <div class="lg:hidden border-t border-white/5 px-4 py-2.5 bg-[#07080a]/90">
             <div class="relative">
                 <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                 <input type="text" placeholder="Search products..."
@@ -221,7 +230,7 @@
         class="lg:hidden fixed inset-0 z-50 bg-[#07080a] flex flex-col overflow-y-auto">
 
         {{-- Drawer header --}}
-        <div class="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] flex-shrink-0">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 shrink-0">
             <a href="{{ route('home') }}" wire:navigate>
                 <img src="{{ asset('logo.webp') }}" class="h-8" alt="Tobac-Go">
             </a>
@@ -281,7 +290,7 @@
         </div>
 
         {{-- Drawer footer / auth --}}
-        <div class="flex-shrink-0 px-4 py-5 border-t border-white/[0.06] space-y-2.5">
+        <div class="shrink-0 px-4 py-5 border-t border-white/10 space-y-2.5">
 
             @guest
             <a href="{{ route('login') }}" wire:navigate
@@ -294,7 +303,7 @@
             </a>
             @else
             <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/8">
-                <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/8 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/8 flex items-center justify-center shrink-0 overflow-hidden">
                     @if(auth()->user()?->avatar)
                     <img src="{{ auth()->user()->avatar }}" class="w-full h-full object-cover">
                     @else
@@ -322,6 +331,10 @@
                 <a href="{{ route('user.address') }}" wire:navigate
                     class="flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                     <i class="ri-map-pin-line text-sm"></i> Addresses
+                </a>
+                <a href="{{ route('user.orders') }}" wire:navigate
+                    class="col-span-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
+                    <i class="ri-shopping-bag-3-line text-sm"></i> My Orders
                 </a>
             </div>
 

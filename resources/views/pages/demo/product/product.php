@@ -52,6 +52,8 @@ new class extends Component
             'type' => 'success',
             'position' => 'top-right',
         ]);
+
+        $this->dispatch('cart-updated', count: current_cart_items_count());
     }
 
     protected function resolveCart(): Cart

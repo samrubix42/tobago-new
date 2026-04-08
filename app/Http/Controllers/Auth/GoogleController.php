@@ -16,6 +16,8 @@ class GoogleController extends Controller
 
     public function callback()
     {
+        $sessionId = session()->getId();
+
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
@@ -35,6 +37,7 @@ class GoogleController extends Controller
         );
 
         Auth::login($user, true);
+    merge_guest_cart_for_user((int) $user->id, $sessionId);
         session()->regenerate();
 
         if ($user->is_admin) {

@@ -22,6 +22,8 @@ new #[Layout('layouts::public-auth')] class extends Component
 
     public function register()
     {
+        $sessionId = session()->getId();
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique(User::class, 'email')],
@@ -36,6 +38,7 @@ new #[Layout('layouts::public-auth')] class extends Component
         ]);
 
         Auth::login($user);
+    merge_guest_cart_for_user((int) $user->id, $sessionId);
         session()->regenerate();
 
         return redirect()->route('home');
