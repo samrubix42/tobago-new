@@ -18,16 +18,33 @@
         </a>
     </div>
 
-    <div class="relative w-full sm:w-80">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 focus-within:text-blue-500 transition-colors">
-            <i class="ri-search-line"></i>
-        </span>
-        <input
-            type="text"
-            wire:model.live.debounce.300ms="search"
-            placeholder="Search products..."
-            class="w-full rounded-md border border-slate-300 pl-9 pr-4 py-2.5 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition duration-200 shadow-sm sm:shadow-none"
-        >
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div class="relative w-full sm:w-80">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 focus-within:text-blue-500 transition-colors">
+                <i class="ri-search-line"></i>
+            </span>
+            <input
+                type="text"
+                wire:model.live.debounce.300ms="search"
+                placeholder="Search products..."
+                class="w-full rounded-md border border-slate-300 pl-9 pr-4 py-2.5 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition duration-200 shadow-sm sm:shadow-none"
+            >
+        </div>
+
+        <div class="flex items-center gap-2 self-start sm:self-auto sm:ml-auto">
+            <label for="per-page" class="text-xs font-semibold uppercase tracking-wider text-slate-500">Show</label>
+            <select
+                id="per-page"
+                wire:model.live="perPage"
+                class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
+            >
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="text-xs text-slate-500">per page</span>
+        </div>
     </div>
 
     <!-- Main Table (Desktop) -->
@@ -151,7 +168,7 @@
             </tbody>
         </table>
         
-        <div class="px-6 py-4 border-t border-slate-50 bg-slate-50/30">
+        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
             {{ $products->links() }}
         </div>
     </div>
@@ -231,6 +248,10 @@
                 <button wire:click="$set('search', '')" class="text-xs text-blue-600 font-bold mt-2 hover:underline">Clear search filters</button>
             </div>
         @endforelse
+
+        <div class="pt-1">
+            {{ $products->links() }}
+        </div>
     </div>
 
     <!-- Product Delete Modal -->

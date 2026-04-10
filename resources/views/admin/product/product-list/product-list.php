@@ -10,8 +10,14 @@ new #[Layout('layouts::admin')] class extends Component
     use WithPagination;
 
     public string $search = '';
+    public int $perPage = 10;
 
     public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage(): void
     {
         $this->resetPage();
     }
@@ -53,7 +59,7 @@ new #[Layout('layouts::admin')] class extends Component
                     ->orWhere('slug', 'like', '%' . $this->search . '%');
             })
             ->latest()
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('admin::product.product-list.product-list', [
             'products' => $products,
