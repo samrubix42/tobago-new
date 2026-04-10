@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('name')->comment('Product name');
             $table->string('slug')->unique()->nullable()->comment('SEO-friendly unique slug');
             $table->string('sku')->nullable()->unique()->comment('Stock Keeping Unit - unique identifier');
-            $table->text('description')->nullable()->comment('Product description');
+            $table->text('short_description')->nullable()->comment('Product short description');
+            $table->longText('feature_and_specifications')->nullable()->comment('Detailed product description');
 
             // PRICING 
             $table->decimal('cost_price', 10, 2)
@@ -42,14 +43,6 @@ return new class extends Migration
             $table->integer('stock')
                 ->default(0)
                 ->comment('Current available stock');
-
-            $table->integer('stock_in')
-                ->default(0)
-                ->comment('Total stock added over time');
-
-            $table->integer('stock_out')
-                ->default(0)
-                ->comment('Total stock removed/sold');
 
             // FOMO
             $table->integer('hurry_stock')

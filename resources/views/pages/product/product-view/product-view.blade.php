@@ -11,10 +11,10 @@
     <div class="grid lg:grid-cols-2 gap-10 items-start">
 
         <!-- LEFT: GALLERY -->
-        <div class="space-y-4 lg:sticky lg:top-24">
+        <div class="space-y-4 min-w-0">
 
             <!-- Main Image -->
-            <div class="relative rounded-3xl border border-subtle bg-[#0b0d0f] overflow-hidden" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
+            <div class="relative rounded-3xl border border-subtle bg-[#0b0d0f] overflow-hidden lg:sticky lg:top-24" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
                 <div class="absolute -top-24 -left-24 h-56 w-56 rounded-full bg-blue-500/10 blur-[90px]"></div>
                 <div class="absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
                 <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at top, rgba(0,198,255,0.18), transparent 55%);"></div>
@@ -73,10 +73,29 @@
                 </div>
             </div>
 
+            <!-- Details -->
+            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7 lg:p-8">
+                <div class="space-y-6 text-sm text-muted leading-relaxed">
+                    <section>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features</h3>
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-[720px] [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
+                            {!! $featuresContent ?? '<h3>Premium Hookah Features</h3><p>This is demo TinyMCE content so you can preview the final look with headings and points.</p><ul><li><strong>Premium Material:</strong> Thick glass base with rust-resistant stainless steel stem.</li><li><strong>Smooth Smoke Flow:</strong> Wide downstem and washable silicone hose for better pull.</li><li><strong>Easy Maintenance:</strong> Detachable parts for quick cleaning after every session.</li><li><strong>Use Case:</strong> Suitable for home setup, cafe, and lounge counters.</li></ul><h3>Box Includes</h3><ol><li>1 Hookah Base</li><li>1 Stem Set</li><li>1 Silicone Hose with Handle</li><li>1 Clay Bowl</li><li>1 Tong</li></ol>' !!}
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Specification</h3>
+                        <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-[720px] [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
+                            {!! $specificationContent ?? '<h3>Hookah Specification</h3><p>Sample TinyMCE table data for preview.</p><table><thead><tr><th>Specification</th><th>Details</th></tr></thead><tbody><tr><td>Model Name</td><td>Crystal Pro X1</td></tr><tr><td>Height</td><td>22 inch</td></tr><tr><td>Base Material</td><td>Heavy Glass</td></tr><tr><td>Stem Material</td><td>Stainless Steel</td></tr><tr><td>Hose Type</td><td>Food Grade Silicone</td></tr><tr><td>Bowl Type</td><td>Clay Bowl (Heat Retention)</td></tr><tr><td>Number of Hoses</td><td>Single Hose</td></tr><tr><td>Country of Origin</td><td>India</td></tr><tr><td>Suitable For</td><td>Home, Party, Lounge</td></tr></tbody></table><h3>Care Instructions</h3><ul><li>Clean base and stem after each use.</li><li>Do not use abrasive chemicals on glass surfaces.</li><li>Store in dry place to avoid odor retention.</li></ul>' !!}
+                        </div>
+                    </section>
+                </div>
+            </div>
+
         </div>
 
         <!-- RIGHT: INFO -->
-        <div class="space-y-8">
+        <div class="space-y-8 min-w-0">
 
             <!-- Title -->
             <div>
@@ -93,20 +112,20 @@
                     Smooth airflow, modern design & premium build quality. Perfect for daily home use and gifting.
                 </p>
 
-                <div class="mt-4 flex items-center gap-3">
+                <div class="mt-4 flex flex-wrap items-center gap-3">
                     <div class="flex gap-1 text-amber-300 text-sm">
                         <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i>
                     </div>
                     <span class="text-sm text-white/80 font-semibold">4.3</span>
                     <span class="text-xs text-muted">(120 reviews)</span>
-                    <span class="ml-auto text-xs text-emerald-300 inline-flex items-center gap-2">
+                    <span class="sm:ml-auto text-xs text-emerald-300 inline-flex items-center gap-2">
                         <i class="ri-checkbox-circle-line text-base"></i> In stock
                     </span>
                 </div>
             </div>
 
             <!-- Pricing -->
-            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-6">
+            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
                 <div class="flex items-end justify-between gap-4">
                     <div>
                         <p class="text-xs uppercase tracking-[0.22em] text-muted">Price</p>
@@ -125,7 +144,7 @@
                         <button type="button" class="px-4 py-2 text-white/80 hover:bg-white/5 transition" x-on:click="qty++">+</button>
                     </div>
 
-                    <div class="flex-1 flex gap-3">
+                    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition">
                             Add to Cart
                         </button>
@@ -147,84 +166,12 @@
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-6">
-                <div class="flex flex-wrap gap-2">
-                    <button type="button" class="px-4 py-2 rounded-full text-xs border border-subtle transition" :class="tab === 'details' ? 'bg-white/5 border-white/15 text-white' : 'text-muted hover:bg-white/5 hover:border-white/15'" x-on:click="tab = 'details'">
-                        Details
-                    </button>
-                    <button type="button" class="px-4 py-2 rounded-full text-xs border border-subtle transition" :class="tab === 'specs' ? 'bg-white/5 border-white/15 text-white' : 'text-muted hover:bg-white/5 hover:border-white/15'" x-on:click="tab = 'specs'">
-                        Specs
-                    </button>
-                    <button type="button" class="px-4 py-2 rounded-full text-xs border border-subtle transition" :class="tab === 'shipping' ? 'bg-white/5 border-white/15 text-white' : 'text-muted hover:bg-white/5 hover:border-white/15'" x-on:click="tab = 'shipping'">
-                        Shipping & Returns
-                    </button>
-                </div>
-
-                <div class="mt-6 space-y-3 text-sm text-muted leading-relaxed">
-                    <div x-show="tab === 'details'" x-transition.opacity>
-                        <p>
-                            Crafted for smooth airflow and long-lasting performance. Built with premium materials to deliver a superior session every time.
-                        </p>
-                        <ul class="list-disc pl-5 space-y-1 mt-3">
-                            <li>High-quality glass build</li>
-                            <li>Modern premium design</li>
-                            <li>Easy cleaning system</li>
-                            <li>Perfect for personal & group use</li>
-                        </ul>
-                    </div>
-
-                    <div x-show="tab === 'specs'" x-transition.opacity x-cloak>
-                        <div class="grid sm:grid-cols-2 gap-3">
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                                <p class="text-xs uppercase tracking-[0.22em] text-muted">Material</p>
-                                <p class="text-white mt-2">Glass + Steel</p>
-                            </div>
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                                <p class="text-xs uppercase tracking-[0.22em] text-muted">Height</p>
-                                <p class="text-white mt-2">22 inch</p>
-                            </div>
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                                <p class="text-xs uppercase tracking-[0.22em] text-muted">Hose</p>
-                                <p class="text-white mt-2">Single (included)</p>
-                            </div>
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                                <p class="text-xs uppercase tracking-[0.22em] text-muted">Use</p>
-                                <p class="text-white mt-2">Home / Lounge</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div x-show="tab === 'shipping'" x-transition.opacity x-cloak>
-                        <p>
-                            Orders are packed in strong outer boxes with protective wrap. Returns accepted within 10 days if unused and in original packaging.
-                        </p>
-                        <div class="mt-4 grid sm:grid-cols-2 gap-3">
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center gap-3">
-                                <i class="ri-archive-2-line text-indigo-300 text-xl"></i>
-                                <div>
-                                    <p class="text-white text-sm font-semibold">Safe packaging</p>
-                                    <p class="text-muted text-xs mt-1">Bubble wrap + foam</p>
-                                </div>
-                            </div>
-                            <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center gap-3">
-                                <i class="ri-refresh-line text-indigo-300 text-xl"></i>
-                                <div>
-                                    <p class="text-white text-sm font-semibold">Easy returns</p>
-                                    <p class="text-muted text-xs mt-1">10-day window</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
     </div>
 
     <!-- RELATED PRODUCTS -->
-    <section class="mt-20">
+    <section class="mt-14 sm:mt-20">
         <div class="flex items-end justify-between gap-6 mb-8">
             <div>
                 <h2 class="text-2xl font-semibold text-white">Related Products</h2>
@@ -235,7 +182,7 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             @foreach([
                 ['Mini Hookah', '1,999'],
                 ['Luxury Hookah', '4,999'],
@@ -269,11 +216,21 @@
         </div>
     </section>
 
+    <style>
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+
     <script>
         function productPage() {
             return {
                 qty: 1,
-                tab: 'details',
                 activeIndex: 0,
                 autoTimer: null,
                 images: [

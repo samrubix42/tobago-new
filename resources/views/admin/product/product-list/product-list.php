@@ -28,6 +28,22 @@ new #[Layout('layouts::admin')] class extends Component
         ]);
     }
 
+    public function updateStatus(int $id, string $status): void
+    {
+        if (!in_array($status, ['active', 'inactive', 'draft'], true)) {
+            return;
+        }
+
+        $product = Product::findOrFail($id);
+        $product->update(['status' => $status]);
+
+        $this->dispatch('toast-show', [
+            'message' => 'Status updated to ' . ucfirst($status),
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+    }
+
     public function render()
     {
         $products = Product::query()

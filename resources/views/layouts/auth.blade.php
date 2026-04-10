@@ -21,10 +21,12 @@
     @livewireStyles
 </head>
 
-<body class="min-h-screen bg-gray-50 antialiased">
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
 
-    <div class="min-h-screen flex items-center justify-center px-4">
-        {{ $slot }}
+    <div class="min-h-screen flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+        <div class="w-full max-w-5xl">
+            {{ $slot }}
+        </div>
     </div>
 
     @livewireScripts

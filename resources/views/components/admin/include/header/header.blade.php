@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 h-16 flex items-center justify-between px-4 lg:px-8">
+<header class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur border-b border-slate-200/80 h-16 flex items-center justify-between px-4 lg:px-8">
     {{-- Left Side: Mobile Toggle & Title --}}
     <div class="flex items-center gap-4">
         <button @click="mobileMenu = true" 
@@ -16,7 +16,7 @@
     {{-- Right Side: Actions & User --}}
     <div class="flex items-center gap-3">
         {{-- Notifications --}}
-        <button class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-xl transition">
+        <button class="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition border border-transparent hover:border-gray-200">
             <i class="ri-notification-3-line text-xl"></i>
             <span class="absolute top-2 right-2.5 w-2 h-2 bg-blue-500 border-2 border-white rounded-full"></span>
         </button>
@@ -26,12 +26,12 @@
         {{-- User Dropdown --}}
         <div class="relative" x-data="{ userOpen: false }" @click.away="userOpen = false">
             <button @click="userOpen = !userOpen" 
-                    class="flex items-center gap-3 p-1.5 rounded-xl hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
-                <div class="flex flex-col items-end text-right hidden sm:flex">
+                    class="flex items-center gap-3 p-1.5 rounded-lg hover:bg-gray-50 transition border border-transparent hover:border-gray-200">
+                <div class="hidden sm:flex sm:flex-col items-end text-right">
                     <span class="text-sm font-bold text-gray-900 leading-none">{{ auth()->user()->name }}</span>
                     <span class="text-[11px] font-medium text-gray-400 mt-1 uppercase tracking-wider">Administrator</span>
                 </div>
-                <div class="h-10 w-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-500/20">
+                <div class="h-10 w-10 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <i class="ri-arrow-down-s-line text-gray-400 transition-transform duration-200" :class="{ 'rotate-180': userOpen }"></i>
@@ -45,7 +45,7 @@
                  x-transition:leave="transition ease-in duration-75"
                  x-transition:leave-start="opacity-100 scale-100"
                  x-transition:leave-end="opacity-0 scale-95"
-                 class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50"
+                 class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50"
                  x-cloak>
                 
                 <div class="px-4 py-3 border-b border-gray-50 mb-1 sm:hidden">

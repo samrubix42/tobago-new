@@ -24,6 +24,7 @@ new #[Layout('layouts::admin')] class extends Component
     public string $name = '';
     public string $slug = '';
     public ?string $description = null;
+    public ?string $feature_and_specifications = null;
     public ?int $category_id = null;
     public string $status = 'draft';
     public bool $is_featured = false;
@@ -73,7 +74,8 @@ new #[Layout('layouts::admin')] class extends Component
         
         $this->name = $product->name;
         $this->slug = $product->slug;
-        $this->description = $product->description;
+        $this->description = $product->short_description;
+        $this->feature_and_specifications = $product->feature_and_specifications;
         $this->category_id = $product->category_id;
         $this->status = $product->status;
         $this->is_featured = $product->is_featured;
@@ -98,11 +100,13 @@ new #[Layout('layouts::admin')] class extends Component
     {
         if ($step < $this->currentStep) {
             $this->currentStep = $step;
+            $this->dispatch('product-step-changed', ['step' => $this->currentStep]);
             return;
         }
 
         $this->validate($this->rules()[$this->currentStep] ?? []);
         $this->currentStep = $step;
+        $this->dispatch('product-step-changed', ['step' => $this->currentStep]);
     }
 
     public function nextStep(): void
@@ -111,6 +115,7 @@ new #[Layout('layouts::admin')] class extends Component
 
         if ($this->currentStep < 4) {
             $this->currentStep++;
+            $this->dispatch('product-step-changed', ['step' => $this->currentStep]);
         }
     }
 
@@ -118,6 +123,7 @@ new #[Layout('layouts::admin')] class extends Component
     {
         if ($this->currentStep > 1) {
             $this->currentStep--;
+            $this->dispatch('product-step-changed', ['step' => $this->currentStep]);
         }
     }
 
@@ -128,7 +134,8 @@ new #[Layout('layouts::admin')] class extends Component
         $data = [
             'name' => $this->name,
             'slug' => Str::slug($this->slug),
-            'description' => $this->description,
+            'short_description' => $this->description,
+            'feature_and_specifications' => $this->feature_and_specifications,
             'category_id' => $this->category_id,
             'status' => $this->status,
             'is_featured' => $this->is_featured,

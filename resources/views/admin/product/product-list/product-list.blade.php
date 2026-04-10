@@ -105,17 +105,14 @@
                         </td>
 
                         <td class="px-6 py-5">
-                            @php
-                                $statusClasses = [
-                                    'active' => 'bg-emerald-50 text-emerald-700 border-emerald-100',
-                                    'inactive' => 'bg-slate-100 text-slate-700 border-slate-200',
-                                    'draft' => 'bg-amber-50 text-amber-700 border-amber-100'
-                                ];
-                            @endphp
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border {{ $statusClasses[$product->status] ?? $statusClasses['draft'] }} shadow-sm">
-                                <span class="h-1.5 w-1.5 rounded-full mr-2 {{ $product->status == 'active' ? 'bg-emerald-500 animate-pulse' : ($product->status == 'draft' ? 'bg-amber-500' : 'bg-slate-400') }}"></span>
-                                {{ ucfirst($product->status) }}
-                            </span>
+                            <select
+                                wire:change="updateStatus({{ $product->id }}, $event.target.value)"
+                                class="w-32 rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
+                            >
+                                <option value="active" @selected($product->status === 'active')>Active</option>
+                                <option value="inactive" @selected($product->status === 'inactive')>Inactive</option>
+                                <option value="draft" @selected($product->status === 'draft')>Draft</option>
+                            </select>
                         </td>
 
                         <td class="px-6 py-5 text-right">
@@ -200,7 +197,17 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex flex-col items-end gap-2">
+                        <select
+                            wire:change="updateStatus({{ $product->id }}, $event.target.value)"
+                            class="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
+                        >
+                            <option value="active" @selected($product->status === 'active')>Active</option>
+                            <option value="inactive" @selected($product->status === 'inactive')>Inactive</option>
+                            <option value="draft" @selected($product->status === 'draft')>Draft</option>
+                        </select>
+
+                        <div class="flex gap-2">
                         <a href="{{ route('admin.products.edit', $product->id) }}"
                            class="h-10 w-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm active:scale-95"
                            wire:navigate
@@ -213,6 +220,7 @@
                         >
                             <i class="ri-delete-bin-line"></i>
                         </button>
+                        </div>
                     </div>
                 </div>
             </div>

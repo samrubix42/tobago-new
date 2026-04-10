@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+<div x-data="productFormEditor({ initialStep: {{ (int) $currentStep }} })" x-init="initEditorLifecycle()" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-gray-200 pb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 tracking-tight">
@@ -74,9 +74,16 @@
                 </div>
 
                 <div>
-                    <label class="text-sm font-semibold text-gray-700 block mb-1.5">Description text</label>
-                    <textarea wire:model.live="description" rows="5" placeholder="Provide detailed information about the product..."
+                    <label class="text-sm font-semibold text-gray-700 block mb-1.5">Short Description</label>
+                    <textarea wire:model.blur="description" rows="4" placeholder="Provide short product summary..."
                               class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold text-gray-700 block mb-1.5">Feature &amp; Specification (TinyMCE)</label>
+                    <div wire:ignore>
+                        <textarea id="product-feature-spec-editor" placeholder="Add complete feature and specification content..."></textarea>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -194,7 +201,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">Purchase Cost (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" step="0.01" wire:model.live="cost_price" placeholder="0.00"
+                           <input type="number" step="0.01" wire:model.blur="cost_price" placeholder="0.00"
                                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
                         @error('cost_price') <p class="text-xs text-red-500 mt-1.5">{{ $message }}</p> @enderror
                         <p class="text-xs text-gray-400 mt-2">Internal cost metric, never visible to users.</p>
@@ -202,14 +209,14 @@
 
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">Retail Price (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" step="0.01" wire:model.live="selling_price" placeholder="0.00"
+                           <input type="number" step="0.01" wire:model.blur="selling_price" placeholder="0.00"
                                class="w-full rounded-lg border border-blue-300 px-4 py-2.5 text-sm font-bold text-gray-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-blue-50/10">
                         @error('selling_price') <p class="text-xs text-red-500 mt-1.5">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">Strike Price (₹)</label>
-                        <input type="number" step="0.01" wire:model.live="compare_price" placeholder="0.00"
+                           <input type="number" step="0.01" wire:model.blur="compare_price" placeholder="0.00"
                                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
                         <p class="text-xs text-gray-400 mt-2">Used as the "original price" for showing discounts.</p>
                     </div>
@@ -223,16 +230,16 @@
                     <div class="space-y-6">
                         <div>
                             <label class="text-sm font-semibold text-gray-700 block mb-1.5">Valid Stock Quantity <span class="text-red-500">*</span></label>
-                            <input type="number" wire:model.live="stock" placeholder="Enter numerical units"
+                            <input type="number" wire:model.blur="stock" placeholder="Enter numerical units"
                                    class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
                             @error('stock') <p class="text-xs text-red-500 mt-1.5">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
-                            <label class="text-sm font-semibold text-gray-700 block mb-1.5">Low Stock Alert Level</label>
-                            <input type="number" wire:model.live="hurry_stock" placeholder="e.g. 10 (triggers low stock warning)"
+                            <label class="text-sm font-semibold text-gray-700 block mb-1.5">Low Stock FOMO Threshold</label>
+                            <input type="number" wire:model.blur="hurry_stock" placeholder="e.g. 10"
                                    class="w-full rounded-lg border border-orange-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition shadow-sm bg-orange-50/20">
-                            <p class="text-xs text-gray-400 mt-2">When remaining units drop to this limit, visual scarcity triggers.</p>
+                            <p class="text-xs text-gray-500 mt-2">This is the number shown to users for urgency messaging, for example: "Only 10 left in stock".</p>
                         </div>
                     </div>
 
@@ -270,34 +277,38 @@
                      @dragleave.prevent="isDropping = false" 
                      @drop.prevent="isDropping = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }));"
                      @click="$refs.fileInput.click()"
-                     :class="isDropping ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50/50 hover:bg-gray-50 hover:border-blue-400'"
-                     class="w-full relative rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-10 transition-all duration-300 cursor-pointer group">
+                     :class="isDropping ? 'border-blue-500 bg-blue-50 ring-4 ring-blue-100' : 'border-blue-200 bg-gradient-to-b from-blue-50/60 to-white hover:border-blue-400 hover:bg-blue-50/70'"
+                     class="w-full relative rounded-2xl border-2 border-dashed flex flex-col items-center justify-center p-8 sm:p-10 transition-all duration-300 cursor-pointer group">
                     
-                    <div class="w-16 h-16 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
-                        <i class="ri-image-add-line text-2xl text-blue-500"></i>
+                    <div class="w-16 h-16 bg-white shadow-sm border border-blue-100 rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
+                        <i class="ri-upload-cloud-2-line text-2xl text-blue-600"></i>
                     </div>
-                    <h4 class="text-base font-semibold text-gray-900">Drag & Drop Product Visuals</h4>
-                    <p class="text-sm text-gray-500 mt-1">or click to browse from device (JPG, PNG, WebP up to 2MB)</p>
+                    <h4 class="text-base font-semibold text-gray-900">Upload Product Images</h4>
+                    <p class="text-sm text-gray-500 mt-1 text-center">Drag and drop images here, or click to browse from your device.</p>
+                    <p class="text-xs text-blue-700/80 mt-2 font-medium">Supports JPG, PNG, WEBP up to 2MB each</p>
                     
                     <input type="file" wire:model="images" x-ref="fileInput" multiple accept="image/*" class="hidden">
                 </div>
                 @error('images.*') <p class="text-xs text-red-500 font-medium"><i class="ri-alert-line"></i> {{ $message }}</p> @enderror
 
                 @if($images)
-                    <div class="flex flex-col gap-4 bg-blue-50/50 border border-blue-100 rounded-xl p-5">
-                        <h5 class="text-xs font-bold uppercase tracking-widest text-blue-600">Pending Uploads</h5>
-                        <div class="flex items-center gap-5">
+                    <div class="flex flex-col gap-4 bg-blue-50/60 border border-blue-100 rounded-2xl p-5">
+                        <div class="flex items-center justify-between gap-3">
+                            <h5 class="text-xs font-bold uppercase tracking-widest text-blue-600">Pending Uploads</h5>
+                            <span class="text-xs text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full font-semibold">{{ count($images) }} selected</span>
+                        </div>
+                        <div class="flex items-center gap-5 flex-wrap lg:flex-nowrap">
                             <div class="flex flex-wrap gap-4 flex-1">
                                 @foreach($images as $img)
-                                    <div class="relative w-20 h-20 rounded-xl border-2 border-white shadow-md overflow-hidden bg-white">
+                                    <div class="relative w-20 h-20 rounded-xl border border-blue-100 shadow-sm overflow-hidden bg-white">
                                         <img src="{{ $img->temporaryUrl() }}" class="w-full h-full object-cover">
                                     </div>
                                 @endforeach
                             </div>
                             <button wire:click="uploadImages"
                                     wire:loading.attr="disabled"
-                                    class="h-12 px-6 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md shadow-blue-500/20 hover:bg-blue-700 transition flex items-center gap-2 whitespace-nowrap">
-                                <span wire:loading.remove wire:target="uploadImages">Commit Upload</span>
+                                    class="h-12 px-6 bg-blue-600 text-white rounded-xl text-sm font-semibold shadow-sm hover:bg-blue-700 transition flex items-center gap-2 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed">
+                                <span wire:loading.remove wire:target="uploadImages"><i class="ri-upload-2-line"></i> Commit Upload</span>
                                 <span wire:loading wire:target="uploadImages"><i class="ri-loader-4-line animate-spin"></i> Processing...</span>
                             </button>
                         </div>
@@ -306,15 +317,16 @@
 
                 @if(!empty($productImages))
                     <div class="pt-2">
-                        <div class="flex justify-between items-end mb-4">
-                            <h4 class="text-sm font-semibold text-gray-800">Current Gallery <span class="text-xs font-medium text-gray-400 font-normal ml-2">(Drag images to adjust catalog display order)</span></h4>
+                        <div class="flex flex-wrap justify-between items-end gap-2 mb-4">
+                            <h4 class="text-sm font-semibold text-gray-800">Sortable Gallery <span class="text-xs text-gray-500 ml-2">Drag images to reorder storefront position</span></h4>
+                            <span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full">{{ count($productImages) }} images</span>
                         </div>
                         
                         <div class="flex flex-wrap gap-5" wire:sort="handleImageSort">
                             @foreach($productImages as $pImg)
                                 <div wire:key="img-{{ $pImg['id'] }}"
                                      wire:sort:item="{{ $pImg['id'] }}"
-                                     class="group relative w-32 h-32 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden transform">
+                                     class="group relative w-32 h-32 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 overflow-hidden transform">
                                     
                                     <img src="{{ asset('storage/' . $pImg['image']) }}" class="w-full h-full object-cover">
                                     
@@ -324,8 +336,8 @@
                                         </div>
                                     @endif
 
-                                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900/40 backdrop-blur-[2px] flex items-center justify-center z-20">
-                                        <span wire:sort:handle class="w-10 h-10 flex items-center justify-center text-white cursor-move hover:scale-125 transition-transform" title="Drag to reorder">
+                                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-900/40 backdrop-blur-[2px] flex items-center justify-center z-20">
+                                        <span wire:sort:handle class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-blue-700 cursor-move hover:scale-110 transition-transform" title="Drag to reorder">
                                             <i class="ri-drag-move-fill text-2xl"></i>
                                         </span>
                                     </div>
@@ -349,7 +361,7 @@
                 <div class="pt-6 border-t border-gray-100">
                     <div class="max-w-md">
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">Visibility Status <span class="text-red-500">*</span></label>
-                        <select wire:model.live="status"
+                        <select wire:model.blur="status"
                                 class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
                             <option value="active">Active (Visible to users)</option>
                             <option value="inactive">Inactive (Hidden from storefront)</option>
@@ -425,3 +437,102 @@
 }
 .animate-fade-in { animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 </style>
+
+<script>
+    function productFormEditor(config = {}) {
+        return {
+            tinyId: 'product-feature-spec-editor',
+            step: Number(config.initialStep || 1),
+            retryCount: 0,
+            maxRetries: 8,
+
+            initEditorLifecycle() {
+                this.$nextTick(() => this.syncEditorsForStep(true));
+
+                this.$watch('step', () => {
+                    this.$nextTick(() => this.syncEditorsForStep(true));
+                });
+
+                window.addEventListener('product-step-changed', (event) => {
+                    const nextStep = Number(event?.detail?.step);
+                    if (!Number.isNaN(nextStep)) {
+                        this.step = nextStep;
+                    }
+                });
+
+                document.addEventListener('livewire:navigated', () => {
+                    this.step = Number(this.$wire?.get('currentStep') || 1);
+                    this.$nextTick(() => this.syncEditorsForStep(true));
+                });
+
+                // Re-init after Livewire morphs this component in place.
+                if (window.Livewire?.hook) {
+                    window.Livewire.hook('morph.updated', ({ el }) => {
+                        if (this.$root.contains(el) || this.$root === el) {
+                            this.step = Number(this.$wire?.get('currentStep') || this.step);
+                            this.$nextTick(() => this.syncEditorsForStep());
+                        }
+                    });
+                }
+            },
+
+            syncEditorsForStep(forceSync = false) {
+                if (!window.tinymce) return;
+
+                if (Number(this.step) !== 1) {
+                    this.destroyEditors();
+                    return;
+                }
+
+                this.initEditor(forceSync);
+            },
+
+            initEditor(forceSync = false) {
+                const textarea = document.getElementById(this.tinyId);
+                if (!textarea || !textarea.isConnected) {
+                    if (this.retryCount < this.maxRetries) {
+                        this.retryCount++;
+                        setTimeout(() => this.syncEditorsForStep(forceSync), 120);
+                    }
+                    return;
+                }
+
+                this.retryCount = 0;
+
+                const existing = window.tinymce.get(this.tinyId);
+                if (existing) {
+                    const current = this.$wire.get('feature_and_specifications') || '';
+                    if (forceSync && existing.getContent() !== current) {
+                        existing.setContent(current);
+                    }
+                    return;
+                }
+
+                window.tinymce.init({
+                    selector: `#${this.tinyId}`,
+                    menubar: 'file edit view insert format tools table help',
+                    branding: false,
+                    height: 460,
+                    min_height: 420,
+                    toolbar_mode: 'sliding',
+                    plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount autoresize hr nonbreaking pagebreak directionality emoticons codesample',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | link image media table | charmap emoticons hr pagebreak nonbreaking | insertdatetime codesample | searchreplace visualblocks fullscreen preview code | removeformat help',
+                    content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }',
+                    setup: (editor) => {
+                        editor.on('init', () => {
+                            editor.setContent(this.$wire.get('feature_and_specifications') || '');
+                        });
+
+                        const sync = () => this.$wire.set('feature_and_specifications', editor.getContent(), false);
+                        editor.on('change keyup input undo redo', sync);
+                    },
+                });
+            },
+
+            destroyEditors() {
+                window.tinymce?.get(this.tinyId)?.remove();
+                this.retryCount = 0;
+            },
+        }
+    }
+</script>

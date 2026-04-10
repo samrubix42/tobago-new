@@ -48,6 +48,7 @@ class AdminSidebar
                     ],
                 ],
             ],
+            
             (object)[
                 'title' => 'Users',
                 'icon' => 'ri-user-line',
@@ -69,21 +70,7 @@ class AdminSidebar
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],
-            (object)[
-                'title' => 'Coupons',
-                'icon' => 'ri-coupon-3-line',
-                'url' => route('admin.coupons'),
-                'hasSubmenu' => false,
-                'submenu' => [],
-            ],
-            (object)[
-                'title' => 'Settings',
-                'icon' => 'ri-settings-3-line',
-                'url' => route('admin.settings'),
-                'hasSubmenu' => false,
-                'submenu' => [],
-            ],
-            (object)[
+             (object)[
                 'title' => 'Blog',
                 'icon' => 'ri-newspaper-line',
                 'url' => '#',
@@ -99,6 +86,21 @@ class AdminSidebar
                     ],
                 ],
             ],
+            (object)[
+                'title' => 'Coupons',
+                'icon' => 'ri-coupon-3-line',
+                'url' => route('admin.coupons'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+            (object)[
+                'title' => 'Settings',
+                'icon' => 'ri-settings-3-line',
+                'url' => route('admin.settings'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+           
            
         ]);
         return $menu;
