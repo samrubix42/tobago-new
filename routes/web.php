@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::home')->name('home');
-Route::livewire('/product/{id}', 'pages::product.product-view')->name('product');
+Route::livewire('/product/{slug}', 'pages::product.product-view')->name('product');
 Route::livewire('/demo/products', 'pages::demo.product')->name('demo.products');
 Route::livewire('/cart', 'pages::cart')->name('cart');
 

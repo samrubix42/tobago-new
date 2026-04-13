@@ -2,7 +2,16 @@
     $headerCartCount = current_cart_items_count();
 @endphp
 
-<div x-data="{ mobileOpen: false, dropdown: null, userMenu: false, cartCount: {{ $headerCartCount }} }"
+<div x-data="{
+        mobileOpen: false,
+        dropdown: null,
+        userMenu: false,
+        cartCount: {{ $headerCartCount }},
+        searchOpen: false,
+        closeSearch() {
+            this.searchOpen = false;
+        },
+    }"
      x-on:cart-updated.window="cartCount = Number($event.detail?.count ?? 0)">
 
     {{-- ── TOP TICKER ── --}}
@@ -93,10 +102,50 @@
 
             {{-- DESKTOP SEARCH --}}
             <div class="hidden lg:flex flex-1 max-w-xs xl:max-w-sm">
-                <div class="relative w-full">
+                <div class="relative w-full" @click.outside="closeSearch()">
                     <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
-                    <input type="text" placeholder="Search products..."
+                    <input type="text"
+                        wire:model.live.debounce.300ms="search"
+                        @focus="searchOpen = true"
+                        @keydown.escape="closeSearch()"
+                        placeholder="Search by product or SKU..."
                         class="w-full pl-9 pr-4 py-2 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 focus:bg-white/7 transition-all">
+
+                    <div x-cloak x-show="searchOpen"
+                        x-transition
+                        class="absolute top-[calc(100%+8px)] left-0 right-0 rounded-2xl border border-white/10 bg-[#0d0f11] shadow-2xl shadow-black/40 overflow-hidden">
+                        <div class="max-h-90 overflow-y-auto">
+                            <div wire:loading wire:target="search" class="px-4 py-6 text-xs text-white/60 flex items-center gap-2">
+                                <i class="ri-loader-4-line animate-spin"></i>
+                                Searching products...
+                            </div>
+
+                            @php $desktopResults = $this->searchResults(); @endphp
+
+                            @if(mb_strlen($search) >= 2)
+                                @if($desktopResults->isEmpty())
+                                    <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
+                                @else
+                                    <div wire:loading.remove wire:target="search">
+                                        @foreach($desktopResults as $item)
+                                            <a href="{{ route('product', $item->slug) }}" wire:navigate
+                                                class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
+                                                <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
+                                                <div class="min-w-0 flex-1">
+                                                    <p class="text-sm text-white truncate">{{ $item->name }}</p>
+                                                    <div class="text-[11px] text-white/45 flex items-center gap-2">
+                                                        <span>{{ $item->category?->title ?: 'General' }}</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            @else
+                                <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -194,10 +243,50 @@
 
         {{-- MOBILE SEARCH BAR (always visible below header on phones) --}}
         <div class="lg:hidden border-t border-white/5 px-4 py-2.5 bg-[#07080a]/90">
-            <div class="relative">
+            <div class="relative" @click.outside="closeSearch()">
                 <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
-                <input type="text" placeholder="Search products..."
+                <input type="text"
+                    wire:model.live.debounce.300ms="search"
+                    @focus="searchOpen = true"
+                    @keydown.escape="closeSearch()"
+                    placeholder="Search by product or SKU..."
                     class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all">
+
+                <div x-cloak x-show="searchOpen"
+                    x-transition
+                    class="absolute top-[calc(100%+8px)] left-0 right-0 rounded-2xl border border-white/10 bg-[#0d0f11] shadow-2xl shadow-black/40 overflow-hidden z-20">
+                    <div class="max-h-[60vh] overflow-y-auto">
+                        <div wire:loading wire:target="search" class="px-4 py-6 text-xs text-white/60 flex items-center gap-2">
+                            <i class="ri-loader-4-line animate-spin"></i>
+                            Searching products...
+                        </div>
+
+                        @php $mobileResults = $this->searchResults(); @endphp
+
+                        @if(mb_strlen($search) >= 2)
+                            @if($mobileResults->isEmpty())
+                                <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
+                            @else
+                                <div wire:loading.remove wire:target="search">
+                                    @foreach($mobileResults as $item)
+                                        <a href="{{ route('product', $item->slug) }}" wire:navigate
+                                            class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
+                                            <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
+                                            <div class="min-w-0 flex-1">
+                                                <p class="text-sm text-white truncate">{{ $item->name }}</p>
+                                                <div class="text-[11px] text-white/45 flex items-center gap-2">
+                                                    <span>{{ $item->category?->title ?: 'General' }}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @else
+                            <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
 
