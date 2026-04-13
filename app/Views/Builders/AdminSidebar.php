@@ -66,7 +66,7 @@ class AdminSidebar
             (object)[
                 'title' => 'Orders',
                 'icon' => 'ri-shopping-cart-2-line',
-                'url' => '#',
+                'url' => route('admin.orders'),
                 'hasSubmenu' => false,
                 'submenu' => [],
             ],

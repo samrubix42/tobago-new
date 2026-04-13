@@ -60,6 +60,10 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     //inventory
     Route::livewire('/inventory', 'admin::inventory')->name('inventory');
 
+    //orders
+    Route::livewire('/orders', 'admin.order.order-list')->name('orders');
+    Route::livewire('/orders/{id}', 'admin.order.order-management')->name('orders.manage');
+
     //testimonial
 
     Route::livewire('/testimonials','admin::testimonial-list')->name('testimonials');
