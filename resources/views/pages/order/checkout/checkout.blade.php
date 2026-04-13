@@ -248,7 +248,7 @@
                     @endif
                 </div>
 
-                @if($useNewAddress)
+                @if($useNewAddress && auth()->check())
                     <label class="inline-flex items-center gap-2 text-xs text-slate-300">
                         <input type="checkbox" wire:model="saveAddressForLater" class="rounded border-white/20 bg-transparent text-blue-500 focus:ring-blue-500/20">
                         Save this new address for future orders

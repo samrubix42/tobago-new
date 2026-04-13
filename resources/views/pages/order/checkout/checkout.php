@@ -43,22 +43,29 @@ new class extends Component
 
     public function mount(): void
     {
-        merge_guest_cart_for_user((int) Auth::id(), session()->getId());
+        if (Auth::check()) {
+            merge_guest_cart_for_user((int) Auth::id(), session()->getId());
 
-        /** @var User $user */
-        $user = Auth::user();
-        $defaultAddress = $user->addresses()->where('is_default', true)->first() ?? $user->addresses()->first();
+            /** @var User|null $user */
+            $user = Auth::user();
+            $defaultAddress = $user?->addresses()->where('is_default', true)->first() ?? $user?->addresses()->first();
 
-        if ($defaultAddress) {
-            $this->selectedAddressId = $defaultAddress->id;
-            $this->fillFromAddress($defaultAddress);
-            $this->useNewAddress = false;
-            $this->editSelectedAddress = false;
-        } else {
-            $this->fullName = (string) ($user->name ?? '');
-            $this->email = (string) ($user->email ?? '');
+            if ($defaultAddress) {
+                $this->selectedAddressId = $defaultAddress->id;
+                $this->fillFromAddress($defaultAddress);
+                $this->useNewAddress = false;
+                $this->editSelectedAddress = false;
+                return;
+            }
+
+            $this->fullName = (string) ($user?->name ?? '');
+            $this->email = (string) ($user?->email ?? '');
             $this->useNewAddress = true;
+            return;
         }
+
+        $this->useNewAddress = true;
+        $this->saveAddressForLater = false;
     }
 
     public function openNewAddressForm(): void
@@ -67,10 +74,10 @@ new class extends Component
         $this->editSelectedAddress = false;
         $this->selectedAddressId = null;
 
-        /** @var User $user */
+        /** @var User|null $user */
         $user = Auth::user();
-        $this->fullName = (string) ($user->name ?? '');
-        $this->email = (string) ($user->email ?? '');
+        $this->fullName = (string) ($user?->name ?? '');
+        $this->email = (string) ($user?->email ?? '');
         $this->phone = '';
         $this->addressLine1 = '';
         $this->addressLine2 = '';
@@ -85,6 +92,10 @@ new class extends Component
 
     public function startEditSelectedAddress(): void
     {
+        if (! Auth::check()) {
+            return;
+        }
+
         if (! $this->selectedAddressId) {
             return;
         }
@@ -104,6 +115,10 @@ new class extends Component
 
     public function selectAddress(int $addressId): void
     {
+        if (! Auth::check()) {
+            return;
+        }
+
         /** @var User $user */
         $user = Auth::user();
         $address = $user->addresses()->whereKey($addressId)->first();
@@ -126,6 +141,12 @@ new class extends Component
 
     public function cancelAddressForm(): void
     {
+        if (! Auth::check()) {
+            $this->useNewAddress = true;
+            $this->editSelectedAddress = false;
+            return;
+        }
+
         /** @var User $user */
         $user = Auth::user();
         $defaultAddress = $user->addresses()->where('is_default', true)->first() ?? $user->addresses()->first();
@@ -144,6 +165,10 @@ new class extends Component
 
     public function updatedSelectedAddressId($value): void
     {
+        if (! Auth::check()) {
+            return;
+        }
+
         if (! $value) {
             return;
         }
@@ -231,7 +256,7 @@ new class extends Component
 
             $order = Order::query()->create([
                 'order_number' => $this->generateOrderNumber(),
-                'user_id' => (int) Auth::id(),
+                'user_id' => Auth::check() ? (int) Auth::id() : null,
                 'session_id' => session()->getId(),
                 'coupon_id' => $cart->coupon_id,
                 'coupon_code' => $cart->coupon?->code,
@@ -279,7 +304,7 @@ new class extends Component
                 ]);
             }
 
-            if ($this->useNewAddress && $this->saveAddressForLater) {
+            if (Auth::check() && $this->useNewAddress && $this->saveAddressForLater) {
                 UserAddress::query()->create(array_merge($this->addressPayload(), [
                     'user_id' => (int) Auth::id(),
                     'is_default' => false,
@@ -341,10 +366,15 @@ new class extends Component
 
     protected function resolveCart(): ?Cart
     {
-        return Cart::query()
-            ->where('user_id', (int) Auth::id())
-            ->latest('id')
-            ->first();
+        $query = Cart::query();
+
+        if (Auth::check()) {
+            $query->where('user_id', (int) Auth::id());
+        } else {
+            $query->whereNull('user_id')->where('session_id', session()->getId());
+        }
+
+        return $query->latest('id')->first();
     }
 
     protected function calculateShipping(float $cartTotal): float
@@ -409,7 +439,7 @@ new class extends Component
         $this->state = (string) $address->state;
         $this->country = (string) $address->country;
         $this->pincode = (string) $address->pincode;
-        $this->email = (string) (Auth::user()->email ?? $this->email);
+        $this->email = (string) (Auth::user()?->email ?? $this->email);
         $this->pincodeHint = null;
     }
 
@@ -461,9 +491,9 @@ new class extends Component
     {
         $cart = $this->resolveCart();
 
-        /** @var User $user */
+        /** @var User|null $user */
         $user = Auth::user();
-        $addresses = $user->addresses()->latest()->get();
+        $addresses = $user ? $user->addresses()->latest()->get() : collect();
 
         $shippingAmount = $cart ? $this->calculateShipping((float) $cart->total) : 0;
         $grandTotal = ($cart?->total ?? 0) + $shippingAmount;
