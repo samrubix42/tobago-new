@@ -249,7 +249,7 @@ new class extends Component
         $this->validateAddressInput();
 
         DB::transaction(function () use ($cart) {
-            $cart->load(['items.product', 'coupon']);
+            $cart->load(['items.product.images', 'items.product.category', 'coupon']);
 
             $shippingAmount = $this->calculateShipping((float) $cart->total);
             $finalTotal = (float) $cart->total + $shippingAmount;
@@ -293,11 +293,16 @@ new class extends Component
             ]);
 
             foreach ($cart->items as $item) {
+                $snapshotImage = $item->product?->images?->firstWhere('is_primary', true)?->image
+                    ?? $item->product?->images?->first()?->image;
+
                 OrderItem::query()->create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'product_name' => $item->product?->name ?? 'Product',
                     'sku' => $item->product?->sku,
+                    'product_image' => $snapshotImage,
+                    'product_category' => $item->product?->category?->title,
                     'quantity' => (int) $item->quantity,
                     'price' => (float) $item->price,
                     'total' => (float) $item->total,

@@ -330,9 +330,10 @@
                                         <div class="rounded-md border border-white/10 bg-[#0a0c0e] p-2.5">
                                             <div class="flex items-start gap-2.5">
                                                 @php
-                                                    $thumb = $item->product?->images?->first()?->image_path;
+                                                    $thumb = $item->product?->images?->firstWhere('is_primary', true)?->image
+                                                        ?? $item->product?->images?->first()?->image;
                                                 @endphp
-                                                <img src="{{ $thumb ? asset('storage/' . $thumb) : asset('images/placeholder.png') }}" alt="{{ $item->product?->name }}" class="h-12 w-12 rounded object-cover border border-white/10 shrink-0">
+                                                <img src="{{ $thumb ? (str_starts_with($thumb, 'http') ? $thumb : asset('storage/' . ltrim($thumb, '/'))) : asset('images/hero.png') }}" alt="{{ $item->product?->name }}" class="h-12 w-12 rounded object-cover border border-white/10 shrink-0">
 
                                                 <div class="min-w-0 flex-1">
                                                     <p class="text-sm text-white truncate">{{ $item->product?->name ?? 'Product' }}</p>

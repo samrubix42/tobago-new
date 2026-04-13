@@ -36,6 +36,12 @@ return new class extends Migration
             $table->enum('payment_method', ['cod', 'online'])->default('cod');
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
             $table->enum('status', ['pending', 'confirmed', 'packed', 'shipped', 'returned', 'on-the-way', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('delivery_type', ['in_hand_delivery', 'third_party'])->default('in_hand_delivery');
+            $table->string('delivery_partner')->nullable();
+            $table->string('delivery_boy_name')->nullable();
+            $table->string('delivery_boy_phone', 20)->nullable();
+            $table->string('awb_number')->nullable();
+            $table->string('tracking_url')->nullable();
 
             $table->string('customer_name');
             $table->string('customer_phone', 20);
@@ -51,6 +57,7 @@ return new class extends Migration
             $table->text('customer_note')->nullable();
 
             $table->timestamp('placed_at')->nullable();
+            $table->timestamp('estimated_delivery_at')->nullable();
             $table->timestamps();
         });
     }

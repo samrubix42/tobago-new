@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->string('product_name');
             $table->string('sku')->nullable();
+            $table->string('product_image')->nullable();
+            $table->string('product_category')->nullable();
             $table->integer('quantity')->default(1);
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2);
