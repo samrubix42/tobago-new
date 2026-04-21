@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\PaymentGatewayInterface;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -43,6 +44,8 @@ new class extends Component
 
     public function mount(): void
     {
+        $this->dispatchFlashToast();
+
         if (Auth::check()) {
             merge_guest_cart_for_user((int) Auth::id(), session()->getId());
 
@@ -227,15 +230,6 @@ new class extends Component
 
     public function placeOrder(): void
     {
-        if ($this->paymentMethod === 'online') {
-            $this->dispatch('toast-show', [
-                'message' => 'Online payment (Razorpay) is disabled for now. Please use COD.',
-                'type' => 'warning',
-                'position' => 'top-right',
-            ]);
-            return;
-        }
-
         $cart = $this->resolveCart();
         if (! $cart || ! $cart->items()->exists()) {
             $this->dispatch('toast-show', [
@@ -248,7 +242,55 @@ new class extends Component
 
         $this->validateAddressInput();
 
-        DB::transaction(function () use ($cart) {
+        $isOnline = $this->paymentMethod === 'online';
+        $order = $this->createOrderFromCart($cart, clearCart: ! $isOnline);
+
+        if ($isOnline) {
+            /** @var PaymentGatewayInterface $paymentGateway */
+            $paymentGateway = app(PaymentGatewayInterface::class);
+            $paymentResponse = $paymentGateway->initiatePayment($order);
+
+            if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
+                $order->update(['payment_status' => 'failed']);
+
+                OrderStatusLog::query()->create([
+                    'order_id' => $order->id,
+                    'status' => $order->status,
+                    'note' => 'PhonePe payment initiation failed: ' . (string) ($paymentResponse['message'] ?? 'Unknown error'),
+                    'source' => 'system',
+                    'logged_at' => now(),
+                ]);
+
+                $this->dispatch('toast-show', [
+                    'message' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment. Please try again.'),
+                    'type' => 'error',
+                    'position' => 'top-right',
+                ]);
+                return;
+            }
+
+            $this->showConfirmationSlide = false;
+            $this->redirect((string) $paymentResponse['redirect_url'], navigate: false);
+            return;
+        }
+
+        $this->placedOrderNumber = $order->order_number;
+        $this->showSuccess = true;
+
+        $this->dispatch('toast-show', [
+            'message' => 'Order placed successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
+        $this->dispatch('cart-updated', count: 0);
+
+        $this->showConfirmationSlide = false;
+    }
+
+    protected function createOrderFromCart(Cart $cart, bool $clearCart): Order
+    {
+        return DB::transaction(function () use ($cart, $clearCart) {
             $cart->load(['items.product.images', 'items.product.category', 'coupon']);
 
             $shippingAmount = $this->calculateShipping((float) $cart->total);
@@ -266,7 +308,7 @@ new class extends Component
                 'discount' => (float) $cart->discount,
                 'shipping_amount' => $shippingAmount,
                 'total' => $finalTotal,
-                'payment_method' => 'cod',
+                'payment_method' => $this->paymentMethod,
                 'payment_status' => 'pending',
                 'status' => 'pending',
                 'delivery_type' => 'in_hand_delivery',
@@ -316,40 +358,22 @@ new class extends Component
                 ]));
             }
 
-            $cart->items()->delete();
-            $cart->update([
-                'coupon_id' => null,
-                'subtotal' => 0,
-                'discount' => 0,
-                'total' => 0,
-            ]);
+            if ($clearCart) {
+                $cart->items()->delete();
+                $cart->update([
+                    'coupon_id' => null,
+                    'subtotal' => 0,
+                    'discount' => 0,
+                    'total' => 0,
+                ]);
+            }
 
-            $this->placedOrderNumber = $order->order_number;
-            $this->showSuccess = true;
+            return $order;
         });
-
-        $this->dispatch('toast-show', [
-            'message' => 'Order placed successfully!',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
-
-        $this->dispatch('cart-updated', count: 0);
-
-        $this->showConfirmationSlide = false;
     }
 
     public function openOrderConfirmation(): void
     {
-        if ($this->paymentMethod === 'online') {
-            $this->dispatch('toast-show', [
-                'message' => 'Online payment (Razorpay) is disabled for now. Please use COD.',
-                'type' => 'warning',
-                'position' => 'top-right',
-            ]);
-            return;
-        }
-
         $cart = $this->resolveCart();
         if (! $cart || ! $cart->items()->exists()) {
             $this->dispatch('toast-show', [
@@ -490,6 +514,27 @@ new class extends Component
         } while (Order::query()->where('order_number', $number)->exists());
 
         return $number;
+    }
+
+    protected function dispatchFlashToast(): void
+    {
+        if (session()->has('success')) {
+            $this->dispatch('toast-show', [
+                'message' => (string) session('success'),
+                'type' => 'success',
+                'position' => 'top-right',
+            ]);
+            session()->forget('success');
+        }
+
+        if (session()->has('error')) {
+            $this->dispatch('toast-show', [
+                'message' => (string) session('error'),
+                'type' => 'error',
+                'position' => 'top-right',
+            ]);
+            session()->forget('error');
+        }
     }
 
     public function render()

@@ -6,7 +6,7 @@
         <div>
             <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Checkout</p>
             <h1 class="text-2xl sm:text-3xl font-semibold text-white mt-1">Complete Your Order</h1>
-            <p class="text-sm text-slate-400 mt-2">Payment gateway (Razorpay) is prepared for future use. COD is active now.</p>
+            <p class="text-sm text-slate-400 mt-2">Choose COD or pay online securely with PhonePe.</p>
         </div>
         <a href="{{ route('cart') }}" wire:navigate class="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10 transition">
             <i class="ri-arrow-left-line"></i>
@@ -265,12 +265,11 @@
                         <input type="radio" wire:model="paymentMethod" value="cod" class="text-blue-500 focus:ring-blue-500/20">
                         Cash on Delivery (COD)
                     </label>
-                    <label class="flex items-center justify-between gap-2 rounded-md border border-white/10 px-3 py-2 text-sm text-slate-400">
+                    <label class="flex items-center gap-2 rounded-md border border-white/10 px-3 py-2 text-sm text-slate-200">
                         <span class="inline-flex items-center gap-2">
                             <input type="radio" wire:model="paymentMethod" value="online" class="text-blue-500 focus:ring-blue-500/20">
-                            Online Payment (Razorpay)
+                            Online Payment (PhonePe)
                         </span>
-                        <span class="text-[11px] rounded-full bg-amber-500/15 text-amber-300 px-2 py-0.5">Disabled</span>
                     </label>
                     @error('paymentMethod') <p class="text-xs text-rose-300">{{ $message }}</p> @enderror
                 </div>

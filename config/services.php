@@ -41,5 +41,14 @@ return [
         'redirect'      => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
+    'phonepe' => [
+        'merchant_id' => env('PHONEPE_MERCHANT_ID', env('CLIENT_ID')),
+        'salt_key' => env('PHONEPE_SALT_KEY', env('CLIENT_KEY')),
+        'salt_index' => env('PHONEPE_SALT_INDEX', env('CLIENT_VERSION', '1')),
+        'base_url' => env('PHONEPE_BASE_URL', env('CLIENT_URL', 'https://api-preprod.phonepe.com/apis/pg-sandbox')),
+        'pay_endpoint' => env('PHONEPE_PAY_ENDPOINT', '/pg/v1/pay'),
+        'test_mode' => (bool) env('PHONEPE_TEST_MODE', true),
+    ],
+
 ];
 

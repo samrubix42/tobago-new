@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Payment\PhonePeCallbackController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::home')->name('home');
@@ -20,6 +21,11 @@ Route::livewire('/admin/login', 'auth::admin-login')->middleware('guest')->name(
 // Google OAuth
 Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
+Route::get('/payment/phonepe/return/{orderNumber}', [PhonePeCallbackController::class, 'handleReturn'])
+    ->name('payment.phonepe.return');
+Route::post('/payment/phonepe/callback', [PhonePeCallbackController::class, 'handleCallback'])
+    ->name('payment.phonepe.callback');
 
 // User account
 Route::middleware('auth')->group(function () {
