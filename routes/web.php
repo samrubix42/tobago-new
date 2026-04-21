@@ -101,7 +101,7 @@ Route::livewire('/{category}', 'pages::product.product')
     ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$)[a-z0-9-]+$')
     ->name('products.category');
 
-Route::livewire('/{category}/{subcategory}', 'pages::product.product')
+Route::livewire('shop/{category}/{subcategory}', 'pages::product.product')
     ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$)[a-z0-9-]+$')
     ->where('subcategory', '^[a-z0-9-]+$')
     ->name('products.category.subcategory');
