@@ -2,7 +2,11 @@
     $mobileCartCount = current_cart_items_count();
 @endphp
 
-<div class="pb-24 lg:pb-0">
+<div
+    class="pb-24 lg:pb-0"
+    x-data="{ cartCount: {{ $mobileCartCount }} }"
+    x-on:cart-updated.window="cartCount = Number($event.detail?.count ?? 0)"
+>
     <footer class="hidden lg:block mt-20 border-t border-subtle bg-[#050607] pb-24 lg:pb-0">
 
     <!-- TOP -->
@@ -116,11 +120,12 @@
                 class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('cart') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
                 <i class="{{ request()->routeIs('cart') ? 'ri-shopping-cart-2-fill' : 'ri-shopping-cart-2-line' }} text-[18px]"></i>
                 <span>Cart</span>
-                @if($mobileCartCount > 0)
-                    <span class="absolute top-0.5 right-2 min-w-4 h-4 px-1 rounded-full bg-[#ef4444] text-white text-[9px] font-bold leading-none flex items-center justify-center border border-[#111315]">
-                        {{ $mobileCartCount > 99 ? '99+' : $mobileCartCount }}
-                    </span>
-                @endif
+                <span
+                    x-cloak
+                    x-show="cartCount > 0"
+                    x-text="cartCount > 99 ? '99+' : cartCount"
+                    class="absolute top-0.5 right-2 min-w-4 h-4 px-1 rounded-full bg-[#ef4444] text-white text-[9px] font-bold leading-none flex items-center justify-center border border-[#111315]"
+                ></span>
             </a>
 
             <a href="{{ auth()->check() ? route('user.profile') : route('login') }}" wire:navigate
