@@ -2,7 +2,7 @@
     $headerCartCount = current_cart_items_count();
 @endphp
 
-<div x-data="{
+<div x-cloak x-data="{
         mobileOpen: false,
         dropdown: null,
         userMenu: false,
