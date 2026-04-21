@@ -69,11 +69,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'combos',
                 'children' => [],
             ],
-            [
-                'title' => 'Hookah Shop in Noida',
-                'slug' => 'hookah-shop-in-noida',
-                'children' => [],
-            ],
+           
         ];
 
         $order = 1;
