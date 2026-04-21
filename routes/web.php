@@ -8,7 +8,7 @@ use App\Http\Controllers\Payment\PhonePeCallbackController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::home')->name('home');
-Route::livewire('/products', 'pages::product.product')->name('products');
+Route::livewire('/shop', 'pages::product.product')->name('products');
 Route::livewire('/product/{slug}', 'pages::product.product-view')->name('product');
 Route::livewire('/demo/products', 'pages::demo.product')->name('demo.products');
 Route::livewire('/cart', 'pages::cart')->name('cart');
@@ -97,7 +97,7 @@ Route::get('/clear-cache', function() {
     return "Cache cleared!";
 })->name('clear.cache');
 
-Route::livewire('/{category}', 'pages::product.product')
+Route::livewire('shop/{category}', 'pages::product.product')
     ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$)[a-z0-9-]+$')
     ->name('products.category');
 
