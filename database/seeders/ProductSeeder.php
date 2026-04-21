@@ -14,53 +14,57 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $categoryIds = Category::query()->pluck('id')->all();
+        $catalog = $this->catalog();
+        $categoryMap = Category::query()
+            ->whereIn('slug', array_keys($catalog))
+            ->get()
+            ->keyBy('slug');
 
-        if (empty($categoryIds)) {
+        if ($categoryMap->isEmpty()) {
             return;
         }
 
-        $adjectives = ['Royal', 'Classic', 'Premium', 'Smooth', 'Bold', 'Frozen', 'Gold', 'Elite'];
-        $flavors = ['Mint', 'Blueberry', 'Grape', 'Peach', 'Mango', 'Cola', 'Watermelon', 'Lemon'];
-        $types = ['Hookah Mix', 'Shisha', 'Coal Pack', 'Starter Kit', 'Bowl Set', 'Flavor Pack'];
         $statuses = ['active', 'active', 'active', 'inactive', 'draft'];
+        $productIndex = 1;
 
-        for ($i = 1; $i <= 220; $i++) {
-            $name = sprintf(
-                '%s %s %s %03d',
-                fake()->randomElement($adjectives),
-                fake()->randomElement($flavors),
-                fake()->randomElement($types),
-                $i
-            );
+        foreach ($catalog as $categorySlug => $products) {
+            $category = $categoryMap->get($categorySlug);
 
-            $slug = $this->uniqueProductSlug($name, $i);
-            $sku = $this->uniqueSku($name, $i);
+            if (! $category) {
+                continue;
+            }
 
-            $costPrice = fake()->randomFloat(2, 4, 80);
-            $sellingPrice = $costPrice + fake()->randomFloat(2, 2, 35);
-            $comparePrice = fake()->boolean(55) ? $sellingPrice + fake()->randomFloat(2, 1, 25) : null;
-            $stock = fake()->numberBetween(0, 240);
+            foreach ($products as $name) {
+                $slug = $this->uniqueProductSlug($name, $productIndex);
+                $sku = $this->uniqueSku($name, $productIndex);
 
-            Product::query()->updateOrCreate(
-                ['slug' => $slug],
-                [
-                    'category_id' => fake()->randomElement($categoryIds),
-                    'name' => $name,
-                    'sku' => $sku,
-                    'short_description' => fake()->sentence(16),
-                    'feature_and_specifications' => $this->generateFeatureSpecHtml($name),
-                    'cost_price' => $costPrice,
-                    'selling_price' => $sellingPrice,
-                    'compare_price' => $comparePrice,
-                    'stock' => $stock,
-                    'hurry_stock' => fake()->numberBetween(3, 20),
-                    'is_out_of_stock' => $stock === 0,
-                    'status' => fake()->randomElement($statuses),
-                    'is_featured' => fake()->boolean(18),
-                    'is_trending' => fake()->boolean(22),
-                ]
-            );
+                $costPrice = fake()->randomFloat(2, 120, 2400);
+                $sellingPrice = $costPrice + fake()->randomFloat(2, 40, 900);
+                $comparePrice = fake()->boolean(60) ? $sellingPrice + fake()->randomFloat(2, 50, 450) : null;
+                $stock = fake()->numberBetween(0, 240);
+
+                Product::query()->updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'category_id' => $category->id,
+                        'name' => $name,
+                        'sku' => $sku,
+                        'short_description' => $this->shortDescriptionFor($name, $category->title),
+                        'feature_and_specifications' => $this->generateFeatureSpecHtml($name, $category->title),
+                        'cost_price' => $costPrice,
+                        'selling_price' => $sellingPrice,
+                        'compare_price' => $comparePrice,
+                        'stock' => $stock,
+                        'hurry_stock' => fake()->numberBetween(3, 20),
+                        'is_out_of_stock' => $stock === 0,
+                        'status' => fake()->randomElement($statuses),
+                        'is_featured' => fake()->boolean(18),
+                        'is_trending' => fake()->boolean(22),
+                    ]
+                );
+
+                $productIndex++;
+            }
         }
     }
 
@@ -76,7 +80,7 @@ class ProductSeeder extends Seeder
         return $base . '-' . str_pad((string) $index, 4, '0', STR_PAD_LEFT);
     }
 
-    private function generateFeatureSpecHtml(string $name): string
+    private function generateFeatureSpecHtml(string $name, string $categoryTitle): string
     {
         return '<h3>Features</h3>'
             . '<ul>'
@@ -87,6 +91,168 @@ class ProductSeeder extends Seeder
             . '<h3>Specification</h3>'
             . '<p><strong>Product:</strong> ' . e($name) . '</p>'
             . '<p><strong>Origin:</strong> Imported</p>'
-            . '<p><strong>Category:</strong> Lifestyle Tobacco Accessory</p>';
+            . '<p><strong>Category:</strong> ' . e($categoryTitle) . '</p>';
+    }
+
+    private function shortDescriptionFor(string $name, string $categoryTitle): string
+    {
+        return $name . ' in our ' . $categoryTitle . ' range, selected for quality, finish, and daily use.';
+    }
+
+    private function catalog(): array
+    {
+        return [
+            'tobac-go-hookah' => [
+                'Tobac Go Hookah Classic Silver',
+                'Tobac Go Hookah Matte Black',
+                'Tobac Go Hookah Premium Gold',
+                'Tobac Go Hookah Travel Edition',
+            ],
+            'vg-france-foggit-hookah' => [
+                'VG France Foggit Hookah Rose Gold',
+                'VG France Foggit Hookah Carbon Finish',
+                'VG France Foggit Hookah Crystal Stem',
+            ],
+            'thugs-hookah' => [
+                'Thugs Hookah Street Edition',
+                'Thugs Hookah Chrome Series',
+                'Thugs Hookah Mini Beast',
+            ],
+            'mya-hookah' => [
+                'Mya Hookah Compact Edition',
+                'Mya Hookah Glass Base Set',
+                'Mya Hookah Lounge Series',
+            ],
+            'whiskey-bottle-hookah' => [
+                'Whiskey Bottle Hookah Oak Barrel',
+                'Whiskey Bottle Hookah Premium Decanter',
+                'Whiskey Bottle Hookah Signature Glass',
+            ],
+            'enrolando-hookah' => [
+                'Enrolando Hookah Urban Black',
+                'Enrolando Hookah Frosted Base',
+                'Enrolando Hookah Gold Stem',
+            ],
+            'dum-hookahs' => [
+                'DUM Hookah Heavy Stem',
+                'DUM Hookah Party Edition',
+                'DUM Hookah Designer Cut',
+            ],
+            'digital-smoke-hookah' => [
+                'Digital Smoke Hookah Neon Series',
+                'Digital Smoke Hookah LED Base',
+                'Digital Smoke Hookah Smart Pull',
+            ],
+            'deja-vu-hookah' => [
+                'Deja Vu Hookah Velvet Black',
+                'Deja Vu Hookah Mirror Silver',
+                'Deja Vu Hookah Limited Edition',
+            ],
+            'cocoyaya-hookah' => [
+                'Cocoyaya Hookah Aero X1',
+                'Cocoyaya Hookah Thunder Stem',
+                'Cocoyaya Hookah Glass Craft',
+                'Cocoyaya Hookah Premium Combo',
+            ],
+            'tobac-go-car-hookah' => [
+                'Tobac Go Car Hookah Compact Drive',
+                'Tobac Go Car Hookah Dashboard Edition',
+                'Tobac Go Car Hookah Travel Kit',
+            ],
+            'alshan-hookah' => [
+                'Alshan Hookah Traditional Brass',
+                'Alshan Hookah Luxe Finish',
+                'Alshan Hookah Premium Lounge',
+            ],
+            'al-akbar-hookah' => [
+                'Al Akbar Hookah Heritage Series',
+                'Al Akbar Hookah Royal Stem',
+                'Al Akbar Hookah Premium Base',
+            ],
+            'acrylic-bongs' => [
+                'Acrylic Bong Ice Catcher Blue',
+                'Acrylic Bong Tall Chamber Green',
+                'Acrylic Bong Compact Travel Red',
+                'Acrylic Bong Wide Base Black',
+            ],
+            'ashtray' => [
+                'Metal Ashtray Windproof Round',
+                'Glass Ashtray Heavy Base',
+                'Portable Pocket Ashtray',
+                'Ceramic Ashtray Matte Finish',
+            ],
+            'hookah-accessories' => [
+                'Hookah Accessory Starter Set',
+                'Hookah Accessory Premium Care Kit',
+                'Hookah Accessory Replacement Bundle',
+            ],
+            'hookah-chillum' => [
+                'Hookah Chillum Clay Bowl',
+                'Hookah Chillum Silicone Bowl',
+                'Hookah Chillum Heat Core Bowl',
+            ],
+            'pipe-and-handle' => [
+                'Pipe and Handle Wooden Grip Set',
+                'Pipe and Handle Brass Finish',
+                'Pipe and Handle Long Reach Kit',
+            ],
+            'wooden-smoking-pipe' => [
+                'Wooden Smoking Pipe Classic Walnut',
+                'Wooden Smoking Pipe Curved Stem',
+                'Wooden Smoking Pipe Handcrafted Finish',
+            ],
+            'smoking-glass-pipe' => [
+                'Smoking Glass Pipe Clear Tube',
+                'Smoking Glass Pipe Color Swirl',
+                'Smoking Glass Pipe Thick Glass Mini',
+            ],
+            'metal-shooter' => [
+                'Metal Shooter Pocket Edition',
+                'Metal Shooter Silver Finish',
+                'Metal Shooter Durable Grip',
+            ],
+            'glass-bong-shooter' => [
+                'Glass Bong Shooter Clear Shot',
+                'Glass Bong Shooter Ice Pinch',
+                'Glass Bong Shooter Thick Wall',
+            ],
+            'filter-screens' => [
+                'Filter Screens Fine Mesh Pack',
+                'Filter Screens Stainless Steel Set',
+                'Filter Screens Brass Round Pack',
+            ],
+            'crusher' => [
+                'Crusher 4 Part Alloy Grinder',
+                'Crusher Magnetic Top Grinder',
+                'Crusher Compact Pocket Mill',
+            ],
+            'cleaning-brush' => [
+                'Cleaning Brush Multi Size Set',
+                'Cleaning Brush Long Stem Pack',
+                'Cleaning Brush Soft Tip Cleaner',
+            ],
+            'baba-chillum' => [
+                'Baba Chillum Classic Stone Finish',
+                'Baba Chillum Handcrafted Edition',
+                'Baba Chillum Compact Smoke Piece',
+            ],
+            'lighters' => [
+                'Jet Flame Lighter Matte Black',
+                'Windproof Lighter Metal Body',
+                'Refillable Torch Lighter',
+                'Pocket Lighter Triple Flame',
+            ],
+            'combos' => [
+                'Hookah Combo Party Starter Kit',
+                'Smoking Combo Gift Box',
+                'Lounge Combo Premium Pack',
+                'Travel Combo Compact Set',
+            ],
+            'hookah-shop-in-noida' => [
+                'Noida Hookah Special Premium Kit',
+                'Noida Hookah Lounge Starter Pack',
+                'Noida Hookah Accessories Bundle',
+            ],
+        ];
     }
 }
