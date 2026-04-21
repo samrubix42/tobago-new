@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Artisan;
 Route::livewire('/', 'pages::home')->name('home');
 Route::livewire('/shop', 'pages::product.product')->name('products');
 Route::livewire('/product/{slug}', 'pages::product.product-view')->name('product');
-Route::livewire('/demo/products', 'pages::demo.product')->name('demo.products');
 Route::livewire('/cart', 'pages::cart')->name('cart');
 Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');
 

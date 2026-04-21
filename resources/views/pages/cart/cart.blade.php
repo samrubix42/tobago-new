@@ -8,7 +8,7 @@
             </div>
 
             <a
-                href="{{ route('demo.products') }}"
+                href="{{ route('products') }}"
                 wire:navigate
                 class="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10 transition"
             >
@@ -25,7 +25,7 @@
             </div>
             <p class="text-slate-200 text-lg mt-4">Your cart is empty</p>
             <p class="text-sm text-slate-400 mt-1">Looks like you have not added anything yet.</p>
-            <a href="{{ route('demo.products') }}" wire:navigate class="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm text-white hover:bg-blue-500 transition">
+            <a href="{{ route('products') }}" wire:navigate class="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm text-white hover:bg-blue-500 transition">
                 <i class="ri-shopping-bag-3-line"></i>
                 Browse Products
             </a>
