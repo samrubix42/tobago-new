@@ -2,15 +2,21 @@
 <div class="max-w-3xl mx-auto space-y-6">
 
     {{-- ── Page title ── --}}
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-xl font-semibold text-white tracking-tight">My Profile</h1>
             <p class="text-sm text-white/40 mt-0.5">Manage your personal information and security</p>
         </div>
-        <a wire:navigate href="{{ route('user.address') }}"
-           class="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
-            <i class="ri-map-pin-line"></i> My Addresses
-        </a>
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
+            <a wire:navigate href="{{ route('user.orders') }}"
+               class="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all whitespace-nowrap">
+                <i class="ri-file-list-3-line"></i> My Orders
+            </a>
+            <a wire:navigate href="{{ route('user.address') }}"
+               class="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all whitespace-nowrap">
+                <i class="ri-map-pin-line"></i> My Addresses
+            </a>
+        </div>
     </div>
 
     {{-- ── Profile info card ── --}}
@@ -176,16 +182,7 @@
     </div>
     @endif
 
-    {{-- ── Danger zone ── --}}
-    <div class="rounded-2xl border border-red-500/15 bg-red-500/[0.04] p-6 flex items-center justify-between gap-4">
-        <div>
-            <p class="text-sm font-medium text-white/70">Delete Account</p>
-            <p class="text-xs text-white/35 mt-0.5">Permanently remove your account and all data. This cannot be undone.</p>
-        </div>
-        <button class="flex-shrink-0 px-4 py-2 rounded-xl border border-red-500/30 text-red-400 text-sm hover:bg-red-500/10 transition-all">
-            Delete
-        </button>
-    </div>
+ 
 
 </div>
 </div>

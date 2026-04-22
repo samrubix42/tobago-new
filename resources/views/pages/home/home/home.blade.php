@@ -419,7 +419,9 @@
             scrollTo(index, smooth = true) {
                 const card = this.cards()[index];
                 if (!card) return;
-                card.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', inline: 'center', block: 'nearest' });
+                const viewport = this.$refs.viewport;
+                const scrollLeft = card.offsetLeft - (viewport.clientWidth / 2) + (card.offsetWidth / 2);
+                viewport.scrollTo({ left: scrollLeft, behavior: smooth ? 'smooth' : 'auto' });
             },
             prev() {
                 const nextIndex = (this.active - 1 + this.items.length) % this.items.length;

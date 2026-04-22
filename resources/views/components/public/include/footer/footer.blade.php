@@ -116,6 +116,18 @@
                 <span>Home</span>
             </a>
 
+            <a href="{{ route('category') }}" wire:navigate
+                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('category') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
+                <i class="{{ request()->routeIs('category') ? 'ri-function-line' : 'ri-function-line' }} text-[18px]"></i>
+                <span>Category</span>
+            </a>
+
+            <a href="{{ route('products') }}" wire:navigate
+                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('products') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
+                <i class="{{ request()->routeIs('products') ? 'ri-shopping-bag-3-fill' : 'ri-shopping-bag-3-line' }} text-[18px]"></i>
+                <span>Shop</span>
+            </a>
+
             <a href="{{ route('cart') }}" wire:navigate
                 class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('cart') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
                 <i class="{{ request()->routeIs('cart') ? 'ri-shopping-cart-2-fill' : 'ri-shopping-cart-2-line' }} text-[18px]"></i>
@@ -129,21 +141,9 @@
             </a>
 
             <a href="{{ auth()->check() ? route('user.profile') : route('login') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('user.profile') || request()->routeIs('user.address') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('user.profile') || request()->routeIs('user.address') ? 'ri-user-3-fill' : 'ri-user-3-line' }} text-[18px]"></i>
-                <span>Profile</span>
-            </a>
-
-            <a href="{{ auth()->check() ? route('user.orders') : route('login') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('user.orders') || request()->routeIs('user.orders.*') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('user.orders') || request()->routeIs('user.orders.*') ? 'ri-file-list-3-fill' : 'ri-file-list-3-line' }} text-[18px]"></i>
-                <span>My Order</span>
-            </a>
-
-            <a href="mailto:support@tobac-go.com"
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold text-white/60 transition hover:text-white hover:bg-white/6">
-                <i class="ri-customer-service-2-line text-[18px]"></i>
-                <span>Support</span>
+                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('user.profile') || request()->routeIs('user.address') || request()->routeIs('user.orders') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
+                <i class="{{ request()->routeIs('user.profile') || request()->routeIs('user.address') || request()->routeIs('user.orders') ? 'ri-user-3-fill' : 'ri-user-3-line' }} text-[18px]"></i>
+                <span>Account</span>
             </a>
     </div>
 </nav>
