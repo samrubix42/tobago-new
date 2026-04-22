@@ -19,8 +19,8 @@
          x-data="{ 
             messages: [
                 { text: 'Free shipping on orders Rs. 3000+', icon: 'ri-truck-line' },
-                { text: 'Premium Hookahs | 500+ Selection', icon: 'ri-fire-line' },
-                { text: '10k+ Trust Tobac-Go Hookah Lovers', icon: 'ri-user-heart-line' }
+                { text: 'Premium Range Available', icon: 'ri-fire-line' },
+                { text: 'Need help finding something? Chat with us', icon: 'ri-whatsapp-line' }
             ],
             current: 0,
             init() {
@@ -76,6 +76,20 @@
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
+                    </div>
+                </div>
+
+                {{-- Shop By Budget --}}
+                <div class="relative" @mouseenter="dropdown='budget'" @mouseleave="dropdown=null">
+                    <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                        Shop By Budget
+                        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='budget' ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="dropdown==='budget'" x-transition.origin.top.left
+                        class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
+                        <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
+                        <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
+                        <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
                     </div>
                 </div>
 
@@ -348,6 +362,20 @@
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Premium</a>
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass</a>
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mini</a>
+                </div>
+            </div>
+
+            {{-- Budget accordion --}}
+            <div x-data="{ sub: false }">
+                <button @click="sub=!sub"
+                    class="flex items-center justify-between w-full px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+                    Shop By Budget
+                    <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
+                    <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 3000</a>
+                    <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 5000</a>
+                    <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Above ₹7000</a>
                 </div>
             </div>
 
