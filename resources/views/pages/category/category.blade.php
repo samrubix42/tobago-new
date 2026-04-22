@@ -78,7 +78,7 @@
                 <p class="text-muted text-sm sm:text-base leading-relaxed mb-8">
                     Not sure which category fits your needs? Reach out to our experts. We'll help you find the perfect setup based on your preferences and budget.
                 </p>
-                <a href="https://wa.me/917838449604" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold text-black transition-transform hover:scale-105 shadow-[0_0_20px_rgba(0,198,255,0.15)]" style="background: var(--gradient-acrylic);">
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', app_setting('whatsapp_number', '917838449604')) }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold text-black transition-transform hover:scale-105 shadow-[0_0_20px_rgba(0,198,255,0.15)]" style="background: var(--gradient-acrylic);">
                     <i class="ri-whatsapp-line text-xl"></i>
                     Chat on WhatsApp
                 </a>

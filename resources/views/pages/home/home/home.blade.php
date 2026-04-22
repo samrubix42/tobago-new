@@ -176,7 +176,7 @@
                     </span>
                     <div>
                         <h3 class="text-sm font-bold text-white">WhatsApp Support</h3>
-                        <p class="mt-1 text-xs text-muted">+91 78384 49604</p>
+                        <p class="mt-1 text-xs text-muted">{{ app_setting('whatsapp_number', '+91 78384 49604') }}</p>
                     </div>
                 </div>
             </div>
@@ -527,21 +527,26 @@
             </p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach([
-            ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
-            ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
-            ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
-            ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
-            ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use. Our number is +91 78384 49604.'],
-            ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
+            @foreach ([
+                ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
+                ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
+                ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
+                ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
+                ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use.'],
+                ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
             ] as $reason)
-            <article class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
-                <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
-                    <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
-                </div>
-                <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
-                <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
-            </article>
+                <article
+                    class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
+                    <div
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
+                        <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
+                    </div>
+                    <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
+                    <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
+                    @if ($reason[1] === 'Real Support on WhatsApp')
+                        <p class="text-muted text-sm leading-6 mt-1">Our number is {{ app_setting('whatsapp_number', '+91 78384 49604') }}.</p>
+                    @endif
+                </article>
             @endforeach
         </div>
     </section>
@@ -555,7 +560,7 @@
                 <p class="text-muted text-sm leading-6 mb-8">
                     Tell us your budget and what you're looking for. We'll suggest the best options in under 5 minutes.
                 </p>
-                <a href="https://wa.me/917838449604" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition hover:scale-105" style="background: var(--gradient-acrylic);">
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', app_setting('whatsapp_number', '917838449604')) }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition hover:scale-105" style="background: var(--gradient-acrylic);">
                     <i class="ri-whatsapp-line text-lg"></i>
                     Chat on WhatsApp
                 </a>

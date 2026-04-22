@@ -21,6 +21,22 @@
         [x-cloak] {
             display: none !important;
         }
+
+        @keyframes float-in {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .whatsapp-sticky {
+            animation: float-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 
@@ -32,6 +48,28 @@
     </main>
     <livewire:public.include.footer />
 
+    <!-- WhatsApp Floating Button -->
+    @php
+    $whatsapp = app_setting('whatsapp_number');
+    @endphp
+
+    @if ($whatsapp)
+    <div class="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[9999] whatsapp-sticky">
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $whatsapp) }}" target="_blank"
+            class="relative flex items-center gap-3 bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white px-5 py-3 md:px-6 md:py-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_15px_40px_rgba(37,211,102,0.4)] group">
+            <div class="relative flex items-center justify-center">
+                <i class="ri-whatsapp-fill text-2xl md:text-3xl transition-transform duration-300 group-hover:rotate-12"></i>
+                <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5 md:h-3 md:w-3">
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-white"></span>
+                </span>
+            </div>
+            <div class="flex flex-col border-l border-white/20 pl-3">
+                <span class="text-[9px] md:text-[10px] leading-none opacity-80 font-bold uppercase tracking-widest">Need help?</span>
+                <span class="text-xs md:text-sm font-black leading-tight tracking-tight">Chat with us</span>
+            </div>
+        </a>
+    </div>
+    @endif
 
     @livewireScripts
 </body>
