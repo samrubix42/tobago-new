@@ -5,11 +5,15 @@
     $activeMax = (int) ($maxPrice ?? $priceMaxBound);
 @endphp
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6"
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6 overflow-x-hidden"
     x-data="{
         mobileFilters: false,
         observer: null,
+        lockScroll() {
+            document.body.style.overflow = this.mobileFilters ? 'hidden' : '';
+        },
         init() {
+            this.$watch('mobileFilters', () => this.lockScroll());
             if (!this.$refs.sentinel) return;
             this.observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
@@ -19,6 +23,9 @@
                 });
             }, { rootMargin: '300px 0px' });
             this.observer.observe(this.$refs.sentinel);
+        },
+        destroy() {
+            document.body.style.overflow = '';
         }
     }"
 >
@@ -36,80 +43,8 @@
         </div>
     </section>
 
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <aside class="hidden lg:block lg:col-span-1 space-y-4">
-            <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-4">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-semibold text-white">Filters</h2>
-                    <button wire:click="clearFilters" class="text-xs text-blue-300 hover:text-blue-200">Reset</button>
-                </div>
-
-                <div class="mt-4 space-y-3">
-                    <div>
-                        <label class="text-xs text-white/60 uppercase tracking-wider">Search</label>
-                        <input
-                            type="text"
-                            wire:model.live.debounce.300ms="search"
-                            placeholder="Name, sku, keyword"
-                            class="mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-cyan-300/50"
-                        >
-                    </div>
-
-                    <div>
-                        <label class="text-xs text-white/60 uppercase tracking-wider">Sort</label>
-                        <select wire:model.live="sort" class="product-filter-select mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-cyan-300/50">
-                            <option value="latest">Latest</option>
-                            <option value="price_asc">Price: Low to High</option>
-                            <option value="price_desc">Price: High to Low</option>
-                            <option value="name_asc">Name: A-Z</option>
-                        </select>
-                    </div>
-
-                    <div x-data="{ min: {{ $activeMin }}, max: {{ $activeMax }}, floor: {{ $priceMinBound }}, ceil: {{ max($priceMaxBound, $priceMinBound + 1) }} }" class="space-y-2">
-                        <label class="text-xs text-white/60 uppercase tracking-wider">Price Range</label>
-                        <div class="rounded-xl border border-white/10 bg-white/5 p-3">
-                            <div class="relative h-7">
-                                <input type="range" :min="floor" :max="ceil" x-model.number="min" x-on:input="if (min > max) max = min; $wire.set('minPrice', Number(min));" class="absolute inset-0 w-full bg-transparent accent-cyan-400">
-                                <input type="range" :min="floor" :max="ceil" x-model.number="max" x-on:input="if (max < min) min = max; $wire.set('maxPrice', Number(max));" class="absolute inset-0 w-full bg-transparent accent-blue-400">
-                            </div>
-                            <div class="mt-2 flex items-center justify-between text-xs">
-                                <span class="text-cyan-200 font-semibold">Rs <span x-text="min"></span></span>
-                                <span class="text-white/40">to</span>
-                                <span class="text-blue-200 font-semibold">Rs <span x-text="max"></span></span>
-                            </div>
-                        </div>
-                        <p class="text-[11px] text-white/45">
-                            Available: Rs {{ number_format((float) ($priceLimits->min_price ?? 0), 0) }} - Rs {{ number_format((float) ($priceLimits->max_price ?? 0), 0) }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-4">
-                <h3 class="text-sm font-semibold text-white">Categories</h3>
-                <div class="mt-3 space-y-1.5 max-h-96 overflow-auto pr-1">
-                    <a href="{{ route('products') }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ !$activeCategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">All Products</a>
-
-                    @foreach($categories as $category)
-                        <a href="{{ route('products.category', ['category' => $category->slug]) }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ $activeCategory?->id === $category->id && !$activeSubcategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">
-                            {{ $category->title }}
-                        </a>
-
-                        @if($activeCategory?->id === $category->id && $category->children->isNotEmpty())
-                            <div class="ml-3 mt-1 space-y-1">
-                                @foreach($category->children as $child)
-                                    <a href="{{ route('products.category.subcategory', ['category' => $category->slug, 'subcategory' => $child->slug]) }}" wire:navigate class="block rounded-md border px-2.5 py-1.5 text-xs transition {{ $activeSubcategory?->id === $child->id ? 'border-blue-300/50 bg-blue-400/10 text-blue-200' : 'border-white/10 text-white/60 hover:border-white/20 hover:text-white' }}">
-                                        {{ $child->title }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-        </aside>
-
-        <section class="lg:col-span-3 space-y-4">
+    <div class="space-y-4">
+        <section class="space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h2 class="text-lg font-semibold text-white">
@@ -117,11 +52,13 @@
                     </h2>
                     <p class="text-xs text-white/60 mt-0.5">Showing {{ $products->count() }} products</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <p class="text-xs text-white/50 hidden sm:block">Extra filters are query-based in URL for easy sharing.</p>
-                    <button type="button" x-on:click="mobileFilters = true" class="lg:hidden inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white">
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <button type="button" x-on:click="mobileFilters = true" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-white/10 transition">
                         <i class="ri-equalizer-line"></i>
                         Filters
+                    </button>
+                    <button type="button" wire:click="clearFilters" class="inline-flex items-center gap-2 rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-medium text-white/80 hover:text-white hover:border-white/25 transition">
+                        Reset
                     </button>
                 </div>
             </div>
@@ -184,67 +121,85 @@
         </section>
     </div>
 
-    <div x-show="mobileFilters" x-cloak class="lg:hidden fixed inset-0 z-50">
+    <div x-show="mobileFilters" x-cloak class="fixed inset-0 z-[70]"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
         <button type="button" x-on:click="mobileFilters = false" class="absolute inset-0 bg-black/60"></button>
-        <div class="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-[#0b0d0f] border-l border-white/10 p-4 overflow-y-auto">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-sm font-semibold text-white">Filters</h3>
-                <button type="button" x-on:click="mobileFilters = false" class="h-8 w-8 rounded-full border border-white/20 text-white inline-flex items-center justify-center">
-                    <i class="ri-close-line"></i>
-                </button>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs text-white/60 uppercase tracking-wider">Search</label>
-                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Name, sku, keyword" class="mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-cyan-300/50">
+        <div class="absolute right-0 top-0 h-full w-full sm:w-[88%] lg:w-[430px] xl:w-[460px] bg-[#0b0d0f] border-l border-white/10 overflow-hidden"
+            x-transition:enter="transition ease-out duration-250"
+            x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full">
+            <div class="flex h-full flex-col">
+                <div class="shrink-0 px-4 py-4 border-b border-white/10 flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-white">Filters</h3>
+                    <button type="button" x-on:click="mobileFilters = false" class="h-8 w-8 rounded-full border border-white/20 text-white inline-flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </button>
                 </div>
 
-                <div>
-                    <label class="text-xs text-white/60 uppercase tracking-wider">Sort</label>
-                    <select wire:model.live="sort" class="product-filter-select mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-cyan-300/50">
-                        <option value="latest">Latest</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                        <option value="name_asc">Name: A-Z</option>
-                    </select>
-                </div>
-
-                <div x-data="{ min: {{ $activeMin }}, max: {{ $activeMax }}, floor: {{ $priceMinBound }}, ceil: {{ max($priceMaxBound, $priceMinBound + 1) }} }" class="space-y-2">
-                    <label class="text-xs text-white/60 uppercase tracking-wider">Price Range</label>
-                    <div class="rounded-xl border border-white/10 bg-white/5 p-3">
-                        <div class="relative h-7">
-                            <input type="range" :min="floor" :max="ceil" x-model.number="min" x-on:input="if (min > max) max = min; $wire.set('minPrice', Number(min));" class="absolute inset-0 w-full bg-transparent accent-cyan-400">
-                            <input type="range" :min="floor" :max="ceil" x-model.number="max" x-on:input="if (max < min) min = max; $wire.set('maxPrice', Number(max));" class="absolute inset-0 w-full bg-transparent accent-blue-400">
+                <div class="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-4 py-4 filter-scroll">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-white/60 uppercase tracking-wider">Search</label>
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Name, sku, keyword" class="mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus:border-cyan-300/50">
                         </div>
-                        <div class="mt-2 flex items-center justify-between text-xs">
-                            <span class="text-cyan-200 font-semibold">Rs <span x-text="min"></span></span>
-                            <span class="text-white/40">to</span>
-                            <span class="text-blue-200 font-semibold">Rs <span x-text="max"></span></span>
-                        </div>
-                    </div>
-                </div>
 
-                <div>
-                    <h4 class="text-xs text-white/60 uppercase tracking-wider">Categories</h4>
-                    <div class="mt-2 space-y-1.5 max-h-60 overflow-auto pr-1">
-                        <a href="{{ route('products') }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ !$activeCategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">All Products</a>
-                        @foreach($categories as $category)
-                            <a href="{{ route('products.category', ['category' => $category->slug]) }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ $activeCategory?->id === $category->id && !$activeSubcategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">{{ $category->title }}</a>
-                            @if($activeCategory?->id === $category->id && $category->children->isNotEmpty())
-                                <div class="ml-3 mt-1 space-y-1">
-                                    @foreach($category->children as $child)
-                                        <a href="{{ route('products.category.subcategory', ['category' => $category->slug, 'subcategory' => $child->slug]) }}" wire:navigate class="block rounded-md border px-2.5 py-1.5 text-xs transition {{ $activeSubcategory?->id === $child->id ? 'border-blue-300/50 bg-blue-400/10 text-blue-200' : 'border-white/10 text-white/60 hover:border-white/20 hover:text-white' }}">{{ $child->title }}</a>
-                                    @endforeach
+                        <div>
+                            <label class="text-xs text-white/60 uppercase tracking-wider">Sort</label>
+                            <select wire:model.live="sort" class="product-filter-select mt-1 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-cyan-300/50">
+                                <option value="latest">Latest</option>
+                                <option value="price_asc">Price: Low to High</option>
+                                <option value="price_desc">Price: High to Low</option>
+                                <option value="name_asc">Name: A-Z</option>
+                            </select>
+                        </div>
+
+                        <div x-data="{ min: {{ $activeMin }}, max: {{ $activeMax }}, floor: {{ $priceMinBound }}, ceil: {{ max($priceMaxBound, $priceMinBound + 1) }} }" class="space-y-2">
+                            <label class="text-xs text-white/60 uppercase tracking-wider">Price Range</label>
+                            <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+                                <div class="relative h-7">
+                                    <input type="range" :min="floor" :max="ceil" x-model.number="min" x-on:input="if (min > max) max = min; $wire.set('minPrice', Number(min));" class="absolute inset-0 w-full bg-transparent accent-cyan-400">
+                                    <input type="range" :min="floor" :max="ceil" x-model.number="max" x-on:input="if (max < min) min = max; $wire.set('maxPrice', Number(max));" class="absolute inset-0 w-full bg-transparent accent-blue-400">
                                 </div>
-                            @endif
-                        @endforeach
+                                <div class="mt-2 flex items-center justify-between text-xs">
+                                    <span class="text-cyan-200 font-semibold">Rs <span x-text="min"></span></span>
+                                    <span class="text-white/40">to</span>
+                                    <span class="text-blue-200 font-semibold">Rs <span x-text="max"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs text-white/60 uppercase tracking-wider">Categories</h4>
+                            <div class="mt-2 space-y-1.5 pr-1">
+                                <a href="{{ route('products') }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ !$activeCategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">All Products</a>
+                                @foreach($categories as $category)
+                                    <a href="{{ route('products.category', ['category' => $category->slug]) }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ $activeCategory?->id === $category->id && !$activeSubcategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">{{ $category->title }}</a>
+                                    @if($activeCategory?->id === $category->id && $category->children->isNotEmpty())
+                                        <div class="ml-3 mt-1 space-y-1">
+                                            @foreach($category->children as $child)
+                                                <a href="{{ route('products.category.subcategory', ['category' => $category->slug, 'subcategory' => $child->slug]) }}" wire:navigate class="block rounded-md border px-2.5 py-1.5 text-xs transition {{ $activeSubcategory?->id === $child->id ? 'border-blue-300/50 bg-blue-400/10 text-blue-200' : 'border-white/10 text-white/60 hover:border-white/20 hover:text-white' }}">{{ $child->title }}</a>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button wire:click="clearFilters" class="w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10">
-                    Reset Filters
-                </button>
+                <div class="shrink-0 border-t border-white/10 bg-[#0b0d0f] p-4">
+                    <button wire:click="clearFilters" class="w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 transition">
+                        Reset Filters
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -257,6 +212,28 @@
         .product-filter-select option {
             background-color: #0b0d0f;
             color: #e2e8f0;
+        }
+
+        .filter-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+        }
+
+        .filter-scroll::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .filter-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .filter-scroll::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.35);
+            border-radius: 9999px;
+        }
+
+        .filter-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.55);
         }
     </style>
 </div>

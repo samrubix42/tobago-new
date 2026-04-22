@@ -216,11 +216,11 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='hookah'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                            <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive</a>
+                            <a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive</a>
                             <div class="h-px bg-white/5 mx-2 my-1"></div>
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
+                            <a href="{{ route('products.category', ['category' => 'premium-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
+                            <a href="{{ route('products.category', ['category' => 'bongs']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
+                            <a href="{{ route('products.category', ['category' => 'tobac-go-car-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
                         </div>
                     </div>
 
@@ -232,13 +232,13 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='budget'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                            <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
-                            <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
-                            <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
+                            <a href="{{ route('products', ['maxPrice' => 3000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
+                            <a href="{{ route('products', ['maxPrice' => 5000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
+                            <a href="{{ route('products', ['minPrice' => 7000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
                         </div>
                     </div>
 
-                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Bongs</a>
+                    <a href="{{ route('products.category', ['category' => 'bongs']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Bongs</a>
 
                     {{-- Accessories --}}
                     <div class="relative" @mouseenter="dropdown='acc'" @mouseleave="dropdown=null">
@@ -248,14 +248,15 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='acc'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hoses</a>
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Bowls</a>
-                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Charcoal</a>
+                            <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Lighters</a>
+                            <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Chillum</a>
+                            <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Pipe and Handle</a>
+                            <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Accessories</a>
                         </div>
                     </div>
 
-                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Combos</a>
-                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
+                    <a href="{{ route('products.category', ['category' => 'combos']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Combos</a>
+                    <a href="{{ route('blogs') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
 
                 </nav>
             </div>
@@ -364,10 +365,10 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Tobac-Go Exclusive</a>
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Premium</a>
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass</a>
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mini</a>
+                    <a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Tobac-Go Exclusive</a>
+                    <a href="{{ route('products.category', ['category' => 'premium-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Premium</a>
+                    <a href="{{ route('products.category', ['category' => 'bongs']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass</a>
+                    <a href="{{ route('products.category', ['category' => 'tobac-go-car-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mini</a>
                 </div>
             </div>
 
@@ -379,13 +380,13 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 3000</a>
-                    <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 5000</a>
-                    <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Above ₹7000</a>
+                    <a href="{{ route('products', ['maxPrice' => 3000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 3000</a>
+                    <a href="{{ route('products', ['maxPrice' => 5000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 5000</a>
+                    <a href="{{ route('products', ['minPrice' => 7000]) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Above ₹7000</a>
                 </div>
             </div>
 
-            <a href="#" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('products.category', ['category' => 'bongs']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Bongs
             </a>
 
@@ -397,16 +398,17 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hoses</a>
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Bowls</a>
-                    <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Charcoal</a>
+                    <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Lighters</a>
+                    <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Chillum</a>
+                    <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Pipe and Handle</a>
+                    <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Accessories</a>
                 </div>
             </div>
 
-            <a href="#" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('products.category', ['category' => 'combos']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Combos
             </a>
-            <a href="#" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('blogs') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Blogs
             </a>
 
@@ -475,4 +477,5 @@ $headerCartCount = current_cart_items_count();
     </div>
 
 </div>
+
 

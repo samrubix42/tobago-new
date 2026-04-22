@@ -250,20 +250,18 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 @foreach([
-                ['Under', '₹999', 'ri-price-tag-3-line'],
-                ['Budget', '₹1,000 - ₹1,999', 'ri-wallet-3-line'],
-                ['Standard', '₹2,000 - ₹3,999', 'ri-shopping-bag-3-line'],
-                ['Premium', '₹4,000 - ₹6,999', 'ri-vip-crown-line'],
-                ['Luxury', '₹7,000+', 'ri-gemini-line'],
+                ['title' => 'Standard', 'range' => 'Under ₹3000', 'icon' => 'ri-shopping-bag-3-line', 'url' => route('products', ['maxPrice' => 3000])],
+                ['title' => 'Premium', 'range' => 'Under ₹5000', 'icon' => 'ri-vip-crown-line', 'url' => route('products', ['maxPrice' => 5000])],
+                ['title' => 'Luxury', 'range' => 'Hookah Above ₹7000', 'icon' => 'ri-gemini-line', 'url' => route('products', ['minPrice' => 7000])],
                 ] as $budget)
-                <a href="#collection" class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition hover:-translate-y-1 hover:border-white/20">
+                <a href="{{ $budget['url'] }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition hover:-translate-y-1 hover:border-white/20">
                     <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
-                        <i class="{{ $budget[2] ?? 'ri-price-tag-3-line' }} text-2xl"></i>
+                        <i class="{{ $budget['icon'] }} text-2xl"></i>
                     </div>
-                    <p class="text-muted text-[10px] uppercase tracking-[0.22em]">{{ $budget[0] ?? 'Budget' }}</p>
-                    <h3 class="text-white text-base sm:text-lg font-semibold mt-2">{{ $budget[1] ?? 'Custom Range' }}</h3>
+                    <p class="text-muted text-[10px] uppercase tracking-[0.22em]">{{ $budget['title'] }}</p>
+                    <h3 class="text-white text-base sm:text-lg font-semibold mt-2">{{ $budget['range'] }}</h3>
                 </a>
                 @endforeach
             </div>
