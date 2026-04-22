@@ -107,44 +107,38 @@
 
 </footer>
 
-<nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#050607] shadow-[0_-8px_24px_rgba(0,0,0,0.45)]">
-    <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent"></div>
-    <div class="grid grid-cols-5 h-17 px-2 py-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))]">
-            <a href="{{ route('home') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('home') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('home') ? 'ri-home-5-fill' : 'ri-home-5-line' }} text-[18px]"></i>
-                <span>Home</span>
-            </a>
+<nav class="lg:hidden fixed -bottom-px inset-x-0 z-50 bg-[#050607] border-t border-white/5 pb-[calc(env(safe-area-inset-bottom,0px)+2px)]">
+    <div class="grid grid-cols-5 h-16">
+        @php
+            $links = [
+                ['name' => 'Home', 'route' => 'home', 'icon' => 'ri-home-5', 'active' => request()->routeIs('home')],
+                ['name' => 'Category', 'route' => 'category', 'icon' => 'ri-function', 'active' => request()->routeIs('category')],
+                ['name' => 'Shop', 'route' => 'products', 'icon' => 'ri-shopping-bag-3', 'active' => request()->routeIs('products')],
+                ['name' => 'Cart', 'route' => 'cart', 'icon' => 'ri-shopping-cart-2', 'active' => request()->routeIs('cart')],
+                ['name' => 'Account', 'route' => 'user.profile', 'icon' => 'ri-user-3', 'active' => request()->routeIs('user.*') || request()->routeIs('login')],
+            ];
+        @endphp
 
-            <a href="{{ route('category') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('category') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('category') ? 'ri-function-line' : 'ri-function-line' }} text-[18px]"></i>
-                <span>Category</span>
-            </a>
+        @foreach($links as $link)
+            <a href="{{ route($link['route']) }}" wire:navigate
+                class="relative flex flex-col items-center justify-center gap-1 transition-all duration-300 {{ $link['active'] ? 'text-white' : 'text-white/40' }}">
 
-            <a href="{{ route('products') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('products') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('products') ? 'ri-shopping-bag-3-fill' : 'ri-shopping-bag-3-line' }} text-[18px]"></i>
-                <span>Shop</span>
-            </a>
+                <div class="relative">
+                    <i class="{{ $link['active'] ? $link['icon'].'-fill' : $link['icon'].'-line' }} text-[21px]"></i>
 
-            <a href="{{ route('cart') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('cart') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('cart') ? 'ri-shopping-cart-2-fill' : 'ri-shopping-cart-2-line' }} text-[18px]"></i>
-                <span>Cart</span>
-                <span
-                    x-cloak
-                    x-show="cartCount > 0"
-                    x-text="cartCount > 99 ? '99+' : cartCount"
-                    class="absolute top-0.5 right-2 min-w-4 h-4 px-1 rounded-full bg-[#ef4444] text-white text-[9px] font-bold leading-none flex items-center justify-center border border-[#111315]"
-                ></span>
-            </a>
+                    @if($link['name'] === 'Cart')
+                        <span
+                            x-cloak
+                            x-show="cartCount > 0"
+                            x-text="cartCount > 99 ? '99+' : cartCount"
+                            class="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center border border-[#050607]"
+                        ></span>
+                    @endif
+                </div>
 
-            <a href="{{ auth()->check() ? route('user.profile') : route('login') }}" wire:navigate
-                class="relative rounded-xl flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition {{ request()->routeIs('user.profile') || request()->routeIs('user.address') || request()->routeIs('user.orders') ? 'bg-white/12 text-white shadow-[0_8px_16px_rgba(0,0,0,0.24)]' : 'text-white/60 hover:text-white hover:bg-white/6' }}">
-                <i class="{{ request()->routeIs('user.profile') || request()->routeIs('user.address') || request()->routeIs('user.orders') ? 'ri-user-3-fill' : 'ri-user-3-line' }} text-[18px]"></i>
-                <span>Account</span>
+                <span class="text-[9px] font-medium tracking-wide">{{ $link['name'] }}</span>
             </a>
+        @endforeach
     </div>
 </nav>
 </div>
