@@ -99,6 +99,7 @@ new class extends Component
             return [
                 'title' => $category->title,
                 'image' => $image,
+                'slug' => $category->slug,
             ];
         })->values()->all();
 
@@ -107,10 +108,10 @@ new class extends Component
         }
 
         return [
-            ['title' => 'Hookahs', 'image' => asset('images/hero.png')],
-            ['title' => 'Charcoal', 'image' => asset('images/hero.png')],
-            ['title' => 'Accessories', 'image' => asset('images/hero.png')],
-            ['title' => 'Vapes', 'image' => asset('images/hero.png')],
+            ['title' => 'Hookahs', 'image' => asset('images/hero.png'), 'slug' => 'hookahs'],
+            ['title' => 'Charcoal', 'image' => asset('images/hero.png'), 'slug' => 'charcoal'],
+            ['title' => 'Accessories', 'image' => asset('images/hero.png'), 'slug' => 'accessories'],
+            ['title' => 'Vapes', 'image' => asset('images/hero.png'), 'slug' => 'vapes'],
         ];
     }
 

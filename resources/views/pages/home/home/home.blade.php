@@ -296,66 +296,65 @@
         </div>
     </section>
 
-    <section id="new-arrivals" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-6 sm:p-8 lg:p-10 overflow-hidden relative">
-            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
-            <div class="relative">
-                <div class="text-center max-w-3xl mx-auto mb-10">
-                    <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Just Landed</p>
-                    <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
-                        New <span class="text-gradient">Arrivals</span>
-                    </h2>
-                    <p class="text-muted text-sm leading-6">
-                        We add new products every month. From limited-edition luxury hookahs to practical accessories, there's always something new to discover. If you've been putting off buying a hookah pot online, these fresh arrivals are worth a look.
-                    </p>
-                </div>
-
-                @island(name: 'home-new-arrivals')
-                @placeholder
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 animate-pulse">
-                    @for($i = 0; $i < 4; $i++)
-                        <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                        <div class="h-40 rounded-xl bg-white/10 mb-4"></div>
-                        <div class="h-3 w-20 rounded bg-indigo-300/20 mb-3"></div>
-                        <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
-                        <div class="h-3 w-8/12 rounded bg-white/10"></div>
-                        </article>
-                        @endfor
-                </div>
-                @endplaceholder
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    @forelse($this->latestProducts as $product)
-                    @php
-                    $arrivalImage = optional($product->images->firstWhere('is_primary', true))->image
-                    ?? optional($product->images->first())->image;
-                    @endphp
-                    <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:-translate-y-1 hover:border-white/20 block">
-                        <div class="relative flex h-40 items-center justify-center rounded-xl bg-black/20 mb-4 overflow-hidden">
-                            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
-                            <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-32 object-contain transition duration-300 group-hover:scale-105">
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] uppercase tracking-[0.22em] text-indigo-300">New Drop</span>
-                            <i class="ri-sparkling-2-line text-indigo-300/80"></i>
-                        </div>
-                        <h3 class="text-white text-sm font-semibold mt-2 line-clamp-2">{{ $product->name }}</h3>
-                        <p class="text-muted text-xs mt-1">
-                            <span class="text-white">&#8377;{{ $this->price($product->selling_price) }}</span>
-                            @if($product->compare_price && $product->compare_price > $product->selling_price)
-                            <span class="line-through text-white/40 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
-                            @endif
-                        </p>
-                    </a>
-                    @empty
-                    <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
-                        New arrivals will appear here shortly.
-                    </div>
-                    @endforelse
-                </div>
-                @endisland
-            </div>
+    <section id="new-arrivals" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
+        <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Just Landed</p>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
+                New <span class="text-gradient">Arrivals</span>
+            </h2>
+            <p class="text-muted text-sm leading-6">
+                We add new products every month. From limited-edition luxury hookahs to practical accessories, there's always something new to discover. If you've been putting off buying a hookah pot online, these fresh arrivals are worth a look.
+            </p>
         </div>
+
+        @island(name: 'home-new-arrivals')
+        @placeholder
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-pulse">
+            @for($i = 0; $i < 4; $i++)
+                <article class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3 sm:p-4">
+                <div class="h-36 sm:h-44 rounded-xl bg-white/10 mb-4"></div>
+                <div class="h-3 w-20 rounded bg-purple-300/20 mb-3"></div>
+                <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
+                <div class="h-3 w-8/12 rounded bg-white/10"></div>
+                </article>
+            @endfor
+        </div>
+        @endplaceholder
+
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            @forelse($this->latestProducts as $product)
+            @php
+            $arrivalImage = optional($product->images->firstWhere('is_primary', true))->image
+            ?? optional($product->images->first())->image;
+            @endphp
+            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-purple-300/30 hover:shadow-2xl hover:shadow-purple-900/30 block">
+                <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-gradient-to-b from-white/[0.06] to-transparent mb-4 overflow-hidden border border-white/5">
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
+                    <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
+                </div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                    <span class="rounded-full border border-purple-300/20 bg-purple-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-purple-200">
+                        New Drop
+                    </span>
+                    <i class="ri-sparkling-2-line text-purple-300/80"></i>
+                </div>
+                <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
+                <p class="text-muted text-xs mt-1">
+                    <span class="text-white font-semibold">&#8377;{{ $this->price($product->selling_price) }}</span>
+                    @if($product->compare_price && $product->compare_price > $product->selling_price)
+                    <span class="line-through text-white/45 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
+                    @endif
+                </p>
+            </a>
+            @empty
+            <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
+                New arrivals will appear here shortly.
+            </div>
+            @endforelse
+        </div>
+        @endisland
     </section>
 
     <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -393,13 +392,26 @@
             items: @js($this->categoryCards),
             active: 2,
             ticking: false,
+            autoSlideInterval: null,
             init() {
                 this.$nextTick(() => {
                     this.scrollTo(this.active, false);
                     this.onScroll();
                     this.$refs.viewport.addEventListener('scroll', () => this.onScroll(), { passive: true });
                     window.addEventListener('resize', () => this.onScroll());
+                    this.startAutoSlide();
                 });
+            },
+            startAutoSlide() {
+                this.stopAutoSlide();
+                this.autoSlideInterval = setInterval(() => {
+                    this.next();
+                }, 3500);
+            },
+            stopAutoSlide() {
+                if (this.autoSlideInterval) {
+                    clearInterval(this.autoSlideInterval);
+                }
             },
             cards() {
                 return Array.from(this.$refs.viewport.querySelectorAll('[data-cat-card]'));
@@ -448,23 +460,26 @@
                 });
             },
         }"
-            class="relative">
-            <div class="flex items-center justify-between mb-6">
-                <button type="button" class="h-10 w-10 rounded-full border border-subtle bg-[#0b0d0f] text-white/70 hover:bg-white/5 hover:border-white/20 transition" x-on:click="prev()" aria-label="Previous category">
-                    <i class="ri-arrow-left-s-line text-2xl"></i>
+            class="relative"
+            @mouseenter="stopAutoSlide()"
+            @mouseleave="startAutoSlide()"
+            @touchstart="stopAutoSlide()"
+            @touchend="startAutoSlide()">
+
+            <div class="absolute inset-y-0 left-2 sm:-left-6 flex items-center z-10 pointer-events-none">
+                <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="prev()" aria-label="Previous category">
+                    <i class="ri-arrow-left-s-line text-2xl sm:text-3xl"></i>
                 </button>
-                <div class="hidden sm:flex items-center gap-2 text-xs text-muted">
-                    <i class="ri-drag-move-2-line"></i>
-                    Swipe to browse
-                </div>
-                <button type="button" class="h-10 w-10 rounded-full border border-subtle bg-[#0b0d0f] text-white/70 hover:bg-white/5 hover:border-white/20 transition" x-on:click="next()" aria-label="Next category">
-                    <i class="ri-arrow-right-s-line text-2xl"></i>
+            </div>
+            <div class="absolute inset-y-0 right-2 sm:-right-6 flex items-center z-10 pointer-events-none">
+                <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="next()" aria-label="Next category">
+                    <i class="ri-arrow-right-s-line text-2xl sm:text-3xl"></i>
                 </button>
             </div>
 
             <div
                 x-ref="viewport"
-                class="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto overflow-y-visible scroll-smooth snap-x snap-mandatory flex gap-4"
+                class="-mx-4 px-4 sm:mx-0 sm:px-0 py-8 overflow-x-auto overflow-y-visible scroll-smooth snap-x snap-mandatory flex gap-4 sm:gap-6 items-center"
                 style="-ms-overflow-style: none; scrollbar-width: none;">
                 <style>
                     [x-ref='viewport']::-webkit-scrollbar {
@@ -475,17 +490,25 @@
                 <template x-for="(item, index) in items" :key="index">
                     <a
                         data-cat-card
-                        href="#collection"
-                        class="snap-center shrink-0 w-[78vw] max-w-[320px] sm:w-[42vw] md:w-[30vw] lg:w-[22vw] group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition duration-300"
-                        x-bind:class="active === index ? 'scale-[1.08] border-white/20 shadow-2xl shadow-black/30' : 'scale-[0.95] opacity-85'"
-                        x-on:click.prevent="scrollTo(index); setTimeout(() => window.location.hash = 'collection', 250)">
-                        <div class="relative mx-auto mb-4 flex h-24 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
-                            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,114,255,0.14), transparent 60%);"></div>
-                            <img x-bind:src="item.image" x-bind:alt="item.title" class="relative h-20 object-contain transition duration-300 group-hover:scale-105">
+                        :href="'/shop/' + item.slug"
+                        wire:navigate
+                        class="snap-center shrink-0 w-[55vw] max-w-[200px] sm:w-[40vw] md:w-[28vw] lg:w-[16vw] group rounded-[2rem] border bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center transition-all duration-500 hover:border-purple-500/30"
+                        x-bind:class="active === index ? 'scale-[1.08] border-purple-500/30 shadow-[0_15px_40px_rgba(168,85,247,0.15)] bg-white/[0.07] z-20' : 'scale-95 border-white/5 opacity-50 hover:opacity-80'"
+                        @click="scrollTo(index)">
+                        
+                        <div class="relative mx-auto mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#0b0d0f] shadow-inner transition-all duration-500 group-hover:border-purple-500/30"
+                            x-bind:class="active === index ? 'border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : ''">
+                            <div class="absolute inset-0 opacity-0 transition-opacity duration-500" x-bind:class="active === index ? 'opacity-100' : 'group-hover:opacity-50'" style="background: radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%);"></div>
+                            <img x-bind:src="item.image" x-bind:alt="item.title" class="relative h-16 w-16 sm:h-20 sm:w-20 object-contain transition-all duration-500 group-hover:scale-105"
+                                x-bind:class="active === index ? 'scale-105 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]' : ''">
                         </div>
-                        <h3 class="text-white text-sm font-semibold" x-text="item.title"></h3>
-                        <div class="mt-2 inline-flex items-center gap-1 text-xs text-indigo-300/80 group-hover:text-indigo-300 transition">
-                            Explore <i class="ri-arrow-right-up-line"></i>
+                        
+                        <h3 class="text-white font-bold tracking-wide transition-all duration-500" x-bind:class="active === index ? 'text-base sm:text-lg' : 'text-sm sm:text-base opacity-70'" x-text="item.title"></h3>
+                        <div class="mt-2 overflow-hidden h-5">
+                            <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-500 transform"
+                                x-bind:class="active === index ? 'text-purple-300 translate-y-0 opacity-100' : 'text-muted translate-y-4 opacity-0'">
+                                Shop Now
+                            </p>
                         </div>
                     </a>
                 </template>
