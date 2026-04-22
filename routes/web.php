@@ -12,7 +12,7 @@ Route::livewire('/shop', 'pages::product.product')->name('products');
 Route::livewire('/product/{slug}', 'pages::product.product-view')->name('product');
 Route::livewire('/cart', 'pages::cart')->name('cart');
 Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');
-
+Route::livewire('/categories', 'pages::category')->name('category');
 Route::livewire('/login', 'auth::login')->middleware('guest')->name('login');
 Route::livewire('/register', 'auth::register')->middleware('guest')->name('register');
 Route::livewire('/admin/login', 'auth::admin-login')->middleware('guest')->name('admin.login');

@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     <section class="relative overflow-hidden">
 
         <!-- ðŸŒˆ SUBTLE AMBIENT GLOW -->
@@ -12,7 +12,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 lg:py-32 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-8 lg:pt-12 lg:pb-16 grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
 
             <div>
 
