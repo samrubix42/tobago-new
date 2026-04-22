@@ -22,6 +22,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('slug')->unique();
             $table->longText('content');
+            $table->text('tags')->nullable();
             $table->string('featured_image')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamps();

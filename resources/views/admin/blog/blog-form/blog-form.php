@@ -20,6 +20,7 @@ new #[Layout('layouts::admin')] class extends Component
     public $featured_image = null;
     public ?string $existing_image = null;
     public string $content = '';
+    public string $tags = '';
     public bool $is_published = false;
 
     public function mount(?int $id = null): void
@@ -33,6 +34,7 @@ new #[Layout('layouts::admin')] class extends Component
             $this->category_id = $blog->category_id;
             $this->existing_image = $blog->featured_image;
             $this->content = $blog->content;
+            $this->tags = (string) $blog->tags;
             $this->is_published = (bool) $blog->is_published;
         }
     }
@@ -70,6 +72,7 @@ new #[Layout('layouts::admin')] class extends Component
             'slug' => ['required', 'string', 'max:255', 'unique:blogs,slug,' . ($this->blogId ?? 'NULL') . ',id'],
             'category_id' => ['required', 'exists:blog_categories,id'],
             'content' => ['required', 'string'],
+            'tags' => ['nullable', 'string', 'max:1000'],
             'featured_image' => ['nullable', 'image', 'max:4096'],
         ]);
 
@@ -88,6 +91,7 @@ new #[Layout('layouts::admin')] class extends Component
             'slug' => $this->makeUniqueSlug($validated['slug'], $this->blogId),
             'category_id' => $validated['category_id'],
             'content' => $validated['content'],
+            'tags' => Blog::normalizeTags($validated['tags'] ?? null),
             'featured_image' => $imagePath,
             'is_published' => $this->is_published,
         ]);
@@ -114,4 +118,3 @@ new #[Layout('layouts::admin')] class extends Component
         ]);
     }
 };
-

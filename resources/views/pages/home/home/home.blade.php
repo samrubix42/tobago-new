@@ -721,7 +721,7 @@
                 Quick reads to help you choose, set up, and maintain your hookah like a pro.
             </p>
         </div>
-        <a href="#" class="hidden sm:inline-flex items-center gap-2 text-sm text-muted hover:text-white transition">
+        <a href="{{ route('blogs') }}" wire:navigate class="hidden sm:inline-flex items-center gap-2 text-sm text-muted hover:text-white transition">
             View all <i class="ri-arrow-right-line"></i>
         </a>
     </div>
@@ -771,12 +771,12 @@
                 </p>
 
                 <div class="mt-5 flex items-center justify-between">
-                    <a href="#" class="inline-flex items-center gap-2 text-sm text-indigo-300/90 group-hover:text-indigo-300 transition">
+                    <a href="{{ route('blog.view', $post->slug) }}" wire:navigate class="inline-flex items-center gap-2 text-sm text-indigo-300/90 group-hover:text-indigo-300 transition">
                         Read more <i class="ri-arrow-right-up-line"></i>
                     </a>
-                    <button class="h-9 w-9 rounded-full border border-subtle text-white/70 transition hover:bg-white/5 hover:border-white/20" aria-label="Open blog post">
+                    <a href="{{ route('blog.view', $post->slug) }}" wire:navigate class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-subtle text-white/70 transition hover:bg-white/5 hover:border-white/20" aria-label="Open blog post">
                         <i class="ri-external-link-line"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </article>

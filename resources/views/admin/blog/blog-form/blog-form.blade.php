@@ -70,6 +70,13 @@
             @error('content')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
         </div>
 
+        <div>
+            <label class="text-xs font-medium text-gray-600">Tags</label>
+            <input wire:model.live="tags" placeholder="hookah, setup, cleaning" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900">
+            <p class="mt-1 text-xs text-gray-500">Comma-separated tags used on the public blog filters.</p>
+            @error('tags')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+        </div>
+
         <div class="flex items-center gap-4">
             <label class="text-xs font-medium text-gray-600">Featured Image</label>
             <input type="file" wire:model="featured_image" accept="image/*" class="text-sm text-gray-900">
