@@ -1,5 +1,5 @@
 @php
-    $headerCartCount = current_cart_items_count();
+$headerCartCount = current_cart_items_count();
 @endphp
 
 <div x-cloak x-data="{
@@ -12,11 +12,11 @@
             this.searchOpen = false;
         },
     }"
-     x-on:cart-updated.window="cartCount = Number($event.detail?.count ?? 0)">
+    x-on:cart-updated.window="cartCount = Number($event.detail?.count ?? 0)">
 
     {{-- ── TOP TICKER ── --}}
     <div class="bg-[#0b0d0f] border-b border-white/5 overflow-hidden"
-         x-data="{ 
+        x-data="{ 
             messages: [
                 { text: 'Free shipping on orders Rs. 3000+', icon: 'ri-truck-line' },
                 { text: 'Premium Range Available', icon: 'ri-fire-line' },
@@ -31,15 +31,14 @@
          }">
         <div class="max-w-7xl mx-auto px-4 h-10 flex items-center justify-center relative">
             <template x-for="(msg, i) in messages" :key="i">
-                <div x-show="current === i" 
-                     x-transition:enter="transition ease-out duration-700"
-                     x-transition:enter-start="opacity-0 translate-y-3"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-500"
-                     x-transition:leave-start="opacity-100 translate-y-0"
-                     x-transition:leave-end="opacity-0 -translate-y-3"
-                     class="absolute flex items-center gap-2.5 text-[10px] font-bold tracking-widest text-white/90 uppercase"
-                >
+                <div x-show="current === i"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 translate-y-3"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-500"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-3"
+                    class="absolute flex items-center gap-2.5 text-[10px] font-bold tracking-widest text-white/90 uppercase">
                     <i :class="msg.icon" class="text-blue-500 text-sm"></i>
                     <span x-text="msg.text"></span>
                 </div>
@@ -53,71 +52,20 @@
         {{-- Main row --}}
         <div class="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center gap-4 lg:gap-6">
 
-            {{-- LOGO --}}
-            <a href="{{ route('home') }}" wire:navigate class="shrink-0">
-                <img src="{{ asset('logo.webp') }}" class="h-9 lg:h-10" alt="Tobac-Go">
-            </a>
+            <div class="relative inline-block">
+                <!-- Glow Effect -->
+                <span
+                    class="pointer-events-none absolute -inset-x-3 -inset-y-3 rounded-full opacity-60 blur-2xl"
+                    style="background: radial-gradient(circle, rgba(236,72,153,0.5) 0%, rgba(168,85,247,0.4) 42%, rgba(168,85,247,0) 76%);">
+                </span>
 
-            {{-- DESKTOP NAV --}}
-            <nav class="hidden lg:flex items-center gap-1 text-sm font-medium text-white/60">
-
-                <a href="{{ route('home') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
-                    Home
-                </a>
-
-                {{-- Hookah --}}
-                <div class="relative" @mouseenter="dropdown='hookah'" @mouseleave="dropdown=null">
-                    <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
-                        Hookah
-                        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='hookah' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="dropdown==='hookah'" x-transition.origin.top.left
-                        class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                        <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive</a>
-                        <div class="h-px bg-white/5 mx-2 my-1"></div>
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
-                    </div>
-                </div>
-
-                {{-- Shop By Budget --}}
-                <div class="relative" @mouseenter="dropdown='budget'" @mouseleave="dropdown=null">
-                    <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
-                        Shop By Budget
-                        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='budget' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="dropdown==='budget'" x-transition.origin.top.left
-                        class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                        <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
-                        <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
-                        <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
-                    </div>
-                </div>
-
-                <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Bongs</a>
-
-                {{-- Accessories --}}
-                <div class="relative" @mouseenter="dropdown='acc'" @mouseleave="dropdown=null">
-                    <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
-                        Accessories
-                        <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='acc' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="dropdown==='acc'" x-transition.origin.top.left
-                        class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hoses</a>
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Bowls</a>
-                        <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Charcoal</a>
-                    </div>
-                </div>
-
-                <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Combos</a>
-                <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
-
-            </nav>
+                <!-- Logo -->
+                <img src="{{ asset('logo.webp') }}" class="relative h-9 lg:h-10" alt="Tobac-Go">
+            </div>
+            <div class="flex-1"></div>
 
             {{-- DESKTOP SEARCH --}}
-            <div class="hidden lg:flex flex-1 max-w-xs xl:max-w-sm">
+            <div class="hidden lg:flex lg:w-80 xl:w-96 lg:shrink-0">
                 <div class="relative w-full" @click.outside="closeSearch()">
                     <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                     <input type="text"
@@ -139,33 +87,31 @@
                             @php $desktopResults = $this->searchResults(); @endphp
 
                             @if(mb_strlen($search) >= 2)
-                                @if($desktopResults->isEmpty())
-                                    <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
-                                @else
-                                    <div wire:loading.remove wire:target="search">
-                                        @foreach($desktopResults as $item)
-                                            <a href="{{ route('product', $item->slug) }}" wire:navigate
-                                                class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
-                                                <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
-                                                <div class="min-w-0 flex-1">
-                                                    <p class="text-sm text-white truncate">{{ $item->name }}</p>
-                                                    <div class="text-[11px] text-white/45 flex items-center gap-2">
-                                                        <span>{{ $item->category?->title ?: 'General' }}</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                @endif
+                            @if($desktopResults->isEmpty())
+                            <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
                             @else
-                                <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
+                            <div wire:loading.remove wire:target="search">
+                                @foreach($desktopResults as $item)
+                                <a href="{{ route('product', $item->slug) }}" wire:navigate
+                                    class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
+                                    <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm text-white truncate">{{ $item->name }}</p>
+                                        <div class="text-[11px] text-white/45 flex items-center gap-2">
+                                            <span>{{ $item->category?->title ?: 'General' }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                @endforeach
+                            </div>
+                            @endif
+                            @else
+                            <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="flex-1 lg:flex-none"></div>
 
             {{-- DESKTOP ACTIONS --}}
             <div class="hidden lg:flex items-center gap-2">
@@ -177,10 +123,7 @@
                     class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-white/70 hover:text-white hover:bg-white/6 border border-white/8 hover:border-white/15 transition-all">
                     <i class="ri-user-line text-base"></i> Sign In
                 </a>
-                <a href="{{ route('register') }}" wire:navigate
-                    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-black hover:bg-white/90 transition-all">
-                    Register
-                </a>
+               
                 @else
                 @if ($user?->is_admin)
                 <a href="{{ route('admin.dashboard') }}" wire:navigate aria-label="Admin"
@@ -256,7 +199,67 @@
             </div>
 
         </div>
+        {{-- DESKTOP MENU ROW --}}
+        <div class="hidden lg:block border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 lg:px-6 h-12 flex items-center">
+                <nav class="flex items-center gap-1 text-sm font-medium text-white/60">
 
+                    <a href="{{ route('home') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                        Home
+                    </a>
+
+                    {{-- Hookah --}}
+                    <div class="relative" @mouseenter="dropdown='hookah'" @mouseleave="dropdown=null">
+                        <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                            Hookah
+                            <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='hookah' ? 'rotate-180' : ''"></i>
+                        </button>
+                        <div x-show="dropdown==='hookah'" x-transition.origin.top.left
+                            class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
+                            <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive</a>
+                            <div class="h-px bg-white/5 mx-2 my-1"></div>
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
+                        </div>
+                    </div>
+
+                    {{-- Shop By Budget --}}
+                    <div class="relative" @mouseenter="dropdown='budget'" @mouseleave="dropdown=null">
+                        <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                            Shop By Budget
+                            <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='budget' ? 'rotate-180' : ''"></i>
+                        </button>
+                        <div x-show="dropdown==='budget'" x-transition.origin.top.left
+                            class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
+                            <a href="{{ route('products', ['max_price' => 3000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
+                            <a href="{{ route('products', ['max_price' => 5000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
+                            <a href="{{ route('products', ['min_price' => 7000]) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
+                        </div>
+                    </div>
+
+                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Bongs</a>
+
+                    {{-- Accessories --}}
+                    <div class="relative" @mouseenter="dropdown='acc'" @mouseleave="dropdown=null">
+                        <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                            Accessories
+                            <i class="ri-arrow-down-s-line text-xs transition-transform duration-200" :class="dropdown==='acc' ? 'rotate-180' : ''"></i>
+                        </button>
+                        <div x-show="dropdown==='acc'" x-transition.origin.top.left
+                            class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hoses</a>
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Bowls</a>
+                            <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Charcoal</a>
+                        </div>
+                    </div>
+
+                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Combos</a>
+                    <a href="#" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
+
+                </nav>
+            </div>
+        </div>
         {{-- MOBILE SEARCH BAR (always visible below header on phones) --}}
         <div class="lg:hidden border-t border-white/5 px-4 py-2.5 bg-[#07080a]/90">
             <div class="relative" @click.outside="closeSearch()">
@@ -280,26 +283,26 @@
                         @php $mobileResults = $this->searchResults(); @endphp
 
                         @if(mb_strlen($search) >= 2)
-                            @if($mobileResults->isEmpty())
-                                <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
-                            @else
-                                <div wire:loading.remove wire:target="search">
-                                    @foreach($mobileResults as $item)
-                                        <a href="{{ route('product', $item->slug) }}" wire:navigate
-                                            class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
-                                            <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
-                                            <div class="min-w-0 flex-1">
-                                                <p class="text-sm text-white truncate">{{ $item->name }}</p>
-                                                <div class="text-[11px] text-white/45 flex items-center gap-2">
-                                                    <span>{{ $item->category?->title ?: 'General' }}</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
+                        @if($mobileResults->isEmpty())
+                        <div wire:loading.remove wire:target="search" class="px-4 py-6 text-xs text-white/50">No matching products found.</div>
                         @else
-                            <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
+                        <div wire:loading.remove wire:target="search">
+                            @foreach($mobileResults as $item)
+                            <a href="{{ route('product', $item->slug) }}" wire:navigate
+                                class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
+                                <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-sm text-white truncate">{{ $item->name }}</p>
+                                    <div class="text-[11px] text-white/45 flex items-center gap-2">
+                                        <span>{{ $item->category?->title ?: 'General' }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                            @endforeach
+                        </div>
+                        @endif
+                        @else
+                        <div class="px-4 py-6 text-xs text-white/50">Type at least 2 characters to search.</div>
                         @endif
                     </div>
                 </div>
@@ -472,3 +475,4 @@
     </div>
 
 </div>
+

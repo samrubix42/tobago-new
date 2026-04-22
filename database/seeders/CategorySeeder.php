@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
     {
         $categoryTree = [
             [
-                'title' => 'Hookah Category',
+                'title' => 'Hookah',
                 'slug' => 'premium-hookah',
                 'children' => [
                     ['title' => 'Tobac Go Hookah', 'slug' => 'tobac-go-hookah'],
@@ -33,9 +33,19 @@ class CategorySeeder extends Seeder
                 ],
             ],
             [
+
                 'title' => 'Bong Collection',
-                'slug' => 'acrylic-bongs',
-                'children' => [],
+                'slug' => 'bongs',
+                'children' => [
+                    [
+                        'title' => 'Acrylic Bongs',
+                        'slug' => 'acrylic-bongs',
+                    ],
+                    [
+                        'title' => 'Glass Percolator Bongs',
+                        'slug' => 'glass-percolator-bongs',
+                    ],
+                ],
             ],
             [
                 'title' => 'Ashtray Category',
@@ -46,9 +56,6 @@ class CategorySeeder extends Seeder
                 'title' => 'Smoking Accessories',
                 'slug' => 'smoking-accessories',
                 'children' => [
-                    ['title' => 'Hookah Accessories', 'slug' => 'hookah-accessories'],
-                    ['title' => 'Hookah Chillum', 'slug' => 'hookah-chillum'],
-                    ['title' => 'Pipe and Handle', 'slug' => 'pipe-and-handle'],
                     ['title' => 'Wooden Smoking Pipe', 'slug' => 'wooden-smoking-pipe'],
                     ['title' => 'Smoking Glass Pipe', 'slug' => 'smoking-glass-pipe'],
                     ['title' => 'Metal Shooter', 'slug' => 'metal-shooter'],
@@ -60,16 +67,42 @@ class CategorySeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Lighters Category',
+                'title' => 'Lighters',
                 'slug' => 'lighters',
                 'children' => [],
             ],
             [
-                'title' => 'Combos Category',
-                'slug' => 'combos',
+                'title' => 'Hookah Chillum',
+                'slug' => 'hookah-chillum',
                 'children' => [],
             ],
-           
+            [
+                'title' => 'Pipe and Handle',
+                'slug' => 'pipe-and-handle',
+                'children' => [],
+            ],
+            [
+                'title' => 'Hookah Accessories',
+                'slug' => 'hookah-accessories',
+                'children' => [],
+            ],
+
+            [
+                'title' => 'Combos',
+                'slug' => 'combos',
+                'children' => [
+                    [
+                        'title' => 'Smoking Glass Pipe Combo',
+                        'slug' => 'smoking-glass-pipe-combo',
+                    ],
+                    [
+                        'title' => 'Wooden Smoking Pipes Combo',
+                        'slug' => 'wooden-smoking-pipes-combo',
+                    ],
+                ],
+            ],
+
+
         ];
 
         $order = 1;

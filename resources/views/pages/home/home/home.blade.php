@@ -1,4 +1,4 @@
-<div>
+﻿<div>
     <section class="relative overflow-hidden">
 
         <!-- ðŸŒˆ SUBTLE AMBIENT GLOW -->
@@ -61,41 +61,12 @@
                     </ul>
                 </div>
 
-                <!-- CTA -->
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#collection"
-                        class="px-8 py-3.5 rounded-full text-sm font-bold text-black text-center shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
-                        style="background: var(--gradient-acrylic);">
-                        Shop Now
-                    </a>
-                    <a href="#categories"
-                        class="px-8 py-3.5 rounded-full border border-white/10 text-sm text-white/80 text-center hover:border-white/20 hover:bg-white/5 active:scale-95 transition-all">
-                        Explore Collection
-                    </a>
-                </div>
-
-                <!-- <div class="mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-2xl shadow-black/20">
-                    <div class="relative px-4 py-5 text-center">
-                        <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
-                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">500+</p>
-                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Products</p>
-                    </div>
-                    <div class="relative px-4 py-5 text-center">
-                        <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
-                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">4.3<span class="text-sm sm:text-base text-amber-300 align-super">★</span></p>
-                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Rating</p>
-                    </div>
-                    <div class="px-4 py-5 text-center">
-                        <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">10k+</p>
-                        <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Customers</p>
-                    </div>
-                </div> -->
 
 
             </div>
 
             <!-- ðŸ’¨ RIGHT -->
-            <div class="relative flex justify-center lg:justify-end items-center group">
+            <div class="relative flex  justify-center lg:justify-end items-center group">
                 <!-- Inner Blur Base -->
                 <div class="absolute w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] rounded-full blur-[80px] sm:blur-[120px] opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity"
                     style="background: radial-gradient(circle, #6a5cff, transparent 70%);">
@@ -124,7 +95,7 @@
         </div>
 
     </section>
-    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 -mt-2 lg:-mt-12">
+    <section class="relative py-2  max-w-7xl mx-auto px-4 sm:px-6 -mt-2 lg:-mt-12">
         <div class="relative overflow-hidden rounded-2xl border border-subtle bg-[#0b0d0f]/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
             <div class="absolute -top-20 left-10 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl"></div>
             <div class="absolute -bottom-20 right-10 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl"></div>
@@ -136,7 +107,7 @@
                     </span>
                     <div>
                         <h3 class="text-sm font-bold text-white">Free Shipping</h3>
-                        <p class="mt-1 text-xs text-muted">On orders above ₹999</p>
+                        <p class="mt-1 text-xs text-muted">On orders above ₹3000</p>
                     </div>
                 </div>
 
@@ -194,7 +165,7 @@
                     Shop <span class="text-gradient">Premium Hookahs</span>
                 </h2>
             </div>
-            <p class="text-muted text-sm max-w-xl">
+            <p class="text-muted text-sm max-w-5xl">
                 Explore Tobac-Go hookah products curated for home users, collectors, gifting, and everyday sessions.
             </p>
         </div>
@@ -301,7 +272,7 @@
 
     <section id="new-arrivals" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
         <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
-        
+
         <div class="text-center max-w-3xl mx-auto mb-10">
             <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Just Landed</p>
             <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
@@ -322,7 +293,7 @@
                 <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
                 <div class="h-3 w-8/12 rounded bg-white/10"></div>
                 </article>
-            @endfor
+                @endfor
         </div>
         @endplaceholder
 
@@ -500,14 +471,14 @@
                         class="snap-center shrink-0 w-[55vw] max-w-[200px] sm:w-[40vw] md:w-[28vw] lg:w-[16vw] group rounded-[2rem] border bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center transition-all duration-500 hover:border-purple-500/30"
                         x-bind:class="active === index ? 'scale-[1.08] border-purple-500/30 shadow-[0_15px_40px_rgba(168,85,247,0.15)] bg-white/[0.07] z-20' : 'scale-95 border-white/5 opacity-50 hover:opacity-80'"
                         @click="scrollTo(index)">
-                        
+
                         <div class="relative mx-auto mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#0b0d0f] shadow-inner transition-all duration-500 group-hover:border-purple-500/30"
                             x-bind:class="active === index ? 'border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : ''">
                             <div class="absolute inset-0 opacity-0 transition-opacity duration-500" x-bind:class="active === index ? 'opacity-100' : 'group-hover:opacity-50'" style="background: radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%);"></div>
                             <img x-bind:src="item.image" x-bind:alt="item.title" class="relative h-16 w-16 sm:h-20 sm:w-20 object-contain transition-all duration-500 group-hover:scale-105"
                                 x-bind:class="active === index ? 'scale-105 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]' : ''">
                         </div>
-                        
+
                         <h3 class="text-white font-bold tracking-wide transition-all duration-500" x-bind:class="active === index ? 'text-base sm:text-lg' : 'text-sm sm:text-base opacity-70'" x-text="item.title"></h3>
                         <div class="mt-2 overflow-hidden h-5">
                             <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-500 transform"
@@ -533,25 +504,25 @@
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach ([
-                ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
-                ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
-                ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
-                ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
-                ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use.'],
-                ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
+            ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
+            ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
+            ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
+            ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
+            ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use.'],
+            ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
             ] as $reason)
-                <article
-                    class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
-                    <div
-                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
-                        <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
-                    </div>
-                    <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
-                    <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
-                    @if ($reason[1] === 'Real Support on WhatsApp')
-                        <p class="text-muted text-sm leading-6 mt-1">Our number is {{ app_setting('whatsapp_number', '+91 78384 49604') }}.</p>
-                    @endif
-                </article>
+            <article
+                class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
+                <div
+                    class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
+                    <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
+                </div>
+                <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
+                <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
+                @if ($reason[1] === 'Real Support on WhatsApp')
+                <p class="text-muted text-sm leading-6 mt-1">Our number is {{ app_setting('whatsapp_number', '+91 78384 49604') }}.</p>
+                @endif
+            </article>
             @endforeach
         </div>
     </section>
