@@ -74,7 +74,7 @@
                     </a>
                 </div>
 
-                <div class="mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-2xl shadow-black/20">
+                <!-- <div class="mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-2xl shadow-black/20">
                     <div class="relative px-4 py-5 text-center">
                         <div class="absolute inset-y-4 right-0 w-px bg-white/10"></div>
                         <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">500+</p>
@@ -89,7 +89,7 @@
                         <p class="text-white font-extrabold text-2xl sm:text-3xl leading-none">10k+</p>
                         <p class="text-muted text-[10px] sm:text-xs uppercase tracking-[0.22em] mt-2">Customers</p>
                     </div>
-                </div>
+                </div> -->
 
 
             </div>
@@ -185,8 +185,11 @@
 
     <section id="collection" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
         <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-            <div>
-                <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Our Collection</p>
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-500/20 bg-orange-500/5 text-[10px] font-bold uppercase tracking-widest text-orange-400">
+                    <i class="ri-vip-diamond-line"></i>
+                    Tobac-Go Exclusive
+                </div>
                 <h2 class="text-3xl sm:text-4xl font-semibold leading-tight">
                     Shop <span class="text-gradient">Premium Hookahs</span>
                 </h2>
@@ -236,7 +239,7 @@
                 </div>
                 <div class="flex items-center justify-between gap-2 mb-2">
                     <span class="rounded-full border border-cyan-300/20 bg-cyan-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-200">
-                        Featured
+                        Premium
                     </span>
                     <span class="text-[10px] text-white/55 uppercase tracking-wider">{{ $product->category?->title ?? 'Hookah' }}</span>
                 </div>

@@ -14,8 +14,24 @@ new class extends Component
     #[Computed]
     public function featuredProducts(): Collection
     { 
+        // Fetch products specifically belonging to the "tobac-go-hookah" category slug
+        $exclusive = Product::query()
+            ->with(['images', 'category'])
+            ->where('status', 'active')
+            ->whereHas('category', function($q) {
+                $q->where('slug', 'tobac-go-hookah');
+            })
+            ->latest()
+            ->take(8)
+            ->get();
+
+        if ($exclusive->isNotEmpty()) {
+            return $exclusive;
+        }
+
+        // Fallback to standard featured products
         $featured = Product::query()
-            ->with(['images'])
+            ->with(['images', 'category'])
             ->where('status', 'active')
             ->where('is_featured', true)
             ->latest()
@@ -27,7 +43,7 @@ new class extends Component
         }
 
         return Product::query()
-            ->with(['images'])
+            ->with(['images', 'category'])
             ->where('status', 'active')
             ->latest()
             ->take(8)

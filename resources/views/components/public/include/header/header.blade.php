@@ -73,6 +73,8 @@
                     </button>
                     <div x-show="dropdown==='hookah'" x-transition.origin.top.left
                         class="absolute top-full left-0 mt-2 w-44 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
+                        <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive</a>
+                        <div class="h-px bg-white/5 mx-2 my-1"></div>
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Premium</a>
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass</a>
                         <a href="#" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mini</a>
@@ -359,6 +361,7 @@
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
+                    <a href="{{ route('products', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Tobac-Go Exclusive</a>
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Premium</a>
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass</a>
                     <a href="#" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mini</a>

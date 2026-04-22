@@ -64,7 +64,7 @@
                 </span>
             </div>
             <div class="flex flex-col border-l border-white/20 pl-3">
-                <span class="text-[9px] md:text-[10px] leading-none opacity-80 font-bold uppercase tracking-widest">Need help?</span>
+                <span class="text-[9px] md:text-[10px] leading-none opacity-80 font-bold uppercase tracking-widest">Have questions?</span>
                 <span class="text-xs md:text-sm font-black leading-tight tracking-tight">Chat with us</span>
             </div>
         </a>
