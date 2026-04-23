@@ -37,40 +37,38 @@
                     <div class="space-y-4">
                         @forelse($recommendationOptions as $parent)
                             <div wire:key="recommend-parent-{{ $parent->id }}" class="rounded-xl border border-slate-200 bg-white p-3">
-                                @if((int) $parent->id !== (int) $recommendationCategoryId)
-                                    <label class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            value="{{ $parent->id }}"
-                                            wire:model="recommendedCategoryIds"
-                                            class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                        >
-                                        <span class="text-sm font-medium text-slate-800">{{ $parent->title }}</span>
-                                    </label>
-                                @else
-                                    <div class="px-2 py-2 text-sm font-medium text-slate-400">
-                                        {{ $parent->title }} (Current)
-                                    </div>
-                                @endif
+                                <label class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        value="{{ $parent->id }}"
+                                        wire:model="recommendedCategoryIds"
+                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                                    >
+                                    <span class="text-sm font-medium text-slate-800">
+                                        {{ $parent->title }}
+                                        @if((int) $parent->id === (int) $recommendationCategoryId)
+                                            <span class="text-xs text-slate-500">(Current)</span>
+                                        @endif
+                                    </span>
+                                </label>
 
                                 @if($parent->children->isNotEmpty())
                                     <div class="mt-2 ml-5 space-y-2 border-l border-slate-200 pl-3">
                                         @foreach($parent->children as $child)
-                                            @if((int) $child->id !== (int) $recommendationCategoryId)
-                                                <label wire:key="recommend-child-{{ $child->id }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-slate-50 cursor-pointer">
-                                                    <input
-                                                        type="checkbox"
-                                                        value="{{ $child->id }}"
-                                                        wire:model="recommendedCategoryIds"
-                                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                    >
-                                                    <span class="text-sm text-slate-700">{{ $child->title }}</span>
-                                                </label>
-                                            @else
-                                                <div class="px-2 py-1.5 text-sm text-slate-400">
-                                                    {{ $child->title }} (Current)
-                                                </div>
-                                            @endif
+                                            <label wire:key="recommend-child-{{ $child->id }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-slate-50 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    value="{{ $child->id }}"
+                                                    wire:model="recommendedCategoryIds"
+                                                    class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                                                >
+                                                <span class="text-sm text-slate-700">
+                                                    {{ $child->title }}
+                                                    @if((int) $child->id === (int) $recommendationCategoryId)
+                                                        <span class="text-xs text-slate-500">(Current)</span>
+                                                    @endif
+                                                </span>
+                                            </label>
                                         @endforeach
                                     </div>
                                 @endif
