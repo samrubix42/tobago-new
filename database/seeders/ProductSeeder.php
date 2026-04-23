@@ -103,7 +103,7 @@ class ProductSeeder extends Seeder
 
     private function catalog(): array
     {
-        return [
+        $baseCatalog = [
             'tobac-go-hookah' => [
                 'Tobac Go Hookah Classic Silver',
                 'Tobac Go Hookah Matte Black',
@@ -256,5 +256,44 @@ class ProductSeeder extends Seeder
                 'Noida Hookah Accessories Bundle',
             ],
         ];
+
+        return $this->ensureMinimumProducts($baseCatalog, 20);
+    }
+
+    private function ensureMinimumProducts(array $catalog, int $minimum): array
+    {
+        $editionWords = [
+            'Prime',
+            'Elite',
+            'Signature',
+            'Pro',
+            'Ultra',
+            'Classic',
+            'Select',
+            'Max',
+            'Nova',
+            'X',
+        ];
+
+        foreach ($catalog as $slug => $products) {
+            $products = array_values(array_unique($products));
+            $seedName = $products[0] ?? Str::headline(str_replace('-', ' ', $slug));
+            $counter = 1;
+
+            while (count($products) < $minimum) {
+                $edition = $editionWords[($counter - 1) % count($editionWords)];
+                $candidate = "{$seedName} {$edition} " . str_pad((string) $counter, 2, '0', STR_PAD_LEFT);
+
+                if (! in_array($candidate, $products, true)) {
+                    $products[] = $candidate;
+                }
+
+                $counter++;
+            }
+
+            $catalog[$slug] = $products;
+        }
+
+        return $catalog;
     }
 }

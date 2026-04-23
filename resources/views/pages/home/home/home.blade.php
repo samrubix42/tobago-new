@@ -231,6 +231,12 @@
             </div>
             @endforelse
         </div>
+
+        <div class="mt-8 flex justify-center">
+            <a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
+                View More <i class="ri-arrow-right-line"></i>
+            </a>
+        </div>
         @endisland
     </section>
 
