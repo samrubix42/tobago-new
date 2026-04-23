@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\RecommendedCategory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
@@ -15,8 +16,11 @@ new #[Layout('layouts::admin')] class extends Component
     public string $search = '';
     public ?int $categoryId = null;
     public ?int $deleteId = null;
+    public ?int $recommendationCategoryId = null;
     public $categories = [];
     public $parentCategories = [];
+    public $recommendationOptions = [];
+    public array $recommendedCategoryIds = [];
 
 
 
@@ -58,6 +62,11 @@ new #[Layout('layouts::admin')] class extends Component
 
         $this->categories = $categories;
         $this->parentCategories = $parentCategories;
+        $this->recommendationOptions = Category::query()
+            ->with(['children' => fn ($query) => $query->orderBy('title')])
+            ->whereNull('parent_id')
+            ->orderBy('title')
+            ->get(['id', 'title']);
     }
 
 
@@ -86,6 +95,8 @@ new #[Layout('layouts::admin')] class extends Component
         $this->meta_description = null;
         $this->meta_keywords = null;
         $this->deleteId = null;
+        $this->recommendationCategoryId = null;
+        $this->recommendedCategoryIds = [];
     }
 
     public function openEditModal(int $categoryId): void
@@ -110,6 +121,62 @@ new #[Layout('layouts::admin')] class extends Component
     public function confirmDelete(int $categoryId): void
     {
         $this->deleteId = $categoryId;
+    }
+
+    public function openRecommendModal(int $categoryId): void
+    {
+        Category::findOrFail($categoryId);
+
+        $this->resetValidation();
+        $this->recommendationCategoryId = $categoryId;
+        $this->recommendedCategoryIds = RecommendedCategory::query()
+            ->where('category_id', $categoryId)
+            ->pluck('recommended_category_id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $this->dispatch('open-recommend-modal');
+    }
+
+    public function saveRecommendations(): void
+    {
+        $this->validate([
+            'recommendationCategoryId' => ['required', 'integer', 'exists:categories,id'],
+            'recommendedCategoryIds' => ['array'],
+            'recommendedCategoryIds.*' => ['integer', 'exists:categories,id', 'distinct'],
+        ]);
+
+        $categoryId = (int) $this->recommendationCategoryId;
+        $selectedIds = collect($this->recommendedCategoryIds)
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values();
+
+        RecommendedCategory::query()
+            ->where('category_id', $categoryId)
+            ->delete();
+
+        if ($selectedIds->isNotEmpty()) {
+            $now = now();
+
+            RecommendedCategory::query()->insert(
+                $selectedIds->map(fn ($recommendedId) => [
+                    'category_id' => $categoryId,
+                    'recommended_category_id' => $recommendedId,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ])->all()
+            );
+        }
+
+        $this->dispatch('toast-show', [
+            'message' => 'Recommended categories updated successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
+        $this->dispatch('close-recommend-modal');
     }
 
     public function save(): void

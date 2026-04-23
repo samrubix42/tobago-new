@@ -112,6 +112,13 @@
                                 >
                                     Delete
                                 </button>
+
+                                <button
+                                    wire:click="openRecommendModal({{ $category->id }})"
+                                    class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-md text-xs"
+                                >
+                                    Recommend
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -181,6 +188,13 @@
                         >
                             Delete
                         </button>
+
+                        <button
+                            wire:click="openRecommendModal({{ $category->id }})"
+                            class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-md text-xs font-medium"
+                        >
+                            Recommend
+                        </button>
                     </div>
                 </div>
             </div>
@@ -193,4 +207,5 @@
 
     @include('livewire.category.category-modal')
     @include('livewire.category.delete')
+    @include('livewire.category.recommend-modal')
 </div>
