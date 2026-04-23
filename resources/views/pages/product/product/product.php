@@ -11,10 +11,13 @@ use Livewire\Component;
 
 new #[Layout('layouts::app')] class extends Component
 {
+    private const PRICE_MIN_BOUND = 3000;
+    private const PRICE_MAX_BOUND = 35000;
+
     public string $search = '';
     public string $sort = 'latest';
-    public ?float $minPrice = null;
-    public ?float $maxPrice = null;
+    public ?float $minPrice = self::PRICE_MIN_BOUND;
+    public ?float $maxPrice = self::PRICE_MAX_BOUND;
 
     public ?string $routeCategorySlug = null;
     public ?string $routeSubcategorySlug = null;
@@ -26,13 +29,16 @@ new #[Layout('layouts::app')] class extends Component
     {
         $this->routeCategorySlug = $category;
         $this->routeSubcategorySlug = $subcategory;
+        $this->minPrice = $this->sanitizePrice($this->minPrice, self::PRICE_MIN_BOUND);
+        $this->maxPrice = $this->sanitizePrice($this->maxPrice, self::PRICE_MAX_BOUND);
+        $this->normalizePriceRange();
     }
 
     protected $queryString = [
         'search' => ['except' => ''],
         'sort' => ['except' => 'latest'],
-        'minPrice' => ['except' => null],
-        'maxPrice' => ['except' => null],
+        'minPrice' => ['except' => self::PRICE_MIN_BOUND],
+        'maxPrice' => ['except' => self::PRICE_MAX_BOUND],
     ];
 
     public function updatedSearch(): void
@@ -47,11 +53,15 @@ new #[Layout('layouts::app')] class extends Component
 
     public function updatedMinPrice(): void
     {
+        $this->minPrice = $this->sanitizePrice($this->minPrice, self::PRICE_MIN_BOUND);
+        $this->normalizePriceRange();
         $this->resetFeed();
     }
 
     public function updatedMaxPrice(): void
     {
+        $this->maxPrice = $this->sanitizePrice($this->maxPrice, self::PRICE_MAX_BOUND);
+        $this->normalizePriceRange();
         $this->resetFeed();
     }
 
@@ -73,9 +83,25 @@ new #[Layout('layouts::app')] class extends Component
     {
         $this->search = '';
         $this->sort = 'latest';
-        $this->minPrice = null;
-        $this->maxPrice = null;
+        $this->minPrice = self::PRICE_MIN_BOUND;
+        $this->maxPrice = self::PRICE_MAX_BOUND;
         $this->resetFeed();
+    }
+
+    protected function sanitizePrice(?float $value, int $fallback): float
+    {
+        if ($value === null) {
+            return (float) $fallback;
+        }
+
+        return (float) max(self::PRICE_MIN_BOUND, min(self::PRICE_MAX_BOUND, (int) round($value)));
+    }
+
+    protected function normalizePriceRange(): void
+    {
+        if ($this->minPrice > $this->maxPrice) {
+            $this->maxPrice = $this->minPrice;
+        }
     }
 
     public function activeCategory(): ?Category
@@ -135,11 +161,11 @@ new #[Layout('layouts::app')] class extends Component
             });
         }
 
-        if ($this->minPrice !== null && $this->minPrice >= 0) {
+        if ($this->minPrice !== null) {
             $query->where('selling_price', '>=', $this->minPrice);
         }
 
-        if ($this->maxPrice !== null && $this->maxPrice >= 0) {
+        if ($this->maxPrice !== null) {
             $query->where('selling_price', '<=', $this->maxPrice);
         }
 
@@ -300,10 +326,10 @@ new #[Layout('layouts::app')] class extends Component
             ->limit($this->loadedCount)
             ->get();
 
-        $priceLimits = Product::query()
-            ->where('status', 'active')
-            ->selectRaw('MIN(selling_price) as min_price, MAX(selling_price) as max_price')
-            ->first();
+        $priceLimits = (object) [
+            'min_price' => self::PRICE_MIN_BOUND,
+            'max_price' => self::PRICE_MAX_BOUND,
+        ];
 
         return view('pages.product.product.product', [
             'products' => $products,

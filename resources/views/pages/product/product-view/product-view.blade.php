@@ -1,14 +1,20 @@
-<div x-data="productPage(@js($galleryImages), {{ max(1, (int) $product->stock) }}, @js($this->isOutOfStock()))" class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+<div x-data="productPage(@js($galleryImages), {{ max(1, (int) $product->stock) }}, @js($this->isOutOfStock()))" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 overflow-x-hidden">
 
     <!-- Breadcrumb -->
-    <nav class="text-xs text-muted mb-6 flex items-center gap-2">
+    <nav class="text-xs text-muted mb-6 flex flex-wrap items-center gap-2">
         <a href="{{ route('home') }}" wire:navigate class="hover:text-white transition">Home</a>
         <i class="ri-arrow-right-s-line text-base"></i>
-        <span class="text-white/70">{{ $product->name }}</span>
+        <span class="text-white/70 break-words">{{ $product->name }}</span>
     </nav>
 
+    @php
+        $whatsappNumber = preg_replace('/[^0-9]/', '', (string) app_setting('whatsapp_number', ''));
+        $whatsappMessage = rawurlencode("Hi, I want to buy this product: {$product->name}. Please help me with the order.");
+        $whatsappUrl = $whatsappNumber ? "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}" : null;
+    @endphp
+
     <!-- GRID -->
-    <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] gap-10 items-start">
+    <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)] gap-6 sm:gap-10 items-start">
 
         <div class="space-y-4 min-w-0">
 
@@ -18,7 +24,7 @@
                 <div class="absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
                 <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at top, rgba(0,198,255,0.18), transparent 55%);"></div>
 
-                <div class="relative h-82.5 sm:h-115 flex items-center justify-center p-6">
+                <div class="relative h-[280px] sm:h-[460px] flex items-center justify-center p-4 sm:p-6">
                     <template x-for="(img, index) in images" :key="img.src">
                         <div
                             x-cloak
@@ -53,8 +59,71 @@
                 </template>
             </div>
 
+            <!-- Pricing (Mobile) -->
+            <div class="lg:hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
+                <div class="flex items-end justify-between gap-4">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.22em] text-muted">Price</p>
+                        <p class="text-3xl font-semibold text-white mt-2">&#8377;{{ $this->price($product->selling_price) }}</p>
+                        @if($product->compare_price && $product->compare_price > $product->selling_price)
+                        <p class="text-sm text-muted line-through mt-1">&#8377;{{ $this->price($product->compare_price) }}</p>
+                        @endif
+                    </div>
+                    @if($this->discountPercent())
+                    <span class="text-xs px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-indigo-300">
+                        Save {{ $this->discountPercent() }}%
+                    </span>
+                    @endif
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="inline-flex items-center border border-subtle rounded-full overflow-hidden bg-white/2">
+                        <button type="button" class="px-4 py-2 text-white/80 hover:bg-white/5 transition" x-on:click="qty = Math.max(1, qty - 1)">-</button>
+                        <span class="px-4 text-sm text-white" x-text="qty"></span>
+                        <button type="button" class="px-4 py-2 text-white/80 hover:bg-white/5 transition" x-on:click="qty = Math.min(maxQty, qty + 1)">+</button>
+                    </div>
+
+                    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            Add to Cart
+                        </button>
+                        <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            Buy Now
+                        </button>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-xs text-amber-300 inline-flex items-center gap-2">
+                    <i class="ri-fire-line"></i> {{ $this->soldText() }}
+                </p>
+
+                @if($this->fomoText())
+                <p class="mt-2 text-xs text-rose-300 inline-flex items-center gap-2">
+                    <i class="ri-timer-flash-line"></i> {{ $this->fomoText() }}
+                </p>
+                @endif
+
+                <div class="mt-6 grid sm:grid-cols-2 gap-3">
+                    <div class="rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs text-muted flex items-center gap-2">
+                        <i class="ri-map-pin-2-line text-indigo-300 text-base"></i>
+                        Ships to India
+                    </div>
+                    @if ($whatsappUrl)
+                        <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs text-muted flex items-center gap-2 transition hover:border-white/20 hover:bg-white/5">
+                            <i class="ri-whatsapp-line text-indigo-300 text-base"></i>
+                            WhatsApp support
+                        </a>
+                    @else
+                        <div class="rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs text-muted flex items-center gap-2 opacity-70">
+                            <i class="ri-whatsapp-line text-indigo-300 text-base"></i>
+                            WhatsApp support unavailable
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <!-- Trust chips -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="hidden lg:grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="rounded-2xl border border-subtle bg-white/3 px-4 py-3 text-xs text-muted flex items-center gap-2">
                     <i class="ri-truck-line text-indigo-300 text-base"></i> Fast delivery
                 </div>
@@ -70,7 +139,7 @@
             </div>
 
             <!-- Details -->
-            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7 lg:p-8">
+            <div class="hidden lg:block rounded-3xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7 lg:p-8">
                 <div class="space-y-6 text-sm text-muted leading-relaxed">
                     <section>
                         <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features</h3>
@@ -104,7 +173,7 @@
                     {{ $product->category?->title ?? 'Premium Product' }}
                 </div>
 
-                <h1 class="text-2xl sm:text-4xl font-semibold text-white leading-tight">
+                <h1 class="text-2xl sm:text-4xl font-semibold text-white leading-tight break-words">
                     {{ $product->name }}
                 </h1>
 
@@ -148,8 +217,31 @@
                 </div>
             </div>
 
+            <!-- Details (Mobile) -->
+            <div class="lg:hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-5">
+                <div class="space-y-6 text-sm text-muted leading-relaxed">
+                    <section>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features</h3>
+                        <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
+                            @if($product->short_description)
+                            {!! nl2br(e($product->short_description)) !!}
+                            @else
+                            <p>Product highlights will be updated soon.</p>
+                            @endif
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Specification</h3>
+                        <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
+                            {!! $product->feature_and_specifications ?: '<p>Detailed specifications are not available yet.</p>' !!}
+                        </div>
+                    </section>
+                </div>
+            </div>
+
             <!-- Pricing -->
-            <div class="rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
+            <div class="hidden lg:block rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
                 <div class="flex items-end justify-between gap-4">
                     <div>
                         <p class="text-xs uppercase tracking-[0.22em] text-muted">Price</p>
@@ -191,12 +283,6 @@
                     <i class="ri-timer-flash-line"></i> {{ $this->fomoText() }}
                 </p>
                 @endif
-
-                @php
-                    $whatsappNumber = preg_replace('/[^0-9]/', '', (string) app_setting('whatsapp_number', ''));
-                    $whatsappMessage = rawurlencode("Hi, I want to buy this product: {$product->name}. Please help me with the order.");
-                    $whatsappUrl = $whatsappNumber ? "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}" : null;
-                @endphp
 
                 <div class="mt-6 grid sm:grid-cols-2 gap-3">
                     <div class="rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs text-muted flex items-center gap-2">
