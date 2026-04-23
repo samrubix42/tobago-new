@@ -74,7 +74,7 @@ new class extends Component
 
         if ($this->product->category_id) {
             $recommendations = RecommendedCategory::query()
-                ->with('recommendedCategory')
+                ->with(['recommendedCategory.parent'])
                 ->where('category_id', $this->product->category_id)
                 ->get();
 
