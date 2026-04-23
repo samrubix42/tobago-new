@@ -12,9 +12,7 @@
          x-cloak></div>
 
         <aside class="fixed inset-y-0 left-0 z-50 w-72 lg:w-64 bg-white text-slate-700 transform transition-transform duration-300 lg:translate-x-0 overflow-y-auto custom-scrollbar border-r border-slate-200"
-    :class="mobileMenu ? 'translate-x-0' : '-translate-x-full'"
-    x-data="{}"
-    @click.away="if(window.innerWidth < 1024) mobileMenu = false">
+    :class="mobileMenu ? 'translate-x-0' : '-translate-x-full'">
     
     <div class="flex flex-col h-full">
         {{-- Logo Section --}}
@@ -115,5 +113,4 @@
     </div>
 </aside>
 </div>
-
 
