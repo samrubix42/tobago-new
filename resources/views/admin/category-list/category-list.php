@@ -145,8 +145,22 @@ new #[Layout('layouts::admin')] class extends Component
                 (int) $recommendation->recommended_category_id => (string) ($recommendation->title ?? ''),
             ])
             ->all();
+    }
 
-        $this->dispatch('open-recommend-modal');
+    public function updatedRecommendedCategoryIds(): void
+    {
+        $selectedIds = collect($this->recommendedCategoryIds)
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values()
+            ->all();
+
+        $this->recommendedCategoryIds = $selectedIds;
+        $this->recommendationTitles = collect($this->recommendationTitles)
+            ->filter(fn ($_title, $categoryId) => in_array((int) $categoryId, $selectedIds, true))
+            ->map(fn ($title) => trim((string) $title))
+            ->all();
     }
 
     public function saveRecommendations(): void
@@ -163,6 +177,7 @@ new #[Layout('layouts::admin')] class extends Component
         $selectedIds = collect($this->recommendedCategoryIds)
             ->map(fn ($id) => (int) $id)
             ->filter(fn ($id) => $id > 0)
+            ->reject(fn ($id) => $id === $categoryId)
             ->unique()
             ->values();
 
