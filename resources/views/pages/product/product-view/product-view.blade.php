@@ -19,7 +19,7 @@
         <div class="space-y-4 min-w-0">
 
             <!-- Main Image -->
-            <div class="relative rounded-3xl border border-subtle bg-[#0b0d0f] overflow-hidden lg:sticky lg:top-24" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
+            <div class="relative z-0 rounded-3xl border border-subtle bg-[#0b0d0f] overflow-hidden" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
                 <div class="absolute -top-24 -left-24 h-56 w-56 rounded-full bg-blue-500/10 blur-[90px]"></div>
                 <div class="absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
                 <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at top, rgba(0,198,255,0.18), transparent 55%);"></div>
@@ -35,18 +35,18 @@
                             x-transition:leave="transition ease-in duration-200"
                             x-transition:leave-start="opacity-100 scale-100"
                             x-transition:leave-end="opacity-0 scale-95"
-                            class="absolute inset-0 flex items-center justify-center p-6">
+                            class="absolute inset-0 overflow-hidden">
                             <img
                                 :src="img.src"
                                 :alt="img.alt"
-                                class="max-h-full object-contain drop-shadow-[0_18px_45px_rgba(0,0,0,0.55)]">
+                                class="h-full w-full object-cover">
                         </div>
                     </template>
                 </div>
             </div>
 
             <!-- Thumbnails -->
-            <div class="flex gap-3 overflow-x-auto pb-1">
+            <div class="relative z-10 mt-2 flex gap-3 overflow-x-auto pb-1">
                 <template x-for="(img, index) in images" :key="img.src + index">
                     <button
                         type="button"
@@ -54,7 +54,7 @@
                         :class="activeIndex === index ? 'border-white/25 ring-2 ring-indigo-400/20' : 'hover:border-white/15'"
                         x-on:click="setActive(index); restartAuto()"
                         :aria-label="`View image ${index + 1}`">
-                        <img :src="img.src" :alt="img.alt" class="max-h-full object-contain opacity-90">
+                        <img :src="img.src" :alt="img.alt" class="h-full w-full object-cover opacity-90">
                     </button>
                 </template>
             </div>
@@ -93,13 +93,9 @@
                     </div>
                 </div>
 
-                <p class="mt-4 text-xs text-amber-300 inline-flex items-center gap-2">
-                    <i class="ri-fire-line"></i> {{ $this->soldText() }}
-                </p>
-
-                @if($this->fomoText())
-                <p class="mt-2 text-xs text-rose-300 inline-flex items-center gap-2">
-                    <i class="ri-timer-flash-line"></i> {{ $this->fomoText() }}
+                @if((int) ($product->hurry_stock ?? 0) > 0)
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
+                    <i class="ri-alarm-warning-line"></i> Only {{ (int) $product->hurry_stock }} items available
                 </p>
                 @endif
 
@@ -181,23 +177,15 @@
                     {{ $this->shortText($product->short_description, 180) }}
                 </p>
 
-                <div class="mt-4 flex flex-wrap items-center gap-3">
-                    <span class="sm:ml-auto text-xs text-amber-300 inline-flex items-center gap-2">
-                        <i class="ri-fire-line text-base"></i> {{ $this->soldText() }}
+                @if((int) ($product->hurry_stock ?? 0) > 0)
+                <div class="mt-4">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
+                        <i class="ri-alarm-warning-line text-base"></i> Only {{ (int) $product->hurry_stock }} items available
                     </span>
-
-                    @if($this->showHurryFomo())
-                    <span class="text-xs text-rose-300 inline-flex items-center gap-2">
-                        <i class="ri-alarm-warning-line text-base"></i> Hurry, only {{ $product->stock }} left
-                    </span>
-                    @elseif(! $this->isOutOfStock())
-                    <span class="text-xs text-emerald-300 inline-flex items-center gap-2">
-                        <i class="ri-checkbox-circle-line text-base"></i> {{ $product->stock }} available
-                    </span>
-                    @endif
                 </div>
+                @endif
 
-                <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div class="mt-4 grid grid-cols-2 gap-2">
                     <div class="rounded-xl border border-white/10 bg-white/3 px-3 py-2">
                         <p class="text-[10px] uppercase tracking-[0.2em] text-muted">SKU</p>
                         <p class="text-xs text-white mt-1 truncate">{{ $product->sku ?: 'N/A' }}</p>
@@ -205,14 +193,6 @@
                     <div class="rounded-xl border border-white/10 bg-white/3 px-3 py-2">
                         <p class="text-[10px] uppercase tracking-[0.2em] text-muted">Category</p>
                         <p class="text-xs text-white mt-1 truncate">{{ $product->category?->title ?: 'General' }}</p>
-                    </div>
-                    <div class="rounded-xl border border-white/10 bg-white/3 px-3 py-2">
-                        <p class="text-[10px] uppercase tracking-[0.2em] text-muted">In Stock</p>
-                        <p class="text-xs text-white mt-1">{{ max(0, (int) $product->stock) }}</p>
-                    </div>
-                    <div class="rounded-xl border border-white/10 bg-white/3 px-3 py-2">
-                        <p class="text-[10px] uppercase tracking-[0.2em] text-muted">Sold</p>
-                        <p class="text-xs text-white mt-1">{{ (int) ($product->hurry_stock ?? 0) > 0 ? (int) $product->hurry_stock . '+' : 'Some' }}</p>
                     </div>
                 </div>
             </div>
@@ -274,13 +254,9 @@
                     </div>
                 </div>
 
-                <p class="mt-4 text-xs text-amber-300 inline-flex items-center gap-2">
-                    <i class="ri-fire-line"></i> {{ $this->soldText() }}
-                </p>
-
-                @if($this->fomoText())
-                <p class="mt-2 text-xs text-rose-300 inline-flex items-center gap-2">
-                    <i class="ri-timer-flash-line"></i> {{ $this->fomoText() }}
+                @if((int) ($product->hurry_stock ?? 0) > 0)
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
+                    <i class="ri-alarm-warning-line"></i> Only {{ (int) $product->hurry_stock }} items available
                 </p>
                 @endif
 

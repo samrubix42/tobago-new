@@ -92,47 +92,6 @@ new class extends Component
         return $this->product->is_out_of_stock || (int) $this->product->stock <= 0;
     }
 
-    public function soldText(): string
-    {
-        $sold = (int) ($this->product->hurry_stock ?? 0);
-
-        if ($this->isOutOfStock()) {
-            return ($sold > 0 ? $sold . '+' : 'All units') . ' sold out';
-        }
-
-        if ($sold > 0) {
-            return $sold . '+ already sold';
-        }
-
-        return 'Some units already sold';
-    }
-
-    public function showHurryFomo(): bool
-    {
-        $hurryStock = (int) ($this->product->hurry_stock ?? 0);
-
-        return ! $this->isOutOfStock() && $hurryStock > 0 && (int) $this->product->stock <= $hurryStock;
-    }
-
-    public function fomoText(): ?string
-    {
-        $hurryStock = (int) ($this->product->hurry_stock ?? 0);
-
-        if ($this->isOutOfStock()) {
-            return null;
-        }
-
-        if ($hurryStock <= 0) {
-            return null;
-        }
-
-        if ((int) $this->product->stock <= $hurryStock) {
-            return 'Hurry! ' . $hurryStock . '+ sold recently, only ' . (int) $this->product->stock . ' left.';
-        }
-
-        return $hurryStock . '+ sold recently. Trending now.';
-    }
-
     public function discountPercent(): ?int
     {
         $sellingPrice = (float) $this->product->selling_price;
