@@ -11,6 +11,19 @@ use Livewire\Component;
 
 new class extends Component
 {
+    protected function productsByCategorySlug(string $slug, int $limit = 8): Collection
+    {
+        return Product::query()
+            ->with(['images', 'category'])
+            ->where('status', 'active')
+            ->whereHas('category', function ($query) use ($slug) {
+                $query->where('slug', $slug);
+            })
+            ->latest()
+            ->take($limit)
+            ->get();
+    }
+
     #[Computed]
     public function featuredProducts(): Collection
     { 
@@ -48,6 +61,18 @@ new class extends Component
             ->latest()
             ->take(8)
             ->get();
+    }
+
+    #[Computed]
+    public function hookahChillumProducts(): Collection
+    {
+        return $this->productsByCategorySlug('hookah-chillum');
+    }
+
+    #[Computed]
+    public function pipeAndHandleProducts(): Collection
+    {
+        return $this->productsByCategorySlug('pipe-and-handle');
     }
 
     #[Computed]

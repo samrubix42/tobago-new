@@ -209,10 +209,7 @@
                     <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
                 </div>
                 <div class="flex items-center justify-between gap-2 mb-2">
-                    <span class="rounded-full border border-cyan-300/20 bg-cyan-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-200">
-                        Premium
-                    </span>
-                    <span class="text-[10px] text-white/55 uppercase tracking-wider">{{ $product->category?->title ?? 'Hookah' }}</span>
+                   
                 </div>
                 <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
                 <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
@@ -235,6 +232,88 @@
             @endforelse
         </div>
         @endisland
+    </section>
+
+    <section id="category-focus" class="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
+        @php
+        $categorySections = [
+        [
+        'title' => 'Hookah Chillum',
+        'description' => 'Top picks from our Hookah Chillum category for better airflow and cleaner sessions.',
+        'slug' => 'hookah-chillum',
+        'products' => $this->hookahChillumProducts,
+        ],
+        [
+        'title' => 'Pipe and Handle',
+        'description' => 'Explore durable pipe and handle options that match your setup and style.',
+        'slug' => 'pipe-and-handle',
+        'products' => $this->pipeAndHandleProducts,
+        ],
+        ];
+        @endphp
+
+        <div class="py-10 flex flex-col justify-center items-center gap-6 mb-12">
+            <div class="space-y-4">
+                
+                <h2 class="text-3xl sm:text-4xl font-semibold leading-tight">
+                    Complete <span class="text-gradient">your setup</span>
+                </h2>
+            </div>
+            <p class="text-muted text-sm max-w-5xl">
+                Cleanly curated picks from our most popular accessories. Explore the collection and jump straight to products that match your setup.
+            </p>
+        </div>
+
+        <div class="space-y-10">
+            @foreach($categorySections as $section)
+            <div>
+                <div class="mb-6">
+                    <div>
+                        <h3 class="text-2xl sm:text-3xl font-semibold">{{ $section['title'] }}</h3>
+                        <p class="text-muted text-sm mt-2 max-w-2xl leading-6">{{ $section['description'] }}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                    @forelse($section['products'] as $product)
+                    @php
+                    $sectionImage = optional($product->images->firstWhere('is_primary', true))->image
+                    ?? optional($product->images->first())->image;
+                    @endphp
+                    <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block">
+                        <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white/[0.03] mb-4 border border-white/10">
+                            <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
+                        </div>
+                     
+                        <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
+                        <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
+                        <div class="mt-4 flex items-end justify-between gap-3">
+                            <div>
+                                <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
+                                @if($product->compare_price && $product->compare_price > $product->selling_price)
+                                <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                                @endif
+                            </div>
+                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-white transition">
+                                <i class="ri-arrow-right-up-line"></i>
+                            </span>
+                        </div>
+                    </a>
+                    @empty
+                    <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
+                        Products are coming soon in {{ $section['title'] }}.
+                    </div>
+                    @endforelse
+                </div>
+
+                <div class=" mt-7 md:mt-12 flex justify-center">
+                    <a href="{{ route('products.category', ['category' => $section['slug']]) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
+                        View More <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </section>
 
     <section id="shop-by-budget" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
