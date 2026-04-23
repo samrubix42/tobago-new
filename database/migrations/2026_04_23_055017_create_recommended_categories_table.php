@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('recommended_category_id')->constrained('categories')->cascadeOnDelete();
+            $table->string('title')->nullable();
             $table->timestamps();
         });
     }

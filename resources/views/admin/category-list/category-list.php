@@ -21,6 +21,7 @@ new #[Layout('layouts::admin')] class extends Component
     public $parentCategories = [];
     public $recommendationOptions = [];
     public array $recommendedCategoryIds = [];
+    public array $recommendationTitles = [];
 
 
 
@@ -97,6 +98,7 @@ new #[Layout('layouts::admin')] class extends Component
         $this->deleteId = null;
         $this->recommendationCategoryId = null;
         $this->recommendedCategoryIds = [];
+        $this->recommendationTitles = [];
     }
 
     public function openEditModal(int $categoryId): void
@@ -129,10 +131,19 @@ new #[Layout('layouts::admin')] class extends Component
 
         $this->resetValidation();
         $this->recommendationCategoryId = $categoryId;
-        $this->recommendedCategoryIds = RecommendedCategory::query()
+        $recommendations = RecommendedCategory::query()
             ->where('category_id', $categoryId)
+            ->get(['recommended_category_id', 'title']);
+
+        $this->recommendedCategoryIds = $recommendations
             ->pluck('recommended_category_id')
             ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $this->recommendationTitles = $recommendations
+            ->mapWithKeys(fn ($recommendation) => [
+                (int) $recommendation->recommended_category_id => (string) ($recommendation->title ?? ''),
+            ])
             ->all();
 
         $this->dispatch('open-recommend-modal');
@@ -144,6 +155,8 @@ new #[Layout('layouts::admin')] class extends Component
             'recommendationCategoryId' => ['required', 'integer', 'exists:categories,id'],
             'recommendedCategoryIds' => ['array'],
             'recommendedCategoryIds.*' => ['integer', 'exists:categories,id', 'distinct'],
+            'recommendationTitles' => ['array'],
+            'recommendationTitles.*' => ['nullable', 'string', 'max:255'],
         ]);
 
         $categoryId = (int) $this->recommendationCategoryId;
@@ -164,6 +177,7 @@ new #[Layout('layouts::admin')] class extends Component
                 $selectedIds->map(fn ($recommendedId) => [
                     'category_id' => $categoryId,
                     'recommended_category_id' => $recommendedId,
+                    'title' => trim((string) ($this->recommendationTitles[$recommendedId] ?? '')) ?: null,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ])->all()

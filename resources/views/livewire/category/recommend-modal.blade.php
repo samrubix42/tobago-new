@@ -52,23 +52,47 @@
                                     </span>
                                 </label>
 
+                                @if(in_array($parent->id, $recommendedCategoryIds))
+                                    <div class="mt-2 px-2">
+                                        <input
+                                            type="text"
+                                            wire:model.live="recommendationTitles.{{ $parent->id }}"
+                                            placeholder="Recommendation section title (optional)"
+                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                                        >
+                                    </div>
+                                @endif
+
                                 @if($parent->children->isNotEmpty())
                                     <div class="mt-2 ml-5 space-y-2 border-l border-slate-200 pl-3">
                                         @foreach($parent->children as $child)
-                                            <label wire:key="recommend-child-{{ $child->id }}" class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-slate-50 cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    value="{{ $child->id }}"
-                                                    wire:model="recommendedCategoryIds"
-                                                    class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                >
-                                                <span class="text-sm text-slate-700">
-                                                    {{ $child->title }}
-                                                    @if((int) $child->id === (int) $recommendationCategoryId)
-                                                        <span class="text-xs text-slate-500">(Current)</span>
-                                                    @endif
-                                                </span>
-                                            </label>
+                                            <div wire:key="recommend-child-{{ $child->id }}">
+                                                <label class="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-slate-50 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        value="{{ $child->id }}"
+                                                        wire:model="recommendedCategoryIds"
+                                                        class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                                                    >
+                                                    <span class="text-sm text-slate-700">
+                                                        {{ $child->title }}
+                                                        @if((int) $child->id === (int) $recommendationCategoryId)
+                                                            <span class="text-xs text-slate-500">(Current)</span>
+                                                        @endif
+                                                    </span>
+                                                </label>
+
+                                                @if(in_array($child->id, $recommendedCategoryIds))
+                                                    <div class="mt-2 px-2">
+                                                        <input
+                                                            type="text"
+                                                            wire:model.live="recommendationTitles.{{ $child->id }}"
+                                                            placeholder="Recommendation section title (optional)"
+                                                            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                                                        >
+                                                    </div>
+                                                @endif
+                                            </div>
                                         @endforeach
                                     </div>
                                 @endif
@@ -81,6 +105,9 @@
                     </div>
 
                     @error('recommendedCategoryIds.*')
+                        <p class="mt-3 text-xs text-rose-600">{{ $message }}</p>
+                    @enderror
+                    @error('recommendationTitles.*')
                         <p class="mt-3 text-xs text-rose-600">{{ $message }}</p>
                     @enderror
                 </div>

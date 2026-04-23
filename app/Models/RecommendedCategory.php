@@ -10,6 +10,7 @@ class RecommendedCategory extends Model
     protected $fillable = [
         'category_id',
         'recommended_category_id',
+        'title',
     ];
 
     public function category(): BelongsTo

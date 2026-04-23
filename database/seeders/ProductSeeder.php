@@ -38,9 +38,11 @@ class ProductSeeder extends Seeder
                 $slug = $this->uniqueProductSlug($name, $productIndex);
                 $sku = $this->uniqueSku($name, $productIndex);
 
-                $costPrice = fake()->randomFloat(2, 120, 2400);
-                $sellingPrice = $costPrice + fake()->randomFloat(2, 40, 900);
-                $comparePrice = fake()->boolean(60) ? $sellingPrice + fake()->randomFloat(2, 50, 450) : null;
+                $sellingPrice = fake()->randomFloat(2, 3000, 35000);
+                $costPrice = round($sellingPrice * fake()->randomFloat(2, 0.62, 0.84), 2);
+                $comparePrice = fake()->boolean(75)
+                    ? round($sellingPrice + fake()->randomFloat(2, 600, 5000), 2)
+                    : null;
                 $stock = fake()->numberBetween(0, 240);
 
                 Product::query()->updateOrCreate(

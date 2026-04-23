@@ -283,6 +283,55 @@
 
     </div>
 
+    @if($recommendedSections->isNotEmpty())
+        @foreach($recommendedSections as $section)
+            <section class="mt-14 sm:mt-20">
+                <div class="flex items-end justify-between gap-6 mb-8">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">{{ $section['title'] }}</h2>
+                        <p class="text-muted text-sm mt-2">Products from {{ $section['category']->title }}</p>
+                    </div>
+                    <a href="{{ route('home') }}#collection" wire:navigate class="text-sm text-muted hover:text-white transition hidden sm:inline-flex items-center gap-2">
+                        View all <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                    @foreach($section['products'] as $recommendedProduct)
+                        <a href="{{ route('product', $recommendedProduct->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-4 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block">
+                            <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white/3">
+                                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.12), transparent 60%);"></div>
+                                <img src="{{ $this->productImageUrl($recommendedProduct) }}" class="relative h-24 object-contain transition duration-300 group-hover:scale-105" alt="{{ $recommendedProduct->name }}">
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-between gap-2">
+                                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-wider text-muted">
+                                    {{ $recommendedProduct->category?->title ?? 'Tobac-Go' }}
+                                </span>
+                                <i class="ri-heart-line text-white/35 group-hover:text-indigo-300 transition"></i>
+                            </div>
+
+                            <h3 class="text-white text-sm font-semibold leading-snug mt-2 min-h-9.5 line-clamp-2">{{ $recommendedProduct->name }}</h3>
+                            <p class="text-muted text-xs mt-1 line-clamp-1">{{ $this->shortText($recommendedProduct->short_description, 38) }}</p>
+
+                            <div class="mt-4 flex items-center justify-between gap-3">
+                                <div>
+                                    <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($recommendedProduct->selling_price) }}</p>
+                                    @if($recommendedProduct->compare_price && $recommendedProduct->compare_price > $recommendedProduct->selling_price)
+                                    <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($recommendedProduct->compare_price) }}</p>
+                                    @endif
+                                </div>
+                                <span class="h-9 w-9 rounded-full border border-subtle text-white/70 transition group-hover:bg-white/5 group-hover:border-white/20 inline-flex items-center justify-center" aria-label="View {{ $recommendedProduct->name }}">
+                                    <i class="ri-add-line"></i>
+                                </span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endforeach
+    @endif
+
     <!-- RELATED PRODUCTS -->
     <section class="mt-14 sm:mt-20">
         <div class="flex items-end justify-between gap-6 mb-8">
@@ -297,38 +346,38 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             @forelse($relatedProducts as $relatedProduct)
-            <a href="{{ route('product', $relatedProduct->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-4 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block">
-                <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white/3">
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.12), transparent 60%);"></div>
-                    <img src="{{ $this->productImageUrl($relatedProduct) }}" class="relative h-24 object-contain transition duration-300 group-hover:scale-105" alt="{{ $relatedProduct->name }}">
-                </div>
-
-                <div class="mt-4 flex items-center justify-between gap-2">
-                    <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-wider text-muted">
-                        {{ $relatedProduct->category?->title ?? 'Tobac-Go' }}
-                    </span>
-                    <i class="ri-heart-line text-white/35 group-hover:text-indigo-300 transition"></i>
-                </div>
-
-                <h3 class="text-white text-sm font-semibold leading-snug mt-2 min-h-9.5 line-clamp-2">{{ $relatedProduct->name }}</h3>
-                <p class="text-muted text-xs mt-1 line-clamp-1">{{ $this->shortText($relatedProduct->short_description, 38) }}</p>
-
-                <div class="mt-4 flex items-center justify-between gap-3">
-                    <div>
-                        <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($relatedProduct->selling_price) }}</p>
-                        @if($relatedProduct->compare_price && $relatedProduct->compare_price > $relatedProduct->selling_price)
-                        <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($relatedProduct->compare_price) }}</p>
-                        @endif
+                <a href="{{ route('product', $relatedProduct->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-4 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block">
+                    <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white/3">
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.12), transparent 60%);"></div>
+                        <img src="{{ $this->productImageUrl($relatedProduct) }}" class="relative h-24 object-contain transition duration-300 group-hover:scale-105" alt="{{ $relatedProduct->name }}">
                     </div>
-                    <span class="h-9 w-9 rounded-full border border-subtle text-white/70 transition group-hover:bg-white/5 group-hover:border-white/20 inline-flex items-center justify-center" aria-label="View {{ $relatedProduct->name }}">
-                        <i class="ri-add-line"></i>
-                    </span>
-                </div>
-            </a>
+
+                    <div class="mt-4 flex items-center justify-between gap-2">
+                        <span class="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-wider text-muted">
+                            {{ $relatedProduct->category?->title ?? 'Tobac-Go' }}
+                        </span>
+                        <i class="ri-heart-line text-white/35 group-hover:text-indigo-300 transition"></i>
+                    </div>
+
+                    <h3 class="text-white text-sm font-semibold leading-snug mt-2 min-h-9.5 line-clamp-2">{{ $relatedProduct->name }}</h3>
+                    <p class="text-muted text-xs mt-1 line-clamp-1">{{ $this->shortText($relatedProduct->short_description, 38) }}</p>
+
+                    <div class="mt-4 flex items-center justify-between gap-3">
+                        <div>
+                            <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($relatedProduct->selling_price) }}</p>
+                            @if($relatedProduct->compare_price && $relatedProduct->compare_price > $relatedProduct->selling_price)
+                            <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($relatedProduct->compare_price) }}</p>
+                            @endif
+                        </div>
+                        <span class="h-9 w-9 rounded-full border border-subtle text-white/70 transition group-hover:bg-white/5 group-hover:border-white/20 inline-flex items-center justify-center" aria-label="View {{ $relatedProduct->name }}">
+                            <i class="ri-add-line"></i>
+                        </span>
+                    </div>
+                </a>
             @empty
-            <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/2 px-6 py-10 text-center text-white/70">
-                More products will appear here soon.
-            </div>
+                <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/2 px-6 py-10 text-center text-white/70">
+                    More products will appear here soon.
+                </div>
             @endforelse
         </div>
     </section>

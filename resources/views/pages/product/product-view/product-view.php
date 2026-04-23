@@ -3,6 +3,7 @@
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\RecommendedCategory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -12,6 +13,7 @@ new class extends Component
     public Product $product;
 
     public Collection $relatedProducts;
+    public Collection $recommendedSections;
 
     public array $galleryImages = [];
 
@@ -66,6 +68,46 @@ new class extends Component
                 ->get();
 
             $this->relatedProducts = $this->relatedProducts->concat($remaining)->values();
+        }
+
+        $this->recommendedSections = collect();
+
+        if ($this->product->category_id) {
+            $recommendations = RecommendedCategory::query()
+                ->with('recommendedCategory')
+                ->where('category_id', $this->product->category_id)
+                ->get();
+
+            $this->recommendedSections = $recommendations
+                ->map(function (RecommendedCategory $recommendation) {
+                    $recommendedCategory = $recommendation->recommendedCategory;
+
+                    if (! $recommendedCategory) {
+                        return null;
+                    }
+
+                    $products = Product::query()
+                        ->with(['images', 'category'])
+                        ->where('status', 'active')
+                        ->where('category_id', $recommendedCategory->id)
+                        ->whereKeyNot($this->product->id)
+                        ->latest('id')
+                        ->limit(4)
+                        ->get();
+
+                    if ($products->isEmpty()) {
+                        return null;
+                    }
+
+                    return [
+                        'id' => $recommendedCategory->id,
+                        'title' => trim((string) ($recommendation->title ?? '')) ?: $recommendedCategory->title,
+                        'category' => $recommendedCategory,
+                        'products' => $products,
+                    ];
+                })
+                ->filter()
+                ->values();
         }
     }
 

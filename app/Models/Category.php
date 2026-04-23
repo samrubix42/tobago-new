@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -46,7 +46,7 @@ class Category extends Model
             'recommended_categories',
             'category_id',
             'recommended_category_id'
-        )->withTimestamps();
+        )->withPivot('title')->withTimestamps();
     }
 
     public function recommendedByCategories(): BelongsToMany
@@ -56,6 +56,11 @@ class Category extends Model
             'recommended_categories',
             'recommended_category_id',
             'category_id'
-        )->withTimestamps();
+        )->withPivot('title')->withTimestamps();
+    }
+
+    public function recommendationLinks(): HasMany
+    {
+        return $this->hasMany(RecommendedCategory::class, 'category_id');
     }
 }

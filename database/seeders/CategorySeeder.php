@@ -86,6 +86,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'hookah-accessories',
                 'children' => [],
             ],
+      
 
             [
                 'title' => 'Combos',
