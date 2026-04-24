@@ -25,7 +25,7 @@
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                     <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Last Updated</p>
-                    <p class="mt-2 text-lg font-semibold text-white">August 8, 2025</p>
+                    <p class="mt-2 text-lg font-semibold text-white">April 24, 2026</p>
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                     <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Free Shipping</p>

@@ -9,7 +9,7 @@
         <div class="rounded-3xl border border-subtle bg-[#0b0d0f]/90 p-6 sm:p-8 shadow-2xl shadow-black/30">
             <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-slate-300">
                 <i class="ri-time-line text-cyan-300"></i>
-                Last updated: August 08, 2025
+                Last updated: April 24, 2026
             </div>
 
             <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight text-white">
