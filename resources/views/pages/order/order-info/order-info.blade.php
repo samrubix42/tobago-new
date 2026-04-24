@@ -103,6 +103,30 @@
                     </div>
                 </div>
 
+                @if($order->payment_gateway || $order->payment_gateway_transaction_id || $order->payment_failure_reason)
+                    <div class="rounded-lg border border-white/10 bg-white/2 p-3 mt-3 text-xs space-y-1.5">
+                        <p class="text-slate-400">Payment Response</p>
+                        @if($order->payment_gateway)
+                            <p class="text-slate-300">Gateway: <span class="text-white uppercase">{{ $order->payment_gateway }}</span></p>
+                        @endif
+                        @if($order->payment_state)
+                            <p class="text-slate-300">Gateway State: <span class="text-white">{{ $order->payment_state }}</span></p>
+                        @endif
+                        @if($order->payment_gateway_transaction_id)
+                            <p class="text-slate-300 break-all">Transaction ID: <span class="text-white">{{ $order->payment_gateway_transaction_id }}</span></p>
+                        @endif
+                        @if($order->payment_gateway_order_id)
+                            <p class="text-slate-300 break-all">Gateway Order ID: <span class="text-white">{{ $order->payment_gateway_order_id }}</span></p>
+                        @endif
+                        @if($order->payment_verified_at)
+                            <p class="text-slate-300">Verified At: <span class="text-white">{{ optional($order->payment_verified_at)->format('d M Y, h:i A') }}</span></p>
+                        @endif
+                        @if($order->payment_failure_reason)
+                            <p class="text-rose-300">Reason: {{ $order->payment_failure_reason }}</p>
+                        @endif
+                    </div>
+                @endif
+
                 <div class="rounded-lg border border-white/10 bg-white/2 p-3 mt-3 text-xs">
                     <p class="text-slate-400">Delivery Address</p>
                     <p class="text-white mt-1 font-semibold">{{ $order->customer_name }} ({{ $order->customer_phone }})</p>

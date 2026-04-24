@@ -250,8 +250,18 @@ new class extends Component
             $paymentGateway = app(PaymentGatewayInterface::class);
             $paymentResponse = $paymentGateway->initiatePayment($order);
 
+            $order->update([
+                'payment_gateway' => 'phonepe',
+                'payment_gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? $order->payment_gateway_order_id),
+                'payment_state' => (string) ($paymentResponse['status'] ?? $order->payment_state),
+                'payment_response_payload' => is_array($paymentResponse['payload'] ?? null) ? $paymentResponse['payload'] : null,
+            ]);
+
             if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
-                $order->update(['payment_status' => 'failed']);
+                $order->update([
+                    'payment_status' => 'failed',
+                    'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
+                ]);
 
                 OrderStatusLog::query()->create([
                     'order_id' => $order->id,
@@ -268,6 +278,10 @@ new class extends Component
                 ]);
                 return;
             }
+
+            $order->update([
+                'payment_failure_reason' => null,
+            ]);
 
             $this->showConfirmationSlide = false;
             $this->redirect((string) $paymentResponse['redirect_url'], navigate: false);

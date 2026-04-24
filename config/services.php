@@ -42,13 +42,24 @@ return [
     ],
 
     'phonepe' => [
+        'client_id' => env('PHONEPE_CLIENT_ID', env('PHONEPE_MERCHANT_ID', env('CLIENT_ID'))),
+        'client_secret' => env('PHONEPE_CLIENT_SECRET', env('PHONEPE_SALT_KEY', env('CLIENT_KEY'))),
+        'client_version' => env('PHONEPE_CLIENT_VERSION', env('PHONEPE_SALT_INDEX', env('CLIENT_VERSION', '1'))),
+        'auth_base_url' => env('PHONEPE_AUTH_BASE_URL'),
+        'base_url' => env('PHONEPE_BASE_URL'),
+        'auth_endpoint' => env('PHONEPE_AUTH_ENDPOINT', '/v1/oauth/token'),
+        'checkout_endpoint' => env('PHONEPE_CHECKOUT_ENDPOINT', '/checkout/v2/pay'),
+        'order_status_endpoint' => env('PHONEPE_ORDER_STATUS_ENDPOINT', '/checkout/v2/order/{merchantOrderId}/status'),
+        'expire_after' => (int) env('PHONEPE_EXPIRE_AFTER', 1200),
+        'webhook_username' => env('PHONEPE_WEBHOOK_USERNAME'),
+        'webhook_password' => env('PHONEPE_WEBHOOK_PASSWORD'),
+        'test_mode' => (bool) env('PHONEPE_TEST_MODE', true),
+
+        // Legacy values (kept for backward compatibility with old envs).
         'merchant_id' => env('PHONEPE_MERCHANT_ID', env('CLIENT_ID')),
         'salt_key' => env('PHONEPE_SALT_KEY', env('CLIENT_KEY')),
         'salt_index' => env('PHONEPE_SALT_INDEX', env('CLIENT_VERSION', '1')),
-        'base_url' => env('PHONEPE_BASE_URL', env('CLIENT_URL', 'https://api-preprod.phonepe.com/apis/pg-sandbox')),
         'pay_endpoint' => env('PHONEPE_PAY_ENDPOINT', '/pg/v1/pay'),
-        'test_mode' => (bool) env('PHONEPE_TEST_MODE', true),
     ],
 
 ];
-

@@ -1,0 +1,110 @@
+PhonePe Payment Setup Guide (Checkout + Webhook)
+Project: tobago-new
+Date: 2026-04-24
+
+========================================
+1) Run Database Migration
+========================================
+Command:
+php artisan migrate
+
+This adds payment response fields to the orders table.
+
+========================================
+2) Configure .env (Sandbox First)
+========================================
+Open .env and set:
+
+PHONEPE_TEST_MODE=true
+PHONEPE_CLIENT_ID=your_test_client_id
+PHONEPE_CLIENT_SECRET=your_test_client_secret
+PHONEPE_CLIENT_VERSION=1
+PHONEPE_WEBHOOK_USERNAME=your_webhook_user
+PHONEPE_WEBHOOK_PASSWORD=your_webhook_pass
+APP_URL=https://your-public-domain
+
+Recommended defaults (already in code/.env.example):
+PHONEPE_AUTH_ENDPOINT=/v1/oauth/token
+PHONEPE_CHECKOUT_ENDPOINT=/checkout/v2/pay
+PHONEPE_ORDER_STATUS_ENDPOINT=/checkout/v2/order/{merchantOrderId}/status
+PHONEPE_EXPIRE_AFTER=1200
+
+========================================
+3) Configure PhonePe Dashboard Webhook
+========================================
+Webhook URL:
+https://your-domain/payment/phonepe/callback
+
+Use same webhook credentials as .env:
+PHONEPE_WEBHOOK_USERNAME
+PHONEPE_WEBHOOK_PASSWORD
+
+Enable events:
+- checkout.order.completed
+- checkout.order.failed
+
+========================================
+4) Refresh Laravel Config Cache
+========================================
+Run:
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+
+========================================
+5) Test Payment Flow (Sandbox)
+========================================
+Test cases:
+1. Online payment success
+2. Online payment failed/cancelled
+3. Retry callback/duplicate webhook event
+
+Verify:
+- Order payment_status updates correctly
+- Payment response details appear in user order info page
+- Order status logs are created correctly
+
+========================================
+6) Go Live
+========================================
+When sandbox tests pass, update .env:
+
+PHONEPE_TEST_MODE=false
+PHONEPE_CLIENT_ID=your_live_client_id
+PHONEPE_CLIENT_SECRET=your_live_client_secret
+PHONEPE_CLIENT_VERSION=your_live_client_version
+PHONEPE_WEBHOOK_USERNAME=your_live_webhook_user
+PHONEPE_WEBHOOK_PASSWORD=your_live_webhook_pass
+APP_URL=https://your-live-domain
+
+Then run:
+php artisan config:cache
+
+========================================
+7) Production Checklist
+========================================
+- APP_URL is HTTPS and public
+- /payment/phonepe/callback is reachable publicly
+- Webhook credentials in PhonePe dashboard match .env exactly
+- Server firewall allows PhonePe webhook traffic
+- SSL certificate is valid
+- Logs monitored for payment errors
+
+========================================
+8) Troubleshooting Quick Notes
+========================================
+If payment does not start:
+- Check PHONEPE_CLIENT_ID / CLIENT_SECRET / CLIENT_VERSION
+- Check PHONEPE_TEST_MODE and credentials match mode
+- Check APP_URL is correct and HTTPS
+- Run php artisan config:clear
+
+If callback is not updating order:
+- Check webhook URL in PhonePe dashboard
+- Check webhook username/password
+- Check server access logs for POST /payment/phonepe/callback
+- Check Laravel logs: storage/logs/laravel.log
+
+If you change .env, always refresh config:
+php artisan config:clear && php artisan config:cache
+
