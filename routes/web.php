@@ -15,6 +15,7 @@ Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');
 Route::livewire('/categories', 'pages::category')->name('category');
 Route::livewire('/blogs', 'pages::blog')->name('blogs');
 Route::livewire('/about', 'pages::about')->name('about');
+Route::livewire('/hookah-shop-noida', 'pages::location')->name('location.noida');
 Route::livewire('/blog/{slug}', 'pages::blog-view')->name('blog.view');
 Route::livewire('/login', 'auth::login')->middleware('guest')->name('login');
 Route::livewire('/register', 'auth::register')->middleware('guest')->name('register');
