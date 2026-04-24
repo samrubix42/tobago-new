@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="relative w-full max-w-[320px] sm:max-w-[450px]">
-                    <img src="{{ asset('images/1 7.webp') }}"
+                    <img src="{{ asset('images/hero.png') }}"
                         alt="Premium Modern Hookah"
                         class="w-[90%] h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-2">
 
