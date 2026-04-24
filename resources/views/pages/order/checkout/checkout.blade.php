@@ -298,12 +298,12 @@
     </div>
 
     @if($showConfirmationSlide)
-    <div class="fixed inset-0 z-50">
+    <div class="fixed inset-0 z-[100]">
         <button type="button" wire:click="closeOrderConfirmation" class="absolute inset-0 bg-black/70"></button>
 
-        <div class="absolute inset-x-0 bottom-0 md:inset-y-0 md:right-0 md:left-auto flex items-end md:items-stretch md:justify-end">
-            <div class="w-full h-[90vh] md:h-full md:max-w-xl border border-white/10 md:border-y-0 md:border-r-0 bg-[#0b0d0f] rounded-t-2xl md:rounded-none shadow-2xl overflow-hidden flex flex-col">
-                <div class="px-4 sm:px-5 py-3 border-b border-white/10 bg-[#0b0d0f]/95 backdrop-blur sticky top-0 z-10">
+        <div class="absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom,0px)+4.25rem)] md:bottom-0 md:inset-y-0 md:right-0 md:left-auto flex items-end md:items-stretch md:justify-end">
+            <div class="w-full h-[calc(100dvh-env(safe-area-inset-bottom,0px)-4.25rem)] max-h-[calc(100dvh-env(safe-area-inset-bottom,0px)-4.25rem)] sm:h-auto sm:max-h-[calc(100dvh-1rem)] md:h-full md:max-h-none md:max-w-xl lg:max-w-2xl border border-white/10 md:border-y-0 md:border-r-0 bg-[#0b0d0f] rounded-t-2xl md:rounded-none shadow-2xl overflow-hidden flex flex-col">
+                <div class="px-4 sm:px-5 md:px-6 py-3 border-b border-white/10 bg-[#0b0d0f]/95 backdrop-blur sticky top-0 z-10">
                     <div class="flex items-center justify-between gap-3">
                         <div>
                             <h3 class="text-base sm:text-lg font-semibold text-white">Confirm Your Order</h3>
@@ -315,7 +315,7 @@
                     </div>
                 </div>
 
-                <div class="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-4">
+                <div class="flex-1 overflow-y-auto px-4 sm:px-5 md:px-6 py-4 space-y-4">
                     <div class="rounded-lg border border-white/10 bg-white/2 p-3 sm:p-4">
                         <div class="flex items-center justify-between gap-2">
                             <p class="text-xs uppercase tracking-[0.12em] text-slate-400">Items</p>
@@ -395,8 +395,8 @@
                     @endif
                 </div>
 
-                <div class="border-t border-white/10 px-4 sm:px-5 py-3 bg-[#0b0d0f]/95 backdrop-blur sticky bottom-0">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="border-t border-white/10 px-4 sm:px-5 md:px-6 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-[#0b0d0f]/95 backdrop-blur sticky bottom-0">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <button type="button" wire:click="closeOrderConfirmation" class="rounded-md border border-white/20 px-4 py-2.5 text-sm text-white hover:bg-white/5">Back</button>
                         <button type="button" wire:click="placeOrder" wire:loading.attr="disabled" wire:target="placeOrder" class="rounded-md bg-white text-black px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition disabled:opacity-60">
                             <span wire:loading.remove wire:target="placeOrder">Confirm & Place Order</span>
