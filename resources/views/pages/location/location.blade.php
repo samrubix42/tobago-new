@@ -1,4 +1,3 @@
-
 <div class="relative overflow-hidden"
     x-data="{
         lightboxOpen: false,
@@ -9,6 +8,9 @@
         galleryGroups: [],
         galleryInterval: null,
         gallerySlides: [
+            { src: 'TOBAC-GO - Front.webp', alt: 'Tobac-Go front store view' },
+            { src: 'tobac-go-interior.webp', alt: 'Tobac-Go store interior' },
+            { src: '1 7.webp', alt: 'Tobac-Go store gallery image' },
             { src: 'hookah-shop-noida.webp', alt: 'Tobac-Go Noida entrance' },
             { src: 'hookah-store.webp', alt: 'Tobac-Go hookah store' },
             { src: 'IMG_20260128_140523102_HDR_AE.webp', alt: 'Tobac-Go store interior' },
@@ -37,7 +39,7 @@
             { src: 'premium-hookah-design.webp', alt: 'Tobac-Go premium hookah design' },
             { src: 'premium-hookah.webp', alt: 'Tobac-Go premium hookah' },
             { src: 'spaceship hookah.webp', alt: 'Tobac-Go spaceship hookah' },
-            { src: 'tobac-go-noida.webp', alt: 'Tobac-Go Noida storefront' }
+           
         ],
         videos: [
             { id: 'h1D9BAqBSKQ', title: 'Tobac-Go Noida Store Video 1', thumbnail: 'https://i.ytimg.com/vi/h1D9BAqBSKQ/mqdefault.jpg' },
@@ -167,7 +169,7 @@
         </div>
     </section>
 
-    
+
 
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
@@ -175,16 +177,16 @@
             <p class="mt-3 text-sm text-slate-300">We often hear: "I wish I had found you sooner." Here is why customers keep coming back.</p>
             <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 @foreach($whyChoose as $point)
-                    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-slate-200 flex items-start gap-2.5">
-                        <i class="ri-checkbox-circle-fill text-cyan-300 mt-0.5"></i>
-                        <span>{{ $point }}</span>
-                    </div>
+                <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-slate-200 flex items-start gap-2.5">
+                    <i class="ri-checkbox-circle-fill text-cyan-300 mt-0.5"></i>
+                    <span>{{ $point }}</span>
+                </div>
                 @endforeach
             </div>
         </div>
     </section>
 
-    
+
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6" @mouseenter="stopGallery()" @mouseleave="startGallery()">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -209,7 +211,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                                 <template x-for="slide in group" :key="slide.src">
                                     <button type="button" @click="openLightbox(slide.index)" class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-                                        <img :src="`/gallery/${slide.src}`" :alt="slide.alt" class="h-44 w-full object-cover transition duration-500 group-hover:scale-105" />
+                                        <img :src="`/gallery/${slide.src}`" :alt="slide.alt" class="h-56 sm:h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
                                         <span class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></span>
                                     </button>
                                 </template>
@@ -237,10 +239,10 @@
                 <p class="mt-3 text-sm text-slate-300">From tabletop to tall floor models, modern to classic styles, we have options for every buyer.</p>
                 <ul class="mt-4 space-y-2.5">
                     @foreach($hookahCollection as $item)
-                        <li class="text-sm text-slate-200 flex items-start gap-2.5">
-                            <i class="ri-arrow-right-up-line text-cyan-300 mt-0.5"></i>
-                            <span>{{ $item }}</span>
-                        </li>
+                    <li class="text-sm text-slate-200 flex items-start gap-2.5">
+                        <i class="ri-arrow-right-up-line text-cyan-300 mt-0.5"></i>
+                        <span>{{ $item }}</span>
+                    </li>
                     @endforeach
                 </ul>
             </article>
@@ -253,10 +255,10 @@
                 <p class="mt-3 text-sm text-slate-300">We keep flavour stock fresh and sealed so every session tastes right.</p>
                 <ul class="mt-4 space-y-2.5">
                     @foreach($flavours as $item)
-                        <li class="text-sm text-slate-200 flex items-start gap-2.5">
-                            <i class="ri-sparkling-2-line text-cyan-300 mt-0.5"></i>
-                            <span>{{ $item }}</span>
-                        </li>
+                    <li class="text-sm text-slate-200 flex items-start gap-2.5">
+                        <i class="ri-sparkling-2-line text-cyan-300 mt-0.5"></i>
+                        <span>{{ $item }}</span>
+                    </li>
                     @endforeach
                 </ul>
             </article>
@@ -272,17 +274,18 @@
             <p class="mt-3 text-sm text-slate-300">We also stock hookah chillums, replacement stems, and base jars for part replacement needs.</p>
             <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
                 @foreach($accessories as $item)
-                    <div class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-slate-200 flex items-start gap-2.5">
-                        <i class="ri-checkbox-circle-line text-cyan-300 mt-0.5"></i>
-                        <span>{{ $item }}</span>
-                    </div>
+                <div class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-slate-200 flex items-start gap-2.5">
+                    <i class="ri-checkbox-circle-line text-cyan-300 mt-0.5"></i>
+                    <span>{{ $item }}</span>
+                </div>
                 @endforeach
             </div>
         </article>
     </section>
 
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">            <div class="flex items-center justify-between gap-3">
+        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
+            <div class="flex items-center justify-between gap-3">
                 <div>
                     <h2 class="text-xl sm:text-3xl font-semibold text-white">Tobac-Go Videos</h2>
                     <p class="mt-2 text-sm text-slate-300">Play the latest Noida store videos directly on this page.</p>
@@ -311,7 +314,8 @@
     </section>
 
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">            <h2 class="text-xl sm:text-3xl font-semibold text-white">What Our Customers in Noida Say</h2>
+        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
+            <h2 class="text-xl sm:text-3xl font-semibold text-white">What Our Customers in Noida Say</h2>
             <div class="mt-5 grid md:grid-cols-3 gap-4">
                 <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
                     <div class="flex items-center gap-2 text-amber-300 text-sm">
@@ -343,18 +347,18 @@
             <h2 class="text-xl sm:text-3xl font-semibold text-white">Frequently Asked Questions About Our Hookah Shop in Noida</h2>
             <div class="mt-5 space-y-3">
                 @foreach($faqs as $index => $faq)
-                    <article class="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
-                        <button type="button"
-                            @click="openFaq = (openFaq === {{ $index }} ? -1 : {{ $index }})"
-                            class="w-full px-4 sm:px-5 py-4 text-left flex items-center justify-between gap-3">
-                            <h3 class="text-sm sm:text-base font-medium text-white">{{ $faq['q'] }}</h3>
-                            <i class="ri-arrow-down-s-line text-slate-300 transition-transform"
-                                :class="openFaq === {{ $index }} ? 'rotate-180' : ''"></i>
-                        </button>
-                        <div x-show="openFaq === {{ $index }}" x-transition class="px-4 sm:px-5 pb-4">
-                            <p class="text-sm text-slate-300 leading-relaxed">{{ $faq['a'] }}</p>
-                        </div>
-                    </article>
+                <article class="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+                    <button type="button"
+                        @click="openFaq = (openFaq === {{ $index }} ? -1 : {{ $index }})"
+                        class="w-full px-4 sm:px-5 py-4 text-left flex items-center justify-between gap-3">
+                        <h3 class="text-sm sm:text-base font-medium text-white">{{ $faq['q'] }}</h3>
+                        <i class="ri-arrow-down-s-line text-slate-300 transition-transform"
+                            :class="openFaq === {{ $index }} ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="openFaq === {{ $index }}" x-transition class="px-4 sm:px-5 pb-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">{{ $faq['a'] }}</p>
+                    </div>
+                </article>
                 @endforeach
             </div>
         </div>
@@ -407,7 +411,7 @@
         </div>
     </div>
 
-    
+
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div class="grid lg:grid-cols-12 gap-6">
             <article class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
