@@ -63,7 +63,7 @@ new #[Layout('layouts::admin')] class extends Component
         OrderStatusLog::query()->create([
             'order_id' => $order->id,
             'status' => $status,
-            'note' => 'Status updated from ' . ucwords(str_replace('-', ' ', $oldStatus)) . ' to ' . ucwords(str_replace('-', ' ', $status)) . ' from order listing.',
+            'note' => $this->customerStatusNote($oldStatus, $status),
             'source' => 'admin',
             'logged_at' => now(),
         ]);
@@ -73,6 +73,26 @@ new #[Layout('layouts::admin')] class extends Component
             'type' => 'success',
             'position' => 'top-right',
         ]);
+    }
+
+    protected function customerStatusNote(string $oldStatus, string $newStatus): string
+    {
+        return match ($newStatus) {
+            'pending' => 'Your order is pending and will be reviewed shortly.',
+            'confirmed' => 'Your order has been confirmed and is now being prepared.',
+            'packed' => 'Your order has been packed and is ready for dispatch.',
+            'shipped' => 'Your order has been shipped and is on its way.',
+            'on-the-way' => 'Your order is out for delivery and will arrive soon.',
+            'delivered' => 'Your order has been delivered successfully.',
+            'returned' => 'Your order has been marked as returned.',
+            'cancelled' => 'Your order has been cancelled. Please contact support if you need help.',
+            default => 'Your order status has been updated from ' . $this->statusLabel($oldStatus) . ' to ' . $this->statusLabel($newStatus) . '.',
+        };
+    }
+
+    protected function statusLabel(string $status): string
+    {
+        return ucwords(str_replace('-', ' ', $status));
     }
 
     public function render()
