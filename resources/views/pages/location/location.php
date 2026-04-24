@@ -11,10 +11,10 @@ new class extends Component
 
     public array $whyChoose = [
         'We stock genuine, tested hookahs from trusted brands - nothing cheap or fake.',
-        'Our team actually knows the products. We help you compare and choose by budget and usage.',
-        'You get everything in one visit - hookah, flavours, charcoal, bowl, pipe, and cleaning tools.',
+        'Our team actually knows the products. We walk you through differences, help you compare, and suggest what fits your budget and usage.',
+        'We carry everything you need in one visit - the hookah, the flavours, the charcoal, the bowl, the pipe, and the cleaning tools.',
         'Our prices are fair and we do not add hidden costs.',
-        'For home use, gifting, or party setups, we help you pick the right setup.',
+        'Whether you are buying for home use, a party setup, or gifting someone, we can help you choose the right thing.',
     ];
 
     public array $hookahCollection = [
@@ -31,10 +31,10 @@ new class extends Component
 
     public array $flavours = [
         'Fruit Flavours - Mango, watermelon, grape, peach, strawberry, lemon and more.',
-        'Mint and Menthol - Cooling options, great solo or mixed with fruit.',
-        'Sweet and Dessert Blends - Vanilla, chocolate, guava cream and similar options.',
+        'Mint and Menthol - Smooth and cooling, great on their own or mixed with fruit.',
+        'Sweet and Dessert Blends - Vanilla, chocolate, guava cream, and similar options.',
         'Classic Shisha Flavours - Double apple, rose, and traditional Middle Eastern blends.',
-        'Mixed and Premium Blends - For layered, unique sessions.',
+        'Mixed and Premium Blends - For people who want something unique and layered.',
     ];
 
     public array $accessories = [
@@ -53,43 +53,43 @@ new class extends Component
     public array $faqs = [
         [
             'q' => "Where exactly is Tobac-Go's hookah shop in Noida?",
-            'a' => 'We are at Shop No. 38-39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City, Sector 76, Noida - 201316. Call 078384 49604 for directions.',
+            'a' => 'We are located at Shop No. 38-39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City, Sector 76, Noida - 201316. You can call us at 078384 49604 if you need help finding us or want directions from your area.',
         ],
         [
             'q' => 'What hookah brands do you sell at your Noida store?',
-            'a' => "We carry Tobac-Go's own line, Cocoyaya, Mya, VG France Foggit, Thugs Hookah, Digital Smoke, Deja Vu, and more in both budget and premium segments.",
+            'a' => "We carry a wide range of brands including Tobac-Go's own line, Cocoyaya, Mya, VG France Foggit, Thugs Hookah, Digital Smoke, Deja Vu, and more. Both budget-friendly and premium options are available, so you will find something that fits your needs.",
         ],
         [
             'q' => 'Do you sell hookah flavours at your shop in Noida?',
-            'a' => 'Yes. We keep fruit, mint, classic, and premium blends. Stock is fresh, sealed, and from trusted brands.',
+            'a' => 'Yes, we keep a good stock of hookah flavours at our Noida store. You will find fruit-based, mint, classic, and premium blends. All our flavours are fresh, sealed, and from trusted brands. If you are not sure which one to pick, we are happy to guide you.',
         ],
         [
             'q' => 'Can I buy hookah accessories separately from your store?',
-            'a' => 'Absolutely. You can buy bowls, charcoal, hoses, foil, mouth tips, brushes, HMDs, and more individually.',
+            'a' => "Absolutely. We sell all hookah accessories individually - bowls, charcoal, hoses, foil, mouth tips, cleaning brushes, heat management devices, and more. You don't need to buy a full hookah set to shop with us.",
         ],
         [
             'q' => 'Do you offer home delivery for hookah in Noida?',
-            'a' => 'Yes. We deliver across Noida and nearby areas, including Greater Noida West.',
+            'a' => 'Yes, we deliver across Noida and nearby areas. You can order from our website or call us directly to place an order. We ship to most Noida sectors and Greater Noida West as well.',
         ],
         [
             'q' => 'I am new to hookah. Can you help me choose the right one?',
-            'a' => 'Yes. Tell us your budget and usage, and we will suggest a setup that makes sense without pressure.',
+            'a' => 'Of course. We work with beginners all the time. Just tell us your budget, how often you plan to use it, and whether it is for home or travel - and we will suggest a setup that makes sense for you. You will not feel lost or pressured here.',
         ],
         [
             'q' => 'Are your hookah products genuine and of good quality?',
-            'a' => 'Yes. We run our own Tobac-Go brand and only stock products we personally test and trust.',
+            'a' => 'Yes. We run our own Tobac-Go brand, so we know exactly what goes into our products. For other brands we carry, we only stock what we have personally tested and trust. Nothing cheap or fake makes it to our shelf.',
         ],
         [
             'q' => 'Do you also sell cigars and other smoking accessories at your Noida store?',
-            'a' => 'Yes. We also carry cigars, bongs, pipes, lighters, ashtrays, and other smoking accessories.',
+            'a' => 'Yes, we also carry cigars (including flavoured, Cuban, and Dominican options), bongs, pipes, lighters, ashtrays, and other smoking accessories. You can browse the full range in our store or on our website.',
         ],
         [
             'q' => 'What is the price range for hookahs at your Noida store?',
-            'a' => 'We offer entry-level to premium models. Pricing depends on brand, size, and material.',
+            'a' => 'We have options starting from entry-level hookahs for everyday use to premium and luxury models. The price range varies based on brand, size, and material. Visit our store or check our website for current pricing.',
         ],
         [
             'q' => 'Is there parking available near your hookah shop in Sector 76 Noida?',
-            'a' => 'Yes. Parking is available at Amarpali Silicon City market.',
+            'a' => 'Yes, parking is available at the Amarpali Silicon City market. You can easily park and walk to our store.',
         ],
     ];
 

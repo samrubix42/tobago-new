@@ -130,12 +130,15 @@
                     Noida Store Location
                 </p>
 
-                <h1 class="mt-5 text-3xl sm:text-5xl font-bold leading-[1.1] tracking-tight text-white">Hookah Shop in Noida - Tobac-Go, Sector 76</h1>
+                <h1 class="mt-5 text-3xl sm:text-5xl font-bold leading-[1.1] tracking-tight text-white">Hookah Shop in Noida &ndash; Tobac-Go, Sector 76</h1>
                 <p class="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed">
-                    If you have been searching for a reliable hookah shop in Noida, you already know how hard it is to find one that actually has what you need. Most places either carry limited stock or the staff cannot guide properly.
+                    If you have been searching for a reliable hookah shop in Noida, you already know how hard it is to find one that actually has what you need. Most places either carry very limited stock or the staff just does not know the products well enough to help you decide.
                 </p>
                 <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed">
-                    At Tobac-Go, we built our store around one simple idea: quality hookahs, fresh flavours, and the right accessories, all in one spot with honest guidance.
+                    At Tobac-Go, we built the store around one simple idea: give people in Noida a proper place to buy quality hookahs, fresh flavours, and good accessories - all in one spot, with honest guidance.
+                </p>
+                <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed">
+                    We are located in Sector 76, Noida, at Amarpali Silicon City, and we welcome everyone from first-time buyers to people who have been smoking hookah for years.
                 </p>
 
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
@@ -174,7 +177,7 @@
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
             <h2 class="text-2xl sm:text-3xl font-semibold text-white">Why People Choose Tobac-Go as Their Hookah Shop in Noida</h2>
-            <p class="mt-3 text-sm text-slate-300">We often hear: "I wish I had found you sooner." Here is why customers keep coming back.</p>
+            <p class="mt-3 text-sm text-slate-300">We have been serving customers across Noida for a while now, and the one thing we hear most is: "I wish I had found you sooner." Here is why customers keep coming back to us.</p>
             <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 @foreach($whyChoose as $point)
                 <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-slate-200 flex items-start gap-2.5">
@@ -183,6 +186,7 @@
                 </div>
                 @endforeach
             </div>
+            <p class="mt-5 text-sm text-slate-300">When people look for a hookah store in Noida that they can trust, we want Tobac-Go to be the first name that comes to mind.</p>
         </div>
     </section>
 
@@ -236,7 +240,8 @@
                     <i class="ri-vip-crown-2-line text-cyan-300"></i>
                     Our Hookah Collection
                 </h2>
-                <p class="mt-3 text-sm text-slate-300">From tabletop to tall floor models, modern to classic styles, we have options for every buyer.</p>
+                <p class="mt-3 text-sm text-slate-300">We carry hookahs across all sizes, styles, and price ranges. Small tabletop models, tall floor-standing ones, modern designs, and classic Egyptian-style builds - we have options for all kinds of buyers.</p>
+                <p class="mt-2 text-sm text-slate-300">Some of the brands and types you will find at our store:</p>
                 <ul class="mt-4 space-y-2.5">
                     @foreach($hookahCollection as $item)
                     <li class="text-sm text-slate-200 flex items-start gap-2.5">
@@ -245,6 +250,7 @@
                     </li>
                     @endforeach
                 </ul>
+                <p class="mt-4 text-sm text-slate-300">Every hookah we keep in our store has been checked for build quality, draw smoothness, and durability. We do not put something on our shelf unless we would recommend it to a friend.</p>
             </article>
 
             <article class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
@@ -252,7 +258,8 @@
                     <i class="ri-restaurant-2-line text-cyan-300"></i>
                     Hookah Flavours in Noida - Fresh Stock, Always
                 </h2>
-                <p class="mt-3 text-sm text-slate-300">We keep flavour stock fresh and sealed so every session tastes right.</p>
+                <p class="mt-3 text-sm text-slate-300">The flavour you choose can change your whole session. A stale or low-quality flavour means harsh smoke, weak taste, and a frustrating experience.</p>
+                <p class="mt-2 text-sm text-slate-300">At our hookah shop in Noida, we keep our flavour stock fresh and sealed at all times. You will find a wide selection to explore:</p>
                 <ul class="mt-4 space-y-2.5">
                     @foreach($flavours as $item)
                     <li class="text-sm text-slate-200 flex items-start gap-2.5">
@@ -261,6 +268,7 @@
                     </li>
                     @endforeach
                 </ul>
+                <p class="mt-4 text-sm text-slate-300">Not sure which one to pick? Just ask us. We will suggest a flavour based on what you already enjoy or what kind of session you are planning.</p>
             </article>
         </div>
     </section>
@@ -271,7 +279,8 @@
                 <i class="ri-tools-line text-cyan-300"></i>
                 Hookah Accessories - Everything in One Place
             </h2>
-            <p class="mt-3 text-sm text-slate-300">We also stock hookah chillums, replacement stems, and base jars for part replacement needs.</p>
+            <p class="mt-3 text-sm text-slate-300">Buying a hookah is just the start. The accessories you use with it make a big difference to how it performs and how long it lasts.</p>
+            <p class="mt-2 text-sm text-slate-300">At our hookah store in Noida, you will find:</p>
             <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
                 @foreach($accessories as $item)
                 <div class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-slate-200 flex items-start gap-2.5">
@@ -280,6 +289,7 @@
                 </div>
                 @endforeach
             </div>
+            <p class="mt-4 text-sm text-slate-300">We also stock hookah chillums, replacement stems, and base jars for people who need to replace specific parts.</p>
         </article>
     </section>
 
@@ -337,6 +347,20 @@
                     </div>
                     <p class="mt-3 text-sm text-slate-200">"Everything in one place. Hookah, coals, bowls, hoses - saved me multiple trips."</p>
                     <p class="mt-3 text-xs text-slate-400">- V. Gupta</p>
+                </article>
+                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <div class="flex items-center gap-2 text-amber-300 text-sm">
+                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                    </div>
+                    <p class="mt-3 text-sm text-slate-200">"Helpful staff, fair prices, and authentic products. Great store in Sector 76."</p>
+                    <p class="mt-3 text-xs text-slate-400">- N. Verma</p>
+                </article>
+                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <div class="flex items-center gap-2 text-amber-300 text-sm">
+                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                    </div>
+                    <p class="mt-3 text-sm text-slate-200">"Good collection of hookahs and flavours. They explained everything clearly for a beginner."</p>
+                    <p class="mt-3 text-xs text-slate-400">- S. Tyagi</p>
                 </article>
             </div>
         </div>
@@ -415,7 +439,7 @@
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div class="grid lg:grid-cols-12 gap-6">
             <article class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
-                <h2 class="text-xl sm:text-2xl font-semibold text-white">Visit Tobac-Go - Hookah Shop in Sector 76, Noida</h2>
+                <h2 class="text-xl sm:text-2xl font-semibold text-white">Visit Tobac-Go &mdash; Hookah Shop in Sector 76, Noida</h2>
                 <div class="mt-4 space-y-3 text-sm text-slate-200">
                     <p><span class="text-slate-400">Store Name:</span> Tobac-Go</p>
                     <p><span class="text-slate-400">Address:</span> Shop No. 38-39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City, Sector 76, Noida, Uttar Pradesh 201316</p>

@@ -40,6 +40,20 @@
         </div>
     </section>
 
+    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-6">
+        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-4 sm:p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Policy Center</p>
+                <div class="flex flex-wrap gap-2">
+                    <a href="{{ route('privacy-policy') }}" wire:navigate class="inline-flex items-center rounded-full border px-3 py-1.5 text-xs transition {{ request()->routeIs('privacy-policy') ? 'border-cyan-300/40 bg-cyan-500/10 text-cyan-200' : 'border-white/15 bg-white/[0.03] text-slate-300 hover:border-white/30 hover:text-white' }}">Privacy</a>
+                    <a href="{{ route('shipping-policy') }}" wire:navigate class="inline-flex items-center rounded-full border px-3 py-1.5 text-xs transition {{ request()->routeIs('shipping-policy') ? 'border-cyan-300/40 bg-cyan-500/10 text-cyan-200' : 'border-white/15 bg-white/[0.03] text-slate-300 hover:border-white/30 hover:text-white' }}">Shipping</a>
+                    <a href="{{ route('terms-conditions') }}" wire:navigate class="inline-flex items-center rounded-full border px-3 py-1.5 text-xs transition {{ request()->routeIs('terms-conditions') ? 'border-cyan-300/40 bg-cyan-500/10 text-cyan-200' : 'border-white/15 bg-white/[0.03] text-slate-300 hover:border-white/30 hover:text-white' }}">Terms</a>
+                    <a href="{{ route('return-refund') }}" wire:navigate class="inline-flex items-center rounded-full border px-3 py-1.5 text-xs transition {{ request()->routeIs('return-refund') ? 'border-cyan-300/40 bg-cyan-500/10 text-cyan-200' : 'border-white/15 bg-white/[0.03] text-slate-300 hover:border-white/30 hover:text-white' }}">Returns</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-10">
         <div class="grid gap-6 lg:grid-cols-12">
             <article class="lg:col-span-8 rounded-3xl border border-subtle bg-[#0b0d0f] p-6 sm:p-8">

@@ -1,4 +1,3 @@
-
 <div class="relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 -left-20 h-72 w-72 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #00c6ff, transparent 70%);"></div>
@@ -17,7 +16,7 @@
                     Founder-Led. <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300">Session-Focused.</span> Built For Real Smokers.
                 </h1>
 
-                <p class="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed">
+                <p class="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
                     Tobac-Go is built from personal experience, not trend-chasing. We focus on quality products, honest information, and a smoother buying journey.
                 </p>
 
@@ -41,17 +40,21 @@
                 </div>
             </article>
 
-            <aside class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4">
-                <div class="grid grid-cols-2 gap-3 h-full">
-                    <div class="rounded-xl overflow-hidden border border-white/10 min-h-[140px] sm:min-h-[170px]">
-                        <img src="{{ asset('images/1 6.webp') }}" alt="Tobac-Go store showcase" class="h-full w-full object-cover">
-                    </div>
-                    <div class="rounded-xl overflow-hidden border border-white/10 min-h-[140px] sm:min-h-[170px]">
-                        <img src="{{ asset('images/1 7.webp') }}" alt="Tobac-Go product display" class="h-full w-full object-cover">
-                    </div>
-                    <div class="col-span-2 rounded-xl overflow-hidden border border-white/10 min-h-[190px] sm:min-h-[230px]">
-                        <img src="{{ asset('images/tobac-go-interior.webp') }}" alt="Tobac-Go interior" class="h-full w-full object-cover">
-                    </div>
+            <aside class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-4 sm:p-5">
+                <div class="rounded-xl overflow-hidden border border-white/10">
+                    <img src="{{ asset('images/TOBAC-GO - Front.webp') }}" alt="Tobac-Go front store" class="w-full h-56 sm:h-64 object-cover">
+                </div>
+
+                <div class="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">What Makes Us Different</p>
+                    <ul class="mt-3 space-y-2.5">
+                        @foreach($whatMakesDifferent as $item)
+                            <li class="text-sm text-slate-200 flex items-start gap-2.5">
+                                <i class="ri-checkbox-circle-fill text-cyan-300 mt-0.5"></i>
+                                <span>{{ $item }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </aside>
         </div>
@@ -63,7 +66,7 @@
                 <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
                     <i class="ri-user-star-line text-base"></i>
                 </span>
-                <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Founder’s Journey</p>
+                <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Founder's Journey</p>
             </div>
 
             <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -74,13 +77,15 @@
                 </div>
 
                 <div class="lg:col-span-4 rounded-xl border border-white/10 bg-white/[0.02] p-4 h-fit">
-                    <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Store Front</p>
-                    <div class="mt-3 rounded-lg overflow-hidden border border-white/10">
-                        <img src="{{ asset('images/TOBAC-GO - Front.webp') }}" alt="Tobac-Go front store" class="w-full h-44 object-cover">
-                    </div>
-                    <p class="mt-3 text-xs leading-relaxed text-slate-300">
-                        Designed for people who care about quality sessions, clear product choices, and dependable buying experience.
+                    <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Our Promise</p>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-300">
+                        Every product listed on Tobac-Go is selected to deliver reliable performance, real value, and a better session experience.
                     </p>
+                    <div class="mt-4 space-y-2 text-sm">
+                        <p class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-slate-200">Quality-first curation</p>
+                        <p class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-slate-200">No inflated claims</p>
+                        <p class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-slate-200">Support that actually helps</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -146,19 +151,19 @@
         </div>
     </section>
 
-    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <article class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
-                <h2 class="text-xl font-semibold text-white">Who Tobac-Go Is For</h2>
-                <ul class="mt-4 space-y-3">
-                    @foreach($forWho as $line)
-                        <li class="flex items-start gap-2 text-sm text-slate-200">
-                            <i class="ri-checkbox-circle-fill mt-0.5 text-cyan-300"></i>
-                            <span>{{ $line }}</span>
-                        </li>
+                <h2 class="text-xl font-semibold text-white">Who This Is For</h2>
+                <p class="mt-3 text-sm text-slate-300 leading-relaxed">Whether you are just getting started or already experienced, Tobac-Go is designed to keep your buying experience simple and clear.</p>
+                <div class="mt-4 flex flex-wrap gap-2.5">
+                    @foreach($forWho as $item)
+                        <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-slate-200">
+                            <i class="ri-sparkling-2-line text-cyan-300"></i>
+                            {{ $item }}
+                        </span>
                     @endforeach
-                </ul>
-                <p class="mt-5 text-sm text-slate-300 leading-relaxed">Whether you are buying your first hookah or adding to your collection, we want the process to feel simple from start to finish.</p>
+                </div>
             </article>
 
             <article class="lg:col-span-7 rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
@@ -168,40 +173,17 @@
                         <p>{{ $line }}</p>
                     @endforeach
                 </div>
-
-                <div class="mt-6 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-                    <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400 mb-2">Why Customers Stay With Us</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm">
-                        <div class="rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 text-slate-200 flex items-center gap-2">
-                            <i class="ri-price-tag-3-line text-cyan-300"></i>
-                            <span>Fair Pricing</span>
-                        </div>
-                        <div class="rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 text-slate-200 flex items-center gap-2">
-                            <i class="ri-file-text-line text-cyan-300"></i>
-                            <span>Honest Details</span>
-                        </div>
-                        <div class="rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 text-slate-200 flex items-center gap-2">
-                            <i class="ri-customer-service-2-line text-cyan-300"></i>
-                            <span>Real Support</span>
-                        </div>
-                    </div>
+                <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                    <a href="{{ route('products') }}" wire:navigate class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.05] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 transition hover:border-cyan-300/40 hover:bg-white/[0.09]">
+                        Explore Products
+                        <i class="ri-arrow-right-line"></i>
+                    </a>
+                    <a href="{{ route('location.noida') }}" wire:navigate class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/75 transition hover:text-white hover:border-white/40">
+                        Visit Our Store
+                        <i class="ri-map-pin-line"></i>
+                    </a>
                 </div>
             </article>
-        </div>
-
-        <div class="mt-6 rounded-2xl overflow-hidden border border-subtle bg-[#0b0d0f]">
-            <div class="grid grid-cols-1 md:grid-cols-3">
-                <div class="md:col-span-2 p-6 sm:p-7">
-                    <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Our Space</p>
-                    <h3 class="mt-2 text-2xl sm:text-3xl font-semibold text-white">Built Around Real Sessions and Real Products</h3>
-                    <p class="mt-3 text-sm text-slate-300 leading-relaxed">
-                        From store floor to final checkout, every detail at Tobac-Go is designed for clarity, consistency, and confidence.
-                    </p>
-                </div>
-                <div class="border-t md:border-t-0 md:border-l border-white/10">
-                    <img src="{{ asset('images/hookah-shop-in-noida.webp') }}" alt="Hookah store in Noida" class="h-full w-full object-cover min-h-[210px]">
-                </div>
-            </div>
         </div>
     </section>
 </div>
