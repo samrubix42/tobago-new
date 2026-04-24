@@ -310,7 +310,7 @@ new class extends Component
                 'total' => $finalTotal,
                 'payment_method' => $this->paymentMethod,
                 'payment_status' => 'pending',
-                'status' => 'pending',
+                'status' => 'confirmed',
                 'delivery_type' => 'in_hand_delivery',
                 'customer_name' => $this->fullName,
                 'customer_phone' => $this->phone,
@@ -328,8 +328,8 @@ new class extends Component
 
             OrderStatusLog::query()->create([
                 'order_id' => $order->id,
-                'status' => 'pending',
-                'note' => 'Order placed successfully. Awaiting confirmation.',
+                'status' => 'confirmed',
+                'note' => 'Order placed successfully. Order confirmed.',
                 'source' => 'customer',
                 'logged_at' => now(),
             ]);
