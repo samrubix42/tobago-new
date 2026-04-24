@@ -34,58 +34,54 @@
             </div>
         </div>
 
-        <!-- SHOP -->
+        <!-- LINKS -->
         <div>
             <h3 class="text-white text-sm font-semibold mb-4 uppercase tracking-wide">
-                Shop
+                Links
             </h3>
 
             <ul class="space-y-2 text-sm text-muted">
-                <li><a href="#" class="hover:text-white transition">Hookah</a></li>
-                <li><a href="#" class="hover:text-white transition">Bongs</a></li>
-                <li><a href="#" class="hover:text-white transition">Accessories</a></li>
-                <li><a href="#" class="hover:text-white transition">Combos</a></li>
+                <li><a href="{{ route('products') }}" class="hover:text-white transition">Shop</a></li>
+                <li><a href="{{ route('category') }}" class="hover:text-white transition">Collection</a></li>
+                <li><a href="{{ route('about') }}" class="hover:text-white transition">About Us</a></li>
+                <li><a href="{{ route('blogs') }}" class="hover:text-white transition">Blogs</a></li>
+                <li><a href="{{ route('location.noida') }}" class="hover:text-white transition">Location</a></li>
             </ul>
         </div>
 
-        <!-- SUPPORT -->
+        <!-- CATEGORIES -->
         <div>
             <h3 class="text-white text-sm font-semibold mb-4 uppercase tracking-wide">
-                Support
+                Categories
             </h3>
 
             <ul class="space-y-2 text-sm text-muted">
-                <li><a href="#" class="hover:text-white transition">Contact</a></li>
-                <li><a href="#" class="hover:text-white transition">FAQ</a></li>
-                <li><a href="#" class="hover:text-white transition">Shipping</a></li>
-                <li><a href="#" class="hover:text-white transition">Returns</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" class="hover:text-white transition">Tobac-Go Hookah</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'premium-hookah']) }}" class="hover:text-white transition">Premium Hookah</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" class="hover:text-white transition">Pipe and Handle</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" class="hover:text-white transition">Smoking Accessories</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'lighters']) }}" class="hover:text-white transition">Lighters</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" class="hover:text-white transition">Hookah Chillum</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" class="hover:text-white transition">Hookah Accessories</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'glass-percolator-bongs']) }}" class="hover:text-white transition">Glass Percolator Bongs</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'combos']) }}" class="hover:text-white transition">Combos</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'acrylic-bongs']) }}" class="hover:text-white transition">Acrylic Bongs</a></li>
+                <li><a href="{{ route('products.category', ['category' => 'ashtray']) }}" class="hover:text-white transition">Ashtray</a></li>
             </ul>
         </div>
 
-        <!-- NEWSLETTER -->
+        <!-- POLICY -->
         <div>
             <h3 class="text-white text-sm font-semibold mb-4 uppercase tracking-wide">
-                Newsletter
+                Policy
             </h3>
 
-            <p class="text-sm text-muted mb-4">
-                Get updates on new arrivals and offers.
-            </p>
-
-            <div class="flex gap-2">
-
-                <input
-                    type="email"
-                    placeholder="Your email"
-                    class="flex-1 rounded-full bg-white/5 border border-subtle px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/20 transition"
-                >
-
-                <button class="px-4 py-2 rounded-full border border-subtle text-sm hover:border-white transition">
-                    Join
-                </button>
-
-            </div>
-
+            <ul class="space-y-2 text-sm text-muted">
+                <li><a href="{{ route('privacy-policy') }}" class="hover:text-white transition">Privacy Policy</a></li>
+                <li><a href="{{ route('shipping-policy') }}" class="hover:text-white transition">Shipping Policy</a></li>
+                <li><a href="{{ route('terms-conditions') }}" class="hover:text-white transition">Terms & Conditions</a></li>
+                <li><a href="{{ route('return-refund') }}" class="hover:text-white transition">Returns & Refunds</a></li>
+            </ul>
         </div>
 
     </div>
@@ -97,9 +93,7 @@
             <p>© {{ date('Y') }} Tobac-Go</p>
 
             <div class="flex gap-5">
-                <a href="#" class="hover:text-white transition">Privacy</a>
-                <a href="#" class="hover:text-white transition">Terms</a>
-                <a href="#" class="hover:text-white transition">Refund</a>
+                <a href="https://techonika.com" target="_blank" class="hover:text-white transition">Powered by Techonika</a>
             </div>
 
         </div>
