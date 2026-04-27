@@ -18,7 +18,7 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public string $paymentMethod = 'cod';
+    public string $paymentMethod = 'online';
 
     public ?int $selectedAddressId = null;
     public bool $useNewAddress = false;
@@ -233,6 +233,8 @@ new class extends Component
 
     public function placeOrder(): void
     {
+        $this->paymentMethod = 'online';
+
         Log::info('Checkout placeOrder hit', [
             'payment_method' => $this->paymentMethod,
             'user_id' => Auth::id(),
@@ -255,9 +257,8 @@ new class extends Component
 
         $this->validateAddressInput();
 
-        $isOnline = $this->paymentMethod === 'online';
         try {
-            $order = $this->createOrderFromCart($cart, clearCart: ! $isOnline);
+            $order = $this->createOrderFromCart($cart, clearCart: false);
             Log::info('Checkout order created', [
                 'order_id' => $order->id,
                 'order_number' => $order->order_number,
@@ -278,85 +279,69 @@ new class extends Component
             return;
         }
 
-        if ($isOnline) {
-            /** @var PaymentGatewayInterface $paymentGateway */
-            $paymentGateway = app(PaymentGatewayInterface::class);
-            Log::info('Checkout initiating PhonePe payment', [
+        /** @var PaymentGatewayInterface $paymentGateway */
+        $paymentGateway = app(PaymentGatewayInterface::class);
+        Log::info('Checkout initiating PhonePe payment', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+        ]);
+        $paymentResponse = $paymentGateway->initiatePayment($order);
+        Log::info('Checkout PhonePe initiate response', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'success' => (bool) ($paymentResponse['success'] ?? false),
+            'status' => (string) ($paymentResponse['status'] ?? ''),
+            'gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? ''),
+            'redirect_url_present' => ! empty($paymentResponse['redirect_url']),
+            'message' => (string) ($paymentResponse['message'] ?? ''),
+        ]);
+
+        $order->update([
+            'payment_gateway' => 'phonepe',
+            'payment_gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? $order->payment_gateway_order_id),
+            'payment_state' => (string) ($paymentResponse['status'] ?? $order->payment_state),
+            'payment_response_payload' => is_array($paymentResponse['payload'] ?? null) ? $paymentResponse['payload'] : null,
+        ]);
+
+        if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
+            Log::warning('Checkout PhonePe initiate failed', [
                 'order_id' => $order->id,
                 'order_number' => $order->order_number,
-            ]);
-            $paymentResponse = $paymentGateway->initiatePayment($order);
-            Log::info('Checkout PhonePe initiate response', [
-                'order_id' => $order->id,
-                'order_number' => $order->order_number,
-                'success' => (bool) ($paymentResponse['success'] ?? false),
                 'status' => (string) ($paymentResponse['status'] ?? ''),
-                'gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? ''),
-                'redirect_url_present' => ! empty($paymentResponse['redirect_url']),
                 'message' => (string) ($paymentResponse['message'] ?? ''),
             ]);
-
             $order->update([
-                'payment_gateway' => 'phonepe',
-                'payment_gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? $order->payment_gateway_order_id),
-                'payment_state' => (string) ($paymentResponse['status'] ?? $order->payment_state),
-                'payment_response_payload' => is_array($paymentResponse['payload'] ?? null) ? $paymentResponse['payload'] : null,
+                'payment_status' => 'failed',
+                'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
             ]);
 
-            if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
-                Log::warning('Checkout PhonePe initiate failed', [
-                    'order_id' => $order->id,
-                    'order_number' => $order->order_number,
-                    'status' => (string) ($paymentResponse['status'] ?? ''),
-                    'message' => (string) ($paymentResponse['message'] ?? ''),
-                ]);
-                $order->update([
-                    'payment_status' => 'failed',
-                    'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
-                ]);
-
-                OrderStatusLog::query()->create([
-                    'order_id' => $order->id,
-                    'status' => $order->status,
-                    'note' => 'PhonePe payment initiation failed: ' . (string) ($paymentResponse['message'] ?? 'Unknown error'),
-                    'source' => 'system',
-                    'logged_at' => now(),
-                ]);
-
-                $this->dispatch('toast-show', [
-                    'message' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment. Please try again.'),
-                    'type' => 'error',
-                    'position' => 'top-right',
-                ]);
-                return;
-            }
-
-            $order->update([
-                'payment_failure_reason' => null,
-            ]);
-
-            Log::info('Checkout redirecting to PhonePe', [
+            OrderStatusLog::query()->create([
                 'order_id' => $order->id,
-                'order_number' => $order->order_number,
+                'status' => $order->status,
+                'note' => 'PhonePe payment initiation failed: ' . (string) ($paymentResponse['message'] ?? 'Unknown error'),
+                'source' => 'system',
+                'logged_at' => now(),
             ]);
 
-            $this->showConfirmationSlide = false;
-            $this->redirect((string) $paymentResponse['redirect_url'], navigate: false);
+            $this->dispatch('toast-show', [
+                'message' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment. Please try again.'),
+                'type' => 'error',
+                'position' => 'top-right',
+            ]);
             return;
         }
 
-        $this->placedOrderNumber = $order->order_number;
-        $this->showSuccess = true;
-
-        $this->dispatch('toast-show', [
-            'message' => 'Order placed successfully!',
-            'type' => 'success',
-            'position' => 'top-right',
+        $order->update([
+            'payment_failure_reason' => null,
         ]);
 
-        $this->dispatch('cart-updated', count: 0);
+        Log::info('Checkout redirecting to PhonePe', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+        ]);
 
         $this->showConfirmationSlide = false;
+        $this->redirect((string) $paymentResponse['redirect_url'], navigate: false);
     }
 
     protected function createOrderFromCart(Cart $cart, bool $clearCart): Order
@@ -518,7 +503,7 @@ new class extends Component
     protected function validateAddressInput(): void
     {
         $this->validate([
-            'paymentMethod' => ['required', 'in:cod,online'],
+            'paymentMethod' => ['required', 'in:online'],
             'fullName' => ['required', 'string', 'min:2', 'max:255'],
             'phone' => ['required', 'regex:/^[0-9]{10}$/'],
             'email' => ['nullable', 'email', 'max:255'],

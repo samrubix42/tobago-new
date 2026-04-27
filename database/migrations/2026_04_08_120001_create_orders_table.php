@@ -34,7 +34,14 @@ return new class extends Migration
             $table->decimal('total', 10, 2)->default(0);
 
             $table->enum('payment_method', ['cod', 'online'])->default('cod');
+            $table->string('payment_gateway', 40)->nullable();
+            $table->string('payment_gateway_order_id')->nullable();
+            $table->string('payment_gateway_transaction_id')->nullable();
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
+            $table->string('payment_state', 40)->nullable();
+            $table->text('payment_failure_reason')->nullable();
+            $table->json('payment_response_payload')->nullable();
+            $table->timestamp('payment_verified_at')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'packed', 'shipped', 'returned', 'on-the-way', 'delivered', 'cancelled'])->default('pending');
             $table->enum('delivery_type', ['in_hand_delivery', 'third_party'])->default('in_hand_delivery');
             $table->string('delivery_partner')->nullable();
