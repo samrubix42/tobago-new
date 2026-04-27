@@ -164,10 +164,7 @@
             <div class="relative group rounded-2xl overflow-hidden border border-subtle shadow-2xl shadow-black/40">
                 <img src="{{ asset('images/hookah-shop-in-noida.webp') }}" alt="Hookah Shop in Noida Tobac-Go Sector 76" class="h-[280px] sm:h-[440px] w-full object-cover transition duration-700 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div class="absolute bottom-4 left-4 right-4 rounded-xl border border-white/15 bg-black/30 backdrop-blur px-4 py-3">
-                    <p class="text-xs uppercase tracking-[0.14em] text-cyan-200">Tobac-Go Noida</p>
-                    <p class="text-sm text-white mt-1">Shop No. 38-39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City</p>
-                </div>
+              
             </div>
         </div>
     </section>
