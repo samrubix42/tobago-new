@@ -1,6 +1,7 @@
 
 @section('meta_title', 'Return & Refund Policy | Tobac-Go Hookah Store')
 @section('meta_description', 'Read our return and refund policy. We offer easy returns and fast refunds to ensure a smooth shopping experience at Tobac-Go.')
+@section('meta_keywords', 'hookah return policy, shisha refund india, Tobac-Go return, hookah exchange policy')
 
 <div class="relative overflow-hidden">
 

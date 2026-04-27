@@ -1,9 +1,39 @@
 @php
+    // --- SEO Meta resolution: subcategory > category > search > generic ---
+    $metaContextName = $activeSubcategory?->title ?? $activeCategory?->title ?? null;
+
+    $metaTitle = $activeSubcategory?->meta_title
+        ?? ($activeSubcategory ? ($activeSubcategory->title . ' | Tobac-Go') : null)
+        ?? $activeCategory?->meta_title
+        ?? ($activeCategory ? ($activeCategory->title . ' Hookah Collection | Tobac-Go') : null)
+        ?? ($search ? 'Search: ' . $search . ' | Tobac-Go' : null) 
+        ?? 'Shop Premium Hookahs & Shisha | Tobac-Go';
+
+    $metaDescription = $activeSubcategory?->meta_description
+        ?? $activeCategory?->meta_description
+        ?? ($metaContextName
+            ? 'Browse our ' . $metaContextName . ' collection at Tobac-Go. Premium hookahs, shisha flavors, and accessories with fast delivery across India.'
+            : 'Explore the full range of premium hookahs, flavors, and accessories at Tobac-Go. Shop curated hookah products delivered across India.')
+        ;
+
+    $metaKeywords = $activeSubcategory?->meta_keywords
+        ?? $activeCategory?->meta_keywords
+        ?? ($metaContextName
+            ? $metaContextName . ', buy hookah online, shisha accessories, Tobac-Go'
+            : 'buy hookah online, premium shisha, hookah accessories, Tobac-Go shop');
+@endphp
+
+@section('meta_title', $metaTitle)
+@section('meta_description', $metaDescription)
+@section('meta_keywords', $metaKeywords)
+
+@php
     $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 0));
     $priceMaxBound = (int) ceil((float) ($priceLimits->max_price ?? 10000));
     $activeMin = (int) ($minPrice ?? $priceMinBound);
     $activeMax = (int) ($maxPrice ?? $priceMaxBound);
 @endphp
+
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6 overflow-x-hidden"
     x-data="{

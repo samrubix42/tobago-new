@@ -133,12 +133,25 @@ class BlogSeeder extends Seeder
                         'is_published' => true,
                         'tags' => $tags,
                         'featured_image' => null,
+                        'meta_title' => $this->metaTitleFor($title),
+                        'meta_description' => $this->metaDescriptionFor($title),
+                        'meta_keywords' => $tags,
                         'created_at' => now()->subDays(($index * 8) + $postIndex),
                         'updated_at' => now()->subDays(($index * 8) + $postIndex),
                     ]
                 );
             }
         }
+    }
+
+    protected function metaTitleFor(string $title): string
+    {
+        return $title . ' | Tobac-Go Hookah Journal';
+    }
+
+    protected function metaDescriptionFor(string $title): string
+    {
+        return 'Read our latest post on ' . $title . ' at Tobac-Go. Expert hookah tips and product insights.';
     }
 
     protected function buildContent(string $title, array $paragraphs): string

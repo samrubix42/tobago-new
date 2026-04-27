@@ -1,5 +1,6 @@
 @section('meta_title', 'Shipping Policy | Tobac-Go Hookah Store')
 @section('meta_description', 'Learn about our shipping and delivery process. We provide safe and fast shipping for hookahs and accessories across India.')
+@section('meta_keywords', 'hookah shipping policy, shisha delivery india, free shipping hookah, Tobac-Go delivery')
 
 <div class="relative overflow-hidden">
 

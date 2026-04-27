@@ -117,7 +117,7 @@ class CategorySeeder extends Seeder
                     'description' => $this->descriptionFor($parentCategory['title']),
                     'is_active' => true,
                     'order' => $order++,
-                    'meta_title' => $parentCategory['title'] . ' | Tobac-Go',
+                    'meta_title' => $this->metaTitleFor($parentCategory['title']),
                     'meta_description' => $this->metaDescriptionFor($parentCategory['title']),
                     'meta_keywords' => $this->metaKeywordsFor($parentCategory['title']),
                 ]
@@ -133,7 +133,7 @@ class CategorySeeder extends Seeder
                         'description' => $this->descriptionFor($childCategory['title']),
                         'is_active' => true,
                         'order' => $childOrder++,
-                        'meta_title' => $childCategory['title'] . ' | Tobac-Go',
+                        'meta_title' => $this->metaTitleFor($childCategory['title']),
                         'meta_description' => $this->metaDescriptionFor($childCategory['title']),
                         'meta_keywords' => $this->metaKeywordsFor($childCategory['title']),
                     ]
@@ -147,13 +147,18 @@ class CategorySeeder extends Seeder
         return 'Browse ' . $title . ' at Tobac-Go with reliable quality, smooth shopping, and quick delivery.';
     }
 
+    protected function metaTitleFor(string $title): string
+    {
+        return $title . ' | Premium Hookah & Accessories | Tobac-Go';
+    }
+
     protected function metaDescriptionFor(string $title): string
     {
-        return 'Shop ' . $title . ' online at Tobac-Go for premium smoking products and accessories.';
+        return 'Explore our premium range of ' . $title . ' at Tobac-Go. We offer curated selections, high-quality finishes, and fast delivery across India.';
     }
 
     protected function metaKeywordsFor(string $title): string
     {
-        return strtolower($title) . ', tobac-go, smoking accessories, hookah shop';
+        return strtolower($title) . ', buy ' . strtolower($title) . ' online, premium hookahs, shisha accessories, Tobac-Go india';
     }
 }

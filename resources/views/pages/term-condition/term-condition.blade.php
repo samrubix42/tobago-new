@@ -1,6 +1,7 @@
 
 @section('meta_title', 'Terms & Conditions | Tobac-Go Hookah Store')
 @section('meta_description', 'Read the terms and conditions for using the Tobac-Go website and purchasing our premium hookah products.')
+@section('meta_keywords', 'Tobac-Go terms, hookah store policy, online hookah terms, shisha purchase conditions')
 
 <div class="relative overflow-hidden">
 

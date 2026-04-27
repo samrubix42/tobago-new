@@ -62,6 +62,9 @@ class ProductSeeder extends Seeder
                         'status' => fake()->randomElement($statuses),
                         'is_featured' => fake()->boolean(18),
                         'is_trending' => fake()->boolean(22),
+                        'meta_title' => $this->metaTitleFor($name),
+                        'meta_description' => $this->metaDescriptionFor($name, $category->title),
+                        'meta_keywords' => $this->metaKeywordsFor($name, $category->title),
                     ]
                 );
 
@@ -99,6 +102,21 @@ class ProductSeeder extends Seeder
     private function shortDescriptionFor(string $name, string $categoryTitle): string
     {
         return $name . ' in our ' . $categoryTitle . ' range, selected for quality, finish, and daily use.';
+    }
+
+    private function metaTitleFor(string $name): string
+    {
+        return $name . ' | Shop Premium Hookah Online | Tobac-Go';
+    }
+
+    private function metaDescriptionFor(string $name, string $categoryTitle): string
+    {
+        return 'Shop ' . $name . ' from our ' . $categoryTitle . ' collection at Tobac-Go. Premium quality and fast delivery across India.';
+    }
+
+    private function metaKeywordsFor(string $name, string $categoryTitle): string
+    {
+        return strtolower($name) . ', ' . strtolower($categoryTitle) . ', buy hookah online, Tobac-Go';
     }
 
     private function catalog(): array

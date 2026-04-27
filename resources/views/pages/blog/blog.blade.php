@@ -1,5 +1,6 @@
 @section('meta_title', 'Tobac-Go Journal | Hookah Guides, Tips & Product News')
 @section('meta_description', 'Read the latest from Tobac-Go. Expert guides on hookah setup, shisha care, and reviews of the best hookah products in India.')
+@section('meta_keywords', 'hookah blog, shisha guides, hookah tips, Tobac-Go journal, shisha review india')
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
 
