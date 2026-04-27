@@ -44,6 +44,9 @@ new class extends Component
     public bool $showSuccess = false;
     public ?string $placedOrderNumber = null;
     public bool $showConfirmationSlide = false;
+    public bool $showFailure = false;
+    public ?string $failedOrderNumber = null;
+    public ?string $failedPaymentMessage = null;
 
     public function mount(): void
     {
@@ -234,6 +237,9 @@ new class extends Component
     public function placeOrder(): void
     {
         $this->paymentMethod = 'online';
+        $this->showFailure = false;
+        $this->failedOrderNumber = null;
+        $this->failedPaymentMessage = null;
 
         Log::info('Checkout placeOrder hit', [
             'payment_method' => $this->paymentMethod,
@@ -323,8 +329,13 @@ new class extends Component
                 'logged_at' => now(),
             ]);
 
+            $this->failedOrderNumber = $order->order_number;
+            $this->failedPaymentMessage = (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment. Please try again.');
+            $this->showFailure = true;
+            $this->showConfirmationSlide = false;
+
             $this->dispatch('toast-show', [
-                'message' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment. Please try again.'),
+                'message' => $this->failedPaymentMessage,
                 'type' => 'error',
                 'position' => 'top-right',
             ]);
@@ -456,6 +467,10 @@ new class extends Component
 
     public function openOrderConfirmation(): void
     {
+        $this->showFailure = false;
+        $this->failedOrderNumber = null;
+        $this->failedPaymentMessage = null;
+
         $cart = $this->resolveCart();
         if (! $cart || ! $cart->items()->exists()) {
             $this->dispatch('toast-show', [

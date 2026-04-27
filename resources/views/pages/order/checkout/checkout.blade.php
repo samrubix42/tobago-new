@@ -20,6 +20,38 @@
         <p class="text-sm text-emerald-200 mt-2">Order Number: <span class="font-semibold">{{ $placedOrderNumber }}</span></p>
         <a href="{{ route('home') }}" wire:navigate class="mt-4 inline-flex rounded-md bg-white text-black px-4 py-2 text-sm font-semibold">Go to Home</a>
     </div>
+    @elseif($showFailure)
+    <div class="rounded-2xl border border-rose-400/30 bg-rose-500/10 p-6">
+        <div class="flex items-start gap-3">
+            <span class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full border border-rose-300/50 text-rose-200">
+                <i class="ri-error-warning-line"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+                <h2 class="text-lg font-semibold text-rose-100">Payment initiation failed</h2>
+                <p class="text-sm text-rose-200/90 mt-1">{{ $failedPaymentMessage ?: 'We could not redirect to PhonePe right now.' }}</p>
+                @if($failedOrderNumber)
+                <p class="text-xs text-rose-100/80 mt-2">Order Number: <span class="font-semibold">{{ $failedOrderNumber }}</span></p>
+                @endif
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <button type="button" wire:click="openOrderConfirmation" class="inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-semibold hover:opacity-90 transition">
+                        <i class="ri-refresh-line"></i>
+                        Try Again
+                    </button>
+                    @if(auth()->check())
+                    <a href="{{ route('user.orders') }}" wire:navigate class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/5 transition">
+                        <i class="ri-file-list-3-line"></i>
+                        My Orders
+                    </a>
+                    @else
+                    <a href="{{ route('cart') }}" wire:navigate class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/5 transition">
+                        <i class="ri-shopping-cart-2-line"></i>
+                        Back To Cart
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
     @elseif(!$cart || $items->isEmpty())
     <div class="rounded-2xl border border-dashed border-white/15 bg-white/3 p-10 text-center text-slate-300">
         No items found for checkout. Please add items to cart first.
@@ -200,7 +232,7 @@
 
                     <div>
                         <label class="mb-1 block text-xs text-slate-400">Pincode</label>
-                        <input wire:model.live="pincode" x-on:input.debounce.600ms="lookupPincode($event.target.value)" type="text" maxlength="6" placeholder="Pincode" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
+                        <input wire:model.live="pincode" x-on:input.debounce.200ms="lookupPincode($event.target.value)" type="text" maxlength="6" placeholder="Pincode" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('pincode') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                         @if($isPincodeLoading)
                         <p class="text-xs text-blue-300 mt-1">Checking pincode...</p>
@@ -292,7 +324,7 @@
     </div>
 
     @if($showConfirmationSlide)
-    <div class="fixed inset-0 z-[100]">
+    <div class="fixed inset-0 z-100">
         <button type="button" wire:click="closeOrderConfirmation" class="absolute inset-0 bg-black/70"></button>
 
         <div class="absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom,0px)+4.25rem)] md:bottom-0 md:inset-y-0 md:right-0 md:left-auto flex items-end md:items-stretch md:justify-end">
@@ -301,7 +333,7 @@
                     <div class="flex items-center justify-between gap-3">
                         <div>
                             <h3 class="text-base sm:text-lg font-semibold text-white">Confirm Your Order</h3>
-                            <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5">Verify all details before placing the order.</p>
+                            <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5">Verify details and continue to PhonePe payment.</p>
                         </div>
                         <button type="button" wire:click="closeOrderConfirmation" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-slate-300 hover:bg-white/5">
                             <i class="ri-close-line"></i>
@@ -361,7 +393,7 @@
                         <p class="text-xs uppercase tracking-[0.12em] text-slate-400">Payment & Totals</p>
                         <div class="flex items-center justify-between text-slate-300">
                             <span>Payment</span>
-                            <span class="inline-flex rounded-full border border-white/15 px-2 py-0.5 text-xs">{{ strtoupper($paymentMethod) }}</span>
+                            <span class="inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-0.5 text-xs text-blue-100">PHONEPE ONLINE</span>
                         </div>
                         <div class="flex items-center justify-between text-slate-300">
                             <span>Subtotal</span>
@@ -393,8 +425,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <button type="button" wire:click="closeOrderConfirmation" class="rounded-md border border-white/20 px-4 py-2.5 text-sm text-white hover:bg-white/5">Back</button>
                         <button type="button" wire:click="placeOrder" wire:loading.attr="disabled" wire:target="placeOrder" class="rounded-md bg-white text-black px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition disabled:opacity-60">
-                            <span wire:loading.remove wire:target="placeOrder">Confirm & Place Order</span>
-                            <span wire:loading wire:target="placeOrder">Placing Order...</span>
+                            <span wire:loading.remove wire:target="placeOrder">Proceed To PhonePe</span>
+                            <span wire:loading wire:target="placeOrder">Connecting To PhonePe...</span>
                         </button>
                     </div>
                 </div>
