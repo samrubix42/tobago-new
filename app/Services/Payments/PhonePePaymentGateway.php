@@ -279,34 +279,65 @@ class PhonePePaymentGateway implements PaymentGatewayInterface
         ]);
 
         try {
-            $response = Http::timeout(15)
-                ->retry(2, 250)
-                ->asForm()
-                ->withHeaders([
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ])
-                ->post($url, [
+            $authPayloads = [
+                [
                     'client_id' => $clientId,
                     'client_version' => $clientVersion,
                     'client_secret' => $clientSecret,
                     'grant_type' => 'client_credentials',
-                ]);
+                ],
+                [
+                    'clientId' => $clientId,
+                    'clientVersion' => $clientVersion,
+                    'clientSecret' => $clientSecret,
+                    'grantType' => 'client_credentials',
+                ],
+            ];
 
-            $body = $response->json();
-            $token = (string) data_get($body, 'access_token', '');
-            $tokenType = (string) data_get($body, 'token_type', 'O-Bearer');
-            $expiresAt = (int) data_get($body, 'expires_at', 0);
+            $response = null;
+            $body = [];
+            foreach ($authPayloads as $index => $authPayload) {
+                $attempt = $index + 1;
+                $response = Http::timeout(15)
+                    ->retry(2, 250, null, false)
+                    ->asForm()
+                    ->withHeaders([
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ])
+                    ->post($url, $authPayload);
 
-            if (! $response->successful() || $token === '') {
-                $this->logWarning('auth:failed', [
+                $body = $response->json();
+                $token = (string) data_get($body, 'access_token', '');
+
+                if ($response->successful() && $token !== '') {
+                    break;
+                }
+
+                $this->logWarning('auth:attempt_failed', [
                     'mode' => $mode,
+                    'attempt' => $attempt,
+                    'payload_style' => $attempt === 1 ? 'snake_case' : 'camelCase',
                     'http_status' => $response->status(),
                     'response' => $body,
                     'url' => $url,
                 ]);
+            }
+
+            $body = is_array($body) ? $body : [];
+            $token = (string) data_get($body, 'access_token', '');
+            $tokenType = (string) data_get($body, 'token_type', 'O-Bearer');
+            $expiresAt = (int) data_get($body, 'expires_at', 0);
+
+            if (! $response || ! $response->successful() || $token === '') {
+                $this->logWarning('auth:failed', [
+                    'mode' => $mode,
+                    'http_status' => $response?->status(),
+                    'response' => $body,
+                    'url' => $url,
+                ]);
                 Log::warning('PhonePe auth token fetch failed', [
-                    'status' => $response->status(),
+                    'status' => $response?->status(),
                     'response' => $body,
                     'url' => $url,
                 ]);
