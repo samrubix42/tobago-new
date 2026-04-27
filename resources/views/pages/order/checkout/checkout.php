@@ -2,9 +2,11 @@
 
 use App\Contracts\PaymentGatewayInterface;
 use App\Models\Cart;
+use App\Models\InventoryLog;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatusLog;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
@@ -243,7 +245,16 @@ new class extends Component
         $this->validateAddressInput();
 
         $isOnline = $this->paymentMethod === 'online';
-        $order = $this->createOrderFromCart($cart, clearCart: ! $isOnline);
+        try {
+            $order = $this->createOrderFromCart($cart, clearCart: ! $isOnline);
+        } catch (\RuntimeException $e) {
+            $this->dispatch('toast-show', [
+                'message' => $e->getMessage(),
+                'type' => 'warning',
+                'position' => 'top-right',
+            ]);
+            return;
+        }
 
         if ($isOnline) {
             /** @var PaymentGatewayInterface $paymentGateway */
@@ -307,6 +318,10 @@ new class extends Component
         return DB::transaction(function () use ($cart, $clearCart) {
             $cart->load(['items.product.images', 'items.product.category', 'coupon']);
 
+            $requiredStockByProductId = $cart->items
+                ->groupBy('product_id')
+                ->map(fn ($items) => (int) $items->sum('quantity'));
+
             $shippingAmount = $this->calculateShipping((float) $cart->total);
             $finalTotal = (float) $cart->total + $shippingAmount;
 
@@ -347,6 +362,28 @@ new class extends Component
                 'source' => 'customer',
                 'logged_at' => now(),
             ]);
+
+            foreach ($requiredStockByProductId as $productId => $requiredQty) {
+                /** @var Product|null $product */
+                $product = Product::query()->lockForUpdate()->find($productId);
+
+                if (! $product || $product->is_out_of_stock || (int) $product->stock < (int) $requiredQty) {
+                    $name = $product?->name ?? 'One or more products';
+                    throw new \RuntimeException($name . ' does not have enough stock.');
+                }
+
+                $product->stock = max(0, (int) $product->stock - (int) $requiredQty);
+                $product->save();
+
+                InventoryLog::query()->create([
+                    'product_id' => $product->id,
+                    'type' => 'sale',
+                    'quantity' => (int) $requiredQty,
+                    'reference_type' => 'order',
+                    'reference_id' => $order->id,
+                    'note' => 'Stock deducted when order was placed.',
+                ]);
+            }
 
             foreach ($cart->items as $item) {
                 $snapshotImage = $item->product?->images?->firstWhere('is_primary', true)?->image

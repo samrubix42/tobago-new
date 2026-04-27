@@ -26,6 +26,28 @@ new class extends Component
             return;
         }
 
+        $item->loadMissing('product');
+        $product = $item->product;
+
+        if (! $product) {
+            session()->flash('cart_message', 'This product is no longer available.');
+            session()->flash('cart_message_type', 'warning');
+            return;
+        }
+
+        $availableStock = (int) $product->stock;
+        if ($product->is_out_of_stock || $availableStock <= 0) {
+            session()->flash('cart_message', $product->name . ' is out of stock.');
+            session()->flash('cart_message_type', 'warning');
+            return;
+        }
+
+        if ((int) $item->quantity >= $availableStock) {
+            session()->flash('cart_message', 'Only ' . $availableStock . ' item(s) available for ' . $product->name . '.');
+            session()->flash('cart_message_type', 'warning');
+            return;
+        }
+
         $item->quantity += 1;
         $item->total = $item->quantity * (float) $item->price;
         $item->save();
@@ -96,11 +118,8 @@ new class extends Component
 
         $cart = $this->resolveCart(false);
         if (! $cart || ! $cart->items()->exists()) {
-            $this->dispatch('toast-show', [
-                'message' => 'Cart is empty.',
-                'type' => 'warning',
-                'position' => 'top-right',
-            ]);
+            session()->flash('coupon_message', 'Cart is empty.');
+            session()->flash('coupon_message_type', 'warning');
             return;
         }
 
@@ -111,11 +130,8 @@ new class extends Component
             ->first();
 
         if (! $coupon || ! $coupon->is_active) {
-            $this->dispatch('toast-show', [
-                'message' => 'Invalid or inactive coupon code.',
-                'type' => 'warning',
-                'position' => 'top-right',
-            ]);
+            session()->flash('coupon_message', 'Invalid or inactive coupon code.');
+            session()->flash('coupon_message_type', 'warning');
             return;
         }
 
@@ -135,11 +151,8 @@ new class extends Component
 
         $this->recalculateCart($cart->fresh());
 
-        $this->dispatch('toast-show', [
-            'message' => 'Coupon applied successfully.',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
+        session()->flash('coupon_message', 'Coupon applied successfully.');
+        session()->flash('coupon_message_type', 'success');
     }
 
     public function removeCoupon(): void
@@ -282,11 +295,13 @@ new class extends Component
             return;
         }
 
-        $this->dispatch('toast-show', [
-            'message' => ($couponCode ? 'Coupon ' . $couponCode . ' removed as it is no longer valid.' : 'Coupon removed as it is no longer valid.'),
-            'type' => 'warning',
-            'position' => 'top-right',
-        ]);
+        session()->flash(
+            'coupon_message',
+            $couponCode
+                ? 'Coupon ' . $couponCode . ' removed as it is no longer valid.'
+                : 'Coupon removed as it is no longer valid.'
+        );
+        session()->flash('coupon_message_type', 'warning');
     }
 
     protected function calculateShipping(float $cartTotal): float

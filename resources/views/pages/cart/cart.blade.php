@@ -18,6 +18,12 @@
         </div>
     </div>
 
+    @if(session()->has('cart_message'))
+        <div class="rounded-lg border px-3 py-2.5 text-sm leading-relaxed {{ session('cart_message_type') === 'warning' ? 'border-amber-400/30 bg-amber-500/10 text-amber-200' : 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200' }}">
+            {{ session('cart_message') }}
+        </div>
+    @endif
+
     @if($items->isEmpty())
         <div class="rounded-2xl border border-dashed border-white/15 bg-white/3 p-8 sm:p-10 text-center">
             <div class="mx-auto w-14 h-14 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-white/70">
