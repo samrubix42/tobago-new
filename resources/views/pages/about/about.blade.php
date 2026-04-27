@@ -4,63 +4,9 @@
         <div class="absolute top-1/3 -right-20 h-80 w-80 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #6a5cff, transparent 70%);"></div>
     </div>
 
-    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            <article class="lg:col-span-7 rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-subtle bg-white/5 text-[11px] tracking-[0.14em] uppercase text-white/70">
-                    <span class="h-2 w-2 rounded-full bg-cyan-400"></span>
-                    About Tobac-Go
-                </div>
 
-                <h1 class="mt-5 text-3xl sm:text-5xl font-semibold leading-[1.1] text-white">
-                    Founder-Led. <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300">Session-Focused.</span> Built For Real Smokers.
-                </h1>
 
-                <p class="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
-                    Tobac-Go is built from personal experience, not trend-chasing. We focus on quality products, honest information, and a smoother buying journey.
-                </p>
-
-                <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <div class="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-                        <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Authenticity</p>
-                        <p class="mt-1 text-sm text-white font-medium">100% Genuine</p>
-                    </div>
-                    <div class="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-                        <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Selection</p>
-                        <p class="mt-1 text-sm text-white font-medium">Curated Range</p>
-                    </div>
-                    <div class="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-                        <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Support</p>
-                        <p class="mt-1 text-sm text-white font-medium">Real People</p>
-                    </div>
-                    <div class="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-                        <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">Experience</p>
-                        <p class="mt-1 text-sm text-white font-medium">Smooth Sessions</p>
-                    </div>
-                </div>
-            </article>
-
-            <aside class="lg:col-span-5 rounded-2xl border border-subtle bg-[#0b0d0f] p-4 sm:p-5">
-                <div class="rounded-xl overflow-hidden border border-white/10">
-                    <img src="{{ asset('images/TOBAC-GO - Front.webp') }}" alt="Tobac-Go front store" class="w-full h-56 sm:h-64 object-cover">
-                </div>
-
-                <div class="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <p class="text-[11px] uppercase tracking-[0.14em] text-slate-400">What Makes Us Different</p>
-                    <ul class="mt-3 space-y-2.5">
-                        @foreach($whatMakesDifferent as $item)
-                            <li class="text-sm text-slate-200 flex items-start gap-2.5">
-                                <i class="ri-checkbox-circle-fill text-cyan-300 mt-0.5"></i>
-                                <span>{{ $item }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-4">
+    <section class="relative max-w-7xl mx-auto pt-20  px-4 sm:px-6 pb-4">
         <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
             <div class="flex items-center gap-2">
                 <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
