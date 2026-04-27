@@ -317,6 +317,7 @@ new class extends Component
                 'message' => (string) ($paymentResponse['message'] ?? ''),
             ]);
             $order->update([
+                'status' => 'pending',
                 'payment_status' => 'failed',
                 'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
             ]);
@@ -625,11 +626,11 @@ new class extends Component
         }
 
         if (session()->has('error')) {
-            $this->dispatch('toast-show', [
-                'message' => (string) session('error'),
-                'type' => 'error',
-                'position' => 'top-right',
-            ]);
+            // Keep PhonePe failure/cancel feedback visible as an inline card.
+            $this->showFailure = true;
+            $this->showConfirmationSlide = false;
+            $this->failedOrderNumber = null;
+            $this->failedPaymentMessage = (string) session('error');
             session()->forget('error');
         }
     }

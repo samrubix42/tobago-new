@@ -203,31 +203,30 @@ class PhonePeCallbackController extends Controller
             return;
         }
 
-        if ($order->payment_status !== 'failed') {
-            $order->update([
-                'payment_gateway' => 'phonepe',
-                'payment_gateway_order_id' => $gatewayOrderId !== '' ? $gatewayOrderId : $order->payment_gateway_order_id,
-                'payment_gateway_transaction_id' => $gatewayTransactionId !== '' ? $gatewayTransactionId : $order->payment_gateway_transaction_id,
-                'payment_status' => 'failed',
-                'payment_state' => $failureState,
-                'payment_failure_reason' => 'PhonePe status: ' . $failureState,
-                'payment_response_payload' => $verificationPayload ?: $order->payment_response_payload,
-            ]);
+        $order->update([
+            'payment_gateway' => 'phonepe',
+            'payment_gateway_order_id' => $gatewayOrderId !== '' ? $gatewayOrderId : $order->payment_gateway_order_id,
+            'payment_gateway_transaction_id' => $gatewayTransactionId !== '' ? $gatewayTransactionId : $order->payment_gateway_transaction_id,
+            'status' => 'pending',
+            'payment_status' => 'failed',
+            'payment_state' => $failureState,
+            'payment_failure_reason' => 'PhonePe status: ' . $failureState,
+            'payment_response_payload' => $verificationPayload ?: $order->payment_response_payload,
+        ]);
 
-            OrderStatusLog::query()->create([
-                'order_id' => $order->id,
-                'status' => $order->status,
-                'note' => 'PhonePe payment verification failed. Status: ' . $failureState,
-                'source' => 'system',
-                'logged_at' => now(),
-            ]);
+        OrderStatusLog::query()->create([
+            'order_id' => $order->id,
+            'status' => $order->status,
+            'note' => 'PhonePe payment verification failed. Status: ' . $failureState,
+            'source' => 'system',
+            'logged_at' => now(),
+        ]);
 
-            Log::warning('PhonePe payment marked failed', [
-                'order_id' => $order->id,
-                'order_number' => $order->order_number,
-                'payment_state' => $failureState,
-            ]);
-        }
+        Log::warning('PhonePe payment marked failed with order pending', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'payment_state' => $failureState,
+        ]);
     }
 
     protected function clearCartForOrder(Order $order): void
