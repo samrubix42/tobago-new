@@ -84,18 +84,18 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            Add to Cart
+                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
                         </button>
-                        <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            Buy Now
+                        <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Buy Now' }}
                         </button>
                     </div>
                 </div>
 
-                @if((int) ($product->hurry_stock ?? 0) > 0)
+                @if($this->shouldShowLowStock())
                 <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                    <i class="ri-alarm-warning-line"></i> Only {{ (int) $product->hurry_stock }} items available
+                    <i class="ri-alarm-warning-line"></i> Only {{ $this->fomoStockValue() }} items available
                 </p>
                 @endif
 
@@ -177,10 +177,10 @@
                     {{ $this->shortText($product->short_description, 180) }}
                 </p>
 
-                @if((int) ($product->hurry_stock ?? 0) > 0)
+                @if($this->shouldShowLowStock())
                 <div class="mt-4">
                     <span class="inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                        <i class="ri-alarm-warning-line text-base"></i> Only {{ (int) $product->hurry_stock }} items available
+                        <i class="ri-alarm-warning-line text-base"></i> Only {{ $this->fomoStockValue() }} items available
                     </span>
                 </div>
                 @endif
@@ -245,18 +245,18 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            Add to Cart
+                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
                         </button>
-                        <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            Buy Now
+                        <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Buy Now' }}
                         </button>
                     </div>
                 </div>
 
-                @if((int) ($product->hurry_stock ?? 0) > 0)
+                @if($this->shouldShowLowStock())
                 <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                    <i class="ri-alarm-warning-line"></i> Only {{ (int) $product->hurry_stock }} items available
+                    <i class="ri-alarm-warning-line"></i> Only {{ $this->fomoStockValue() }} items available
                 </p>
                 @endif
 

@@ -134,6 +134,26 @@ new class extends Component
         return $this->product->is_out_of_stock || (int) $this->product->stock <= 0;
     }
 
+    public function shouldShowLowStock(): bool
+    {
+        $stock = (int) $this->product->stock;
+        $hurryStock = (int) ($this->product->hurry_stock ?? 0);
+
+        return $stock > 0 && $hurryStock > 0;
+    }
+
+    public function fomoStockValue(): int
+    {
+        $stock = (int) $this->product->stock;
+        $hurryStock = (int) ($this->product->hurry_stock ?? 0);
+
+        if ($stock <= 0 || $hurryStock <= 0) {
+            return 0;
+        }
+
+        return $stock < $hurryStock ? $stock : $hurryStock;
+    }
+
     public function discountPercent(): ?int
     {
         $sellingPrice = (float) $this->product->selling_price;
