@@ -9,6 +9,7 @@ use Livewire\Component;
 new class extends Component
 {
     public string $couponCode = '';
+    public bool $showCheckoutChoice = false;
 
     public function increment(int $itemId): void
     {
@@ -174,6 +175,48 @@ new class extends Component
     {
         $this->couponCode = trim($code);
         $this->applyCoupon();
+    }
+
+    public function proceedToCheckout(): void
+    {
+        $cart = $this->resolveCart(false);
+        if (! $cart || ! $cart->items()->exists()) {
+            session()->flash('cart_message', 'Your cart is empty.');
+            session()->flash('cart_message_type', 'warning');
+            return;
+        }
+
+        if (Auth::check()) {
+            $this->redirectRoute('order.checkout', navigate: true);
+            return;
+        }
+
+        $this->showCheckoutChoice = true;
+    }
+
+    public function closeCheckoutChoice(): void
+    {
+        $this->showCheckoutChoice = false;
+    }
+
+    public function orderAsGuest(): void
+    {
+        $this->showCheckoutChoice = false;
+        $this->redirectRoute('order.checkout', navigate: true);
+    }
+
+    public function loginAndOrder(): void
+    {
+        session()->put('url.intended', route('order.checkout'));
+        $this->showCheckoutChoice = false;
+        $this->redirectRoute('login', navigate: true);
+    }
+
+    public function signupAndOrder(): void
+    {
+        session()->put('url.intended', route('order.checkout'));
+        $this->showCheckoutChoice = false;
+        $this->redirectRoute('register', navigate: true);
     }
 
     protected function resolveCart(bool $create = true): ?Cart

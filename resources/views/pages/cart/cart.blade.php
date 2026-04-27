@@ -195,10 +195,40 @@
                     </div>
                 </div>
 
-                <a href="{{ route('order.checkout') }}" wire:navigate class="inline-flex w-full items-center justify-center rounded-md bg-white text-black py-2.5 text-sm font-semibold hover:opacity-90 transition">
+                <button type="button" wire:click="proceedToCheckout" class="inline-flex w-full items-center justify-center rounded-md bg-white text-black py-2.5 text-sm font-semibold hover:opacity-90 transition">
                     Proceed to Checkout
-                </a>
+                </button>
             </aside>
+        </div>
+    @endif
+
+    @if($showCheckoutChoice)
+        <div class="fixed inset-0 z-[120] flex items-end sm:items-center justify-center p-3 sm:p-4">
+            <div class="absolute inset-0 bg-black/70" wire:click="closeCheckoutChoice"></div>
+
+            <div class="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0b0d0f] p-4 sm:p-5 shadow-2xl">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">Choose How To Order</h3>
+                        <p class="mt-1 text-sm text-slate-300">Continue checkout as guest or use your account.</p>
+                    </div>
+                    <button type="button" wire:click="closeCheckoutChoice" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-slate-300 hover:bg-white/5">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+
+                <div class="mt-4 grid grid-cols-1 gap-2.5">
+                    <button type="button" wire:click="orderAsGuest" class="w-full rounded-lg bg-white text-black px-4 py-2.5 text-sm font-semibold hover:opacity-90 transition">
+                        Order as Guest
+                    </button>
+                    <button type="button" wire:click="loginAndOrder" class="w-full rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white hover:bg-white/5 transition">
+                        Login to Order
+                    </button>
+                    <button type="button" wire:click="signupAndOrder" class="w-full rounded-lg border border-white/20 px-4 py-2.5 text-sm text-white hover:bg-white/5 transition">
+                        Signup and Order
+                    </button>
+                </div>
+            </div>
         </div>
     @endif
 </div>

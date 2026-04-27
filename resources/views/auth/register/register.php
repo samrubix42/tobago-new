@@ -41,6 +41,6 @@ new #[Layout('layouts::public-auth')] class extends Component
     merge_guest_cart_for_user((int) $user->id, $sessionId);
         session()->regenerate();
 
-        return redirect()->route('home');
+        return redirect()->intended(route('home'));
     }
 };
