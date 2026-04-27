@@ -368,6 +368,7 @@ new class extends Component
             $shippingAmount = $this->calculateShipping((float) $cart->total);
             $finalTotal = (float) $cart->total + $shippingAmount;
 
+
             $order = Order::query()->create([
                 'order_number' => $this->generateOrderNumber(),
                 'user_id' => Auth::check() ? (int) Auth::id() : null,
@@ -382,7 +383,7 @@ new class extends Component
                 'total' => $finalTotal,
                 'payment_method' => $this->paymentMethod,
                 'payment_status' => 'pending',
-                'status' => 'confirmed',
+                'status' => 'pending',
                 'delivery_type' => 'in_hand_delivery',
                 'customer_name' => $this->fullName,
                 'customer_phone' => $this->phone,
@@ -400,8 +401,8 @@ new class extends Component
 
             OrderStatusLog::query()->create([
                 'order_id' => $order->id,
-                'status' => 'confirmed',
-                'note' => 'Order placed successfully. Order confirmed.',
+                'status' => 'pending',
+                'note' => 'Order placed successfully. Awaiting payment confirmation.',
                 'source' => 'customer',
                 'logged_at' => now(),
             ]);

@@ -156,6 +156,7 @@ class PhonePeCallbackController extends Controller
                 return;
             }
 
+
             $order->update([
                 'payment_gateway' => 'phonepe',
                 'payment_gateway_order_id' => $gatewayOrderId !== '' ? $gatewayOrderId : $order->payment_gateway_order_id,
@@ -165,12 +166,12 @@ class PhonePeCallbackController extends Controller
                 'payment_failure_reason' => null,
                 'payment_response_payload' => $verificationPayload ?: $order->payment_response_payload,
                 'payment_verified_at' => now(),
-                'status' => $order->status === 'pending' ? 'confirmed' : $order->status,
+                'status' => 'confirmed',
             ]);
 
             OrderStatusLog::query()->create([
                 'order_id' => $order->id,
-                'status' => $order->status,
+                'status' => 'confirmed',
                 'note' => 'PhonePe payment verified successfully.',
                 'source' => 'system',
                 'logged_at' => now(),
