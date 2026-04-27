@@ -193,6 +193,36 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="border-t border-gray-100 pt-6 mt-6">
+                    <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ri-search-line text-blue-500"></i> SEO Optimization
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700 block mb-1.5">Meta Title</label>
+                                <input type="text" wire:model.blur="meta_title" placeholder="SEO optimized title (optional)"
+                                       class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
+                                <p class="text-[11px] text-gray-400 mt-1">Recommended: 60 characters or less.</p>
+                            </div>
+
+                            <div>
+                                <label class="text-sm font-semibold text-gray-700 block mb-1.5">Meta Keywords</label>
+                                <input type="text" wire:model.blur="meta_keywords" placeholder="keyword1, keyword2, keyword3"
+                                       class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-semibold text-gray-700 block mb-1.5">Meta Description</label>
+                            <textarea wire:model.blur="meta_description" rows="3" placeholder="SEO optimized description (optional)"
+                                      class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50"></textarea>
+                            <p class="text-[11px] text-gray-400 mt-1">Recommended: 160 characters or less.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         @elseif($currentStep == 2)

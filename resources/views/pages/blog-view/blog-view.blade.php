@@ -1,4 +1,9 @@
+@section('meta_title', $this->blog->meta_title ?? ($this->blog->title . ' | Tobac-Go Journal'))
+@section('meta_description', $this->blog->meta_description ?? \Illuminate\Support\Str::limit(strip_tags((string) $this->blog->content), 155))
+@section('meta_keywords', $this->blog->meta_keywords ?? ($this->blog->tags ? implode(', ', (array) $this->blog->tags) : 'hookah blog, shisha news, Tobac-Go journal'))
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+
     <section class="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_12%_16%,rgba(45,212,191,0.18),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(56,189,248,0.16),transparent_32%),#0b0d0f]">
         <div class="absolute inset-0 opacity-70 pointer-events-none" style="background: linear-gradient(145deg, rgba(255,255,255,0.03), transparent 45%, rgba(34,211,238,0.08));"></div>
         <div class="relative grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-0">

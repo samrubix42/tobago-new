@@ -22,6 +22,9 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('slug')->unique();
             $table->longText('content');
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_keywords')->nullable();
             $table->text('tags')->nullable();
             $table->string('featured_image')->nullable();
             $table->boolean('is_published')->default(false);

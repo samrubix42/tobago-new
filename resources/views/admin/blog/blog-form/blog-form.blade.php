@@ -93,6 +93,28 @@
             </label>
         </div>
 
+        <div class="border-t border-slate-100 pt-4">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-widest mb-3">SEO Optimization</h3>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-medium text-gray-600">Meta Title</label>
+                        <input wire:model.live="meta_title" placeholder="SEO title (optional)" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900">
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-gray-600">Meta Keywords</label>
+                        <input wire:model.live="meta_keywords" placeholder="keyword1, keyword2" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-medium text-gray-600">Meta Description</label>
+                    <textarea wire:model.live="meta_description" rows="2" placeholder="SEO description (optional)" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"></textarea>
+                </div>
+            </div>
+        </div>
+
         <div class="flex justify-end">
             <button wire:click="save" wire:loading.attr="disabled" class="px-4 py-2 rounded-md bg-blue-600 text-white disabled:opacity-60">
                 {{ $blogId ? 'Save' : 'Create' }}

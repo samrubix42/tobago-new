@@ -22,6 +22,10 @@ new #[Layout('layouts::admin')] class extends Component
     public string $content = '';
     public string $tags = '';
     public bool $is_published = false;
+    public ?string $meta_title = null;
+    public ?string $meta_description = null;
+    public ?string $meta_keywords = null;
+
 
     public function mount(?int $id = null): void
     {
@@ -36,7 +40,11 @@ new #[Layout('layouts::admin')] class extends Component
             $this->content = $blog->content;
             $this->tags = (string) $blog->tags;
             $this->is_published = (bool) $blog->is_published;
+            $this->meta_title = $blog->meta_title;
+            $this->meta_description = $blog->meta_description;
+            $this->meta_keywords = $blog->meta_keywords;
         }
+
     }
 
     public function updatedTitle(string $value): void
@@ -94,7 +102,11 @@ new #[Layout('layouts::admin')] class extends Component
             'tags' => Blog::normalizeTags($validated['tags'] ?? null),
             'featured_image' => $imagePath,
             'is_published' => $this->is_published,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
         ]);
+
 
         if (! $this->blogId) {
             $blog->author_id = auth()->id();

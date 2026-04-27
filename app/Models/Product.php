@@ -25,6 +25,9 @@ class Product extends Model
         'status',
         'is_featured',
         'is_trending',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [

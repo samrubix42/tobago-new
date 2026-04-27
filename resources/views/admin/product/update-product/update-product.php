@@ -29,6 +29,10 @@ new #[Layout('layouts::admin')] class extends Component
     public string $status = 'draft';
     public bool $is_featured = false;
     public bool $is_trending = false;
+    public ?string $meta_title = null;
+    public ?string $meta_description = null;
+    public ?string $meta_keywords = null;
+
 
     // Pricing
     public float $cost_price = 0;
@@ -86,7 +90,11 @@ new #[Layout('layouts::admin')] class extends Component
         $this->stock = $product->stock;
         $this->hurry_stock = $product->hurry_stock;
         $this->is_out_of_stock = $product->is_out_of_stock;
+        $this->meta_title = $product->meta_title;
+        $this->meta_description = $product->meta_description;
+        $this->meta_keywords = $product->meta_keywords;
         $this->productImages = $product->images->toArray();
+
     }
 
     public function updatedName($value): void
@@ -146,7 +154,11 @@ new #[Layout('layouts::admin')] class extends Component
             'stock' => $this->stock,
             'hurry_stock' => $this->hurry_stock,
             'is_out_of_stock' => $this->is_out_of_stock,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
         ];
+
 
         DB::transaction(function () use ($data) {
             /** @var Product $product */

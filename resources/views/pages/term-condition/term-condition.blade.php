@@ -1,5 +1,9 @@
 
+@section('meta_title', 'Terms & Conditions | Tobac-Go Hookah Store')
+@section('meta_description', 'Read the terms and conditions for using the Tobac-Go website and purchasing our premium hookah products.')
+
 <div class="relative overflow-hidden">
+
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 -left-20 h-72 w-72 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #00c6ff, transparent 70%);"></div>
         <div class="absolute top-1/4 -right-24 h-80 w-80 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #6a5cff, transparent 70%);"></div>

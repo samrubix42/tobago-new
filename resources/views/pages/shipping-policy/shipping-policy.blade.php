@@ -1,4 +1,8 @@
+@section('meta_title', 'Shipping Policy | Tobac-Go Hookah Store')
+@section('meta_description', 'Learn about our shipping and delivery process. We provide safe and fast shipping for hookahs and accessories across India.')
+
 <div class="relative overflow-hidden">
+
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 -left-20 h-72 w-72 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #00c6ff, transparent 70%);"></div>
         <div class="absolute top-1/3 -right-20 h-80 w-80 rounded-full blur-3xl opacity-20" style="background: radial-gradient(circle, #6a5cff, transparent 70%);"></div>

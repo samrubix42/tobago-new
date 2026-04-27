@@ -1,4 +1,8 @@
+@section('meta_title', 'Shopping Cart | Tobac-Go Hookah Store')
+@section('meta_description', 'View your selected hookahs and accessories in your Tobac-Go cart. Complete your purchase and enjoy premium shisha sessions.')
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-7">
+
     <div class="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_45%),#0b0d0f] px-4 sm:px-6 py-5 sm:py-6">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>

@@ -1,4 +1,8 @@
+@section('meta_title', 'Tobac-Go Journal | Hookah Guides, Tips & Product News')
+@section('meta_description', 'Read the latest from Tobac-Go. Expert guides on hookah setup, shisha care, and reviews of the best hookah products in India.')
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+
     <section class="mb-8 sm:mb-10 text-center">
         <p class="text-xs uppercase tracking-[0.34em] text-slate-500">Tobac-Go Journal</p>
         <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight">

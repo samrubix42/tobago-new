@@ -23,6 +23,9 @@ class Blog extends Model
         'tags',
         'featured_image',
         'is_published',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [

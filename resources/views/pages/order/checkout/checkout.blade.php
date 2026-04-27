@@ -1,3 +1,6 @@
+@section('meta_title', 'Secure Checkout | Tobac-Go Hookah Store')
+@section('meta_description', 'Complete your order securely at Tobac-Go. Enter your shipping details and choose from multiple payment options for your hookah purchase.')
+
 <div x-data="{ fired:false }"
     x-init="$watch('$wire.showSuccess', v => { if (v && !fired) { fired = true; const s = document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js'; s.onload=()=>{ confetti({ particleCount: 220, spread: 85, origin:{ y:0.65 } }); }; document.head.appendChild(s); } })"
     class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">

@@ -67,6 +67,12 @@ return new class extends Migration
             $table->boolean('is_trending')
                 ->default(false)
                 ->comment('Mark product as trending');
+
+            // SEO
+            $table->string('meta_title')->nullable()->comment('SEO meta title');
+            $table->text('meta_description')->nullable()->comment('SEO meta description');
+            $table->text('meta_keywords')->nullable()->comment('SEO meta keywords');
+
             $table->timestamps();
         });
     }

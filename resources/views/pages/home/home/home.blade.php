@@ -1,4 +1,8 @@
-﻿<div>
+@section('meta_title', 'Tobac-Go | Buy Premium Hookah Online in India')
+@section('meta_description', 'Discover premium hookahs, shisha flavors, and accessories at Tobac-Go. The best online hookah shop in India offering luxury setups, fast shipping, and expert advice.')
+
+<div>
+
     <section class="relative overflow-hidden">
 
         <!-- ðŸŒˆ SUBTLE AMBIENT GLOW -->
