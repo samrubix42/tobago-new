@@ -20,6 +20,9 @@ new #[Layout('layouts::admin')] class extends Component
     public ?string $existing_image = null;
     public string $content = '';
     public bool $is_published = false;
+    public ?string $meta_title = null;
+    public ?string $meta_description = null;
+    public ?string $meta_keywords = null;
     public $categories = [];
 
     public function mount($id): void
@@ -38,6 +41,9 @@ new #[Layout('layouts::admin')] class extends Component
         $this->existing_image = $blog->featured_image;
         $this->content = $blog->content;
         $this->is_published = (bool) $blog->is_published;
+        $this->meta_title = $blog->meta_title;
+        $this->meta_description = $blog->meta_description;
+        $this->meta_keywords = $blog->meta_keywords;
     }
 
     protected function makeUniqueSlug(string $value): string
@@ -79,6 +85,9 @@ new #[Layout('layouts::admin')] class extends Component
             'category_id' => $validated['category_id'],
             'content' => $validated['content'],
             'is_published' => $this->is_published,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
         ]);
 
         $this->dispatch('toast-show', ['message' => 'Blog updated', 'type' => 'success', 'position' => 'top-right']);
@@ -177,6 +186,28 @@ new #[Layout('layouts::admin')] class extends Component
                 <input type="checkbox" wire:model.live="is_published" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 Published
             </label>
+        </div>
+
+        <div class="border-t border-slate-100 pt-4">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-widest mb-3">SEO Optimization</h3>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-medium text-gray-600">Meta Title</label>
+                        <input wire:model.live="meta_title" placeholder="SEO title (optional)" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900">
+                        <p class="text-[11px] text-gray-400 mt-1">Recommended: 60 characters or less.</p>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-gray-600">Meta Keywords</label>
+                        <input wire:model.live="meta_keywords" placeholder="keyword1, keyword2" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-medium text-gray-600">Meta Description</label>
+                    <textarea wire:model.live="meta_description" rows="2" placeholder="SEO description (optional)" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"></textarea>
+                    <p class="text-[11px] text-gray-400 mt-1">Recommended: 160 characters or less.</p>
+                </div>
+            </div>
         </div>
 
         <div class="flex justify-end">
