@@ -103,7 +103,7 @@
                         @php
                             $isOut = $product->is_out_of_stock || (int) $product->stock <= 0;
                         @endphp
-                        <article wire:key="product-card-{{ $product->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20">
+                        <article wire:key="product-card-{{ $product->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20 {{ $isOut ? 'opacity-60 grayscale-[0.3]' : '' }}">
                             <a href="{{ route('product', $product->slug) }}" wire:navigate class="block">
                                 <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white/4">
                                     <img src="{{ $this->productImage($product) }}" alt="{{ $product->name }}" class="h-24 object-contain transition duration-300 group-hover:scale-105">

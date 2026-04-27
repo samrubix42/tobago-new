@@ -67,10 +67,14 @@
             <div class="lg:hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
                 <div class="flex items-end justify-between gap-4">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.22em] text-muted">Price</p>
-                        <p class="text-3xl font-semibold text-white mt-2">&#8377;{{ $this->price($product->selling_price) }}</p>
-                        @if($product->compare_price && $product->compare_price > $product->selling_price)
-                        <p class="text-sm text-muted line-through mt-1">&#8377;{{ $this->price($product->compare_price) }}</p>
+                        <p class="text-xs uppercase tracking-[0.22em] text-muted">{{ $this->isOutOfStock() ? 'Status' : 'Price' }}</p>
+                        @if($this->isOutOfStock())
+                            <p class="text-2xl font-semibold text-rose-400 mt-2 italic">Out of Stock</p>
+                        @else
+                            <p class="text-3xl font-semibold text-white mt-2">&#8377;{{ $this->price($product->selling_price) }}</p>
+                            @if($product->compare_price && $product->compare_price > $product->selling_price)
+                            <p class="text-sm text-muted line-through mt-1">&#8377;{{ $this->price($product->compare_price) }}</p>
+                            @endif
                         @endif
                     </div>
                     @if($this->discountPercent())
@@ -228,10 +232,14 @@
             <div class="hidden lg:block rounded-3xl border border-subtle bg-[#0b0d0f] p-4 sm:p-6">
                 <div class="flex items-end justify-between gap-4">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.22em] text-muted">Price</p>
-                        <p class="text-3xl font-semibold text-white mt-2">&#8377;{{ $this->price($product->selling_price) }}</p>
-                        @if($product->compare_price && $product->compare_price > $product->selling_price)
-                        <p class="text-sm text-muted line-through mt-1">&#8377;{{ $this->price($product->compare_price) }}</p>
+                        <p class="text-xs uppercase tracking-[0.22em] text-muted">{{ $this->isOutOfStock() ? 'Status' : 'Price' }}</p>
+                        @if($this->isOutOfStock())
+                            <p class="text-2xl font-semibold text-rose-400 mt-2 italic">Out of Stock</p>
+                        @else
+                            <p class="text-3xl font-semibold text-white mt-2">&#8377;{{ $this->price($product->selling_price) }}</p>
+                            @if($product->compare_price && $product->compare_price > $product->selling_price)
+                            <p class="text-sm text-muted line-through mt-1">&#8377;{{ $this->price($product->compare_price) }}</p>
+                            @endif
                         @endif
                     </div>
                     @if($this->discountPercent())
