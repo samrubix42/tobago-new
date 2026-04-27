@@ -208,9 +208,9 @@ class PhonePePaymentGateway implements PaymentGatewayInterface
 
     protected function resolveClient(): array
     {
-        $clientId = trim((string) config('services.phonepe.client_id', config('services.phonepe.merchant_id', '')));
-        $clientVersionRaw = trim((string) config('services.phonepe.client_version', config('services.phonepe.salt_index', '1')));
-        $clientSecret = trim((string) config('services.phonepe.client_secret', config('services.phonepe.salt_key', '')));
+        $clientId = trim((string) config('services.phonepe.client_id', ''));
+        $clientVersionRaw = trim((string) config('services.phonepe.client_version', '1'));
+        $clientSecret = trim((string) config('services.phonepe.client_secret', ''));
 
         if ($clientId === '' || $clientVersionRaw === '' || $clientSecret === '') {
             return [
