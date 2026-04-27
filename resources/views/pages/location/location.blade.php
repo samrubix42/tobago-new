@@ -41,6 +41,35 @@
             { src: 'spaceship hookah.webp', alt: 'Tobac-Go spaceship hookah' },
            
         ],
+        reviewCurrent: 0,
+        reviewGroups: [],
+        reviewInterval: null,
+        reviewSlides: [
+            'Screenshot 2026-04-27 182440.png',
+            'Screenshot 2026-04-27 182508.png',
+            'Screenshot 2026-04-27 182534.png',
+            'Screenshot 2026-04-27 182633.png',
+            'Screenshot 2026-04-27 182708.png',
+            'Screenshot 2026-04-27 182809.png',
+            'Screenshot 2026-04-27 182814.png',
+            'Screenshot 2026-04-27 182827.png',
+            'Screenshot 2026-04-27 182836.png',
+            'Screenshot 2026-04-27 182851.png',
+            'Screenshot 2026-04-27 182858.png',
+            'Screenshot 2026-04-27 182913.png',
+            'Screenshot 2026-04-27 182919.png',
+            'Screenshot 2026-04-27 182927.png',
+            'Screenshot 2026-04-27 182934.png',
+            'Screenshot 2026-04-27 182940.png',
+            'Screenshot 2026-04-27 182953.png',
+            'Screenshot 2026-04-27 183001.png',
+            'Screenshot 2026-04-27 183009.png',
+            'Screenshot 2026-04-27 183024.png',
+            'Screenshot 2026-04-27 183031.png',
+            'Screenshot 2026-04-27 183041.png',
+            'Screenshot 2026-04-27 183048.png',
+            'Screenshot 2026-04-27 183123.png'
+        ],
         videos: [
             { id: 'h1D9BAqBSKQ', title: 'Tobac-Go Noida Store Video 1', thumbnail: 'https://i.ytimg.com/vi/h1D9BAqBSKQ/mqdefault.jpg' },
             { id: '2FfETJDmAFo', title: 'Tobac-Go Hookah Experience', thumbnail: 'https://i.ytimg.com/vi/2FfETJDmAFo/mqdefault.jpg' },
@@ -49,9 +78,11 @@
             { id: 'yYD4niTNUcM', title: 'Tobac-Go Hookah Setup', thumbnail: 'https://i.ytimg.com/vi/yYD4niTNUcM/mqdefault.jpg' },
             { id: 'AdzOhh3sA7M', title: 'Tobac-Go Store Highlights', thumbnail: 'https://i.ytimg.com/vi/AdzOhh3sA7M/mqdefault.jpg' }
         ],
-        openLightbox(index) {
+        lightboxReview: false,
+        openLightbox(index, isReview = false) {
             this.lightboxIndex = index;
             this.lightboxOpen = true;
+            this.lightboxReview = isReview;
             document.body.classList.add('overflow-hidden');
         },
         closeLightbox() {
@@ -74,7 +105,10 @@
         initGallery() {
             this.gallerySlides = this.gallerySlides.map((slide, index) => ({ ...slide, index }));
             this.groupGallery();
-            window.addEventListener('resize', () => this.groupGallery());
+            window.addEventListener('resize', () => {
+                this.groupGallery();
+                this.groupReviews();
+            });
         },
         groupGallery() {
             const perPage = window.innerWidth >= 1024 ? 5 : window.innerWidth >= 768 ? 4 : 3;
@@ -107,14 +141,54 @@
             if (!this.galleryGroups.length) return;
             this.galleryCurrent = (this.galleryCurrent - 1 + this.galleryGroups.length) % this.galleryGroups.length;
         },
+
+        initReviews() {
+            this.reviewSlides = this.reviewSlides.map((src, index) => ({ src, index }));
+            this.groupReviews();
+        },
+        groupReviews() {
+            const perPage = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+            this.reviewGroups = [];
+            for (let i = 0; i < this.reviewSlides.length; i += perPage) {
+                this.reviewGroups.push(this.reviewSlides.slice(i, i + perPage));
+            }
+            if (this.reviewCurrent >= this.reviewGroups.length) {
+                this.reviewCurrent = 0;
+            }
+        },
+        startReviews() {
+            if (!this.reviewGroups.length) {
+                this.initReviews();
+            }
+            this.stopReviews();
+            this.reviewInterval = setInterval(() => this.nextReview(), 4000);
+        },
+        stopReviews() {
+            if (this.reviewInterval) {
+                clearInterval(this.reviewInterval);
+                this.reviewInterval = null;
+            }
+        },
+        nextReview() {
+            if (!this.reviewGroups.length) return;
+            this.reviewCurrent = (this.reviewCurrent + 1) % this.reviewGroups.length;
+        },
+        prevReview() {
+            if (!this.reviewGroups.length) return;
+            this.reviewCurrent = (this.reviewCurrent - 1 + this.reviewGroups.length) % this.reviewGroups.length;
+        },
+
         next() {
-            this.lightboxIndex = (this.lightboxIndex + 1) % this.gallerySlides.length;
+            const slides = this.lightboxReview ? this.reviewSlides : this.gallerySlides;
+            this.lightboxIndex = (this.lightboxIndex + 1) % slides.length;
         },
         prev() {
-            this.lightboxIndex = (this.lightboxIndex - 1 + this.gallerySlides.length) % this.gallerySlides.length;
+            const slides = this.lightboxReview ? this.reviewSlides : this.gallerySlides;
+            this.lightboxIndex = (this.lightboxIndex - 1 + slides.length) % slides.length;
         }
     }"
-    x-init="initGallery(); startGallery()">
+    x-init="initGallery(); startGallery(); initReviews(); startReviews()">
+
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
         <div class="absolute -top-[12%] -left-[8%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] opacity-20 blur-[100px]"
             style="background: radial-gradient(circle, #00c6ff, transparent 72%);"></div>
@@ -321,47 +395,47 @@
     </section>
 
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7">
-            <h2 class="text-xl sm:text-3xl font-semibold text-white">What Our Customers in Noida Say</h2>
-            <div class="mt-5 grid md:grid-cols-3 gap-4">
-                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div class="flex items-center gap-2 text-amber-300 text-sm">
-                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-                    </div>
-                    <p class="mt-3 text-sm text-slate-200">"Best hookah shop in Noida. Staff helped me choose the right setup in my budget."</p>
-                    <p class="mt-3 text-xs text-slate-400">- R. Sharma</p>
-                </article>
-                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div class="flex items-center gap-2 text-amber-300 text-sm">
-                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-                    </div>
-                    <p class="mt-3 text-sm text-slate-200">"Fresh flavours and genuine products. Much better than random online listings."</p>
-                    <p class="mt-3 text-xs text-slate-400">- A. Khan</p>
-                </article>
-                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div class="flex items-center gap-2 text-amber-300 text-sm">
-                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i>
-                    </div>
-                    <p class="mt-3 text-sm text-slate-200">"Everything in one place. Hookah, coals, bowls, hoses - saved me multiple trips."</p>
-                    <p class="mt-3 text-xs text-slate-400">- V. Gupta</p>
-                </article>
-                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div class="flex items-center gap-2 text-amber-300 text-sm">
-                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-                    </div>
-                    <p class="mt-3 text-sm text-slate-200">"Helpful staff, fair prices, and authentic products. Great store in Sector 76."</p>
-                    <p class="mt-3 text-xs text-slate-400">- N. Verma</p>
-                </article>
-                <article class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div class="flex items-center gap-2 text-amber-300 text-sm">
-                        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-                    </div>
-                    <p class="mt-3 text-sm text-slate-200">"Good collection of hookahs and flavours. They explained everything clearly for a beginner."</p>
-                    <p class="mt-3 text-xs text-slate-400">- S. Tyagi</p>
-                </article>
+        <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7" @mouseenter="stopReviews()" @mouseleave="startReviews()">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-xl sm:text-3xl font-semibold text-white">Google Reviews</h2>
+                    <p class="mt-2 text-sm text-slate-300">See what our customers in Noida say about Tobac-Go.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="prevReview()" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan-300/40">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </button>
+                    <button type="button" @click="nextReview()" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan-300/40">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-6 overflow-hidden rounded-[28px] border border-white/10 bg-black/10">
+                <div class="flex transition-transform duration-700 ease-in-out" :style="`transform: translateX(-${reviewCurrent * 100}%)`">
+                    <template x-for="(group, groupIndex) in reviewGroups" :key="groupIndex">
+                        <div class="min-w-full p-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <template x-for="slide in group" :key="slide.src">
+                                    <button type="button" @click="openLightbox(slide.index, true)" class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+                                        <img :src="`/review/${slide.src}`" alt="Tobac-Go Google Review" class="w-full object-contain transition duration-500 group-hover:scale-105" />
+                                        <span class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition"></span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-center gap-2">
+                <template x-for="(group, index) in reviewGroups" :key="index">
+                    <button type="button" @click="reviewCurrent = index" :class="reviewCurrent === index ? 'bg-cyan-300' : 'bg-white/20'" class="h-2.5 w-2.5 rounded-full transition"></button>
+                </template>
             </div>
         </div>
     </section>
+
 
     <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20" x-data="{ openFaq: 0 }">
         <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6">
@@ -402,9 +476,12 @@
         </button>
 
         <div class="w-full max-w-5xl">
-            <img :src="`/gallery/${gallerySlides[lightboxIndex].src}`" :alt="gallerySlides[lightboxIndex].alt" class="w-full max-h-[78vh] object-contain rounded-xl border border-white/20">
-            <p class="mt-3 text-center text-sm text-slate-300" x-text="gallerySlides[lightboxIndex].alt"></p>
+            <img :src="lightboxReview ? `/review/${reviewSlides[lightboxIndex].src}` : `/gallery/${gallerySlides[lightboxIndex].src}`" 
+                 :alt="lightboxReview ? 'Google Review' : gallerySlides[lightboxIndex].alt" 
+                 class="w-full max-h-[78vh] object-contain rounded-xl border border-white/20">
+            <p x-show="!lightboxReview" class="mt-3 text-center text-sm text-slate-300" x-text="gallerySlides[lightboxIndex].alt"></p>
         </div>
+
     </div>
 
     <div x-show="videoOpen"
