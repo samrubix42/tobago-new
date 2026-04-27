@@ -12,6 +12,7 @@ use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -232,8 +233,18 @@ new class extends Component
 
     public function placeOrder(): void
     {
+        Log::info('Checkout placeOrder hit', [
+            'payment_method' => $this->paymentMethod,
+            'user_id' => Auth::id(),
+            'session_id' => session()->getId(),
+        ]);
+
         $cart = $this->resolveCart();
         if (! $cart || ! $cart->items()->exists()) {
+            Log::warning('Checkout placeOrder blocked: empty cart', [
+                'user_id' => Auth::id(),
+                'session_id' => session()->getId(),
+            ]);
             $this->dispatch('toast-show', [
                 'message' => 'Your cart is empty.',
                 'type' => 'warning',
@@ -247,7 +258,18 @@ new class extends Component
         $isOnline = $this->paymentMethod === 'online';
         try {
             $order = $this->createOrderFromCart($cart, clearCart: ! $isOnline);
+            Log::info('Checkout order created', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'payment_method' => $this->paymentMethod,
+                'total' => (float) $order->total,
+            ]);
         } catch (\RuntimeException $e) {
+            Log::warning('Checkout order creation failed', [
+                'user_id' => Auth::id(),
+                'session_id' => session()->getId(),
+                'error' => $e->getMessage(),
+            ]);
             $this->dispatch('toast-show', [
                 'message' => $e->getMessage(),
                 'type' => 'warning',
@@ -259,7 +281,20 @@ new class extends Component
         if ($isOnline) {
             /** @var PaymentGatewayInterface $paymentGateway */
             $paymentGateway = app(PaymentGatewayInterface::class);
+            Log::info('Checkout initiating PhonePe payment', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+            ]);
             $paymentResponse = $paymentGateway->initiatePayment($order);
+            Log::info('Checkout PhonePe initiate response', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'success' => (bool) ($paymentResponse['success'] ?? false),
+                'status' => (string) ($paymentResponse['status'] ?? ''),
+                'gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? ''),
+                'redirect_url_present' => ! empty($paymentResponse['redirect_url']),
+                'message' => (string) ($paymentResponse['message'] ?? ''),
+            ]);
 
             $order->update([
                 'payment_gateway' => 'phonepe',
@@ -269,6 +304,12 @@ new class extends Component
             ]);
 
             if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
+                Log::warning('Checkout PhonePe initiate failed', [
+                    'order_id' => $order->id,
+                    'order_number' => $order->order_number,
+                    'status' => (string) ($paymentResponse['status'] ?? ''),
+                    'message' => (string) ($paymentResponse['message'] ?? ''),
+                ]);
                 $order->update([
                     'payment_status' => 'failed',
                     'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
@@ -292,6 +333,11 @@ new class extends Component
 
             $order->update([
                 'payment_failure_reason' => null,
+            ]);
+
+            Log::info('Checkout redirecting to PhonePe', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
             ]);
 
             $this->showConfirmationSlide = false;

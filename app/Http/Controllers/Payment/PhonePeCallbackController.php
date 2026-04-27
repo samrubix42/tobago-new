@@ -20,13 +20,28 @@ class PhonePeCallbackController extends Controller
 
     public function handleReturn(Request $request, string $orderNumber): RedirectResponse
     {
+        Log::info('PhonePe return hit', [
+            'order_number' => $orderNumber,
+            'query' => $request->query(),
+            'ip' => $request->ip(),
+        ]);
+
         $order = Order::query()->where('order_number', $orderNumber)->first();
 
         if (! $order) {
+            Log::warning('PhonePe return order not found', [
+                'order_number' => $orderNumber,
+            ]);
             return redirect()->route('order.checkout')->with('error', 'Order not found for payment verification.');
         }
 
         $verification = $this->paymentGateway->verifyPayment($order->order_number);
+        Log::info('PhonePe return verification result', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'verification_status' => (string) ($verification['status'] ?? 'UNKNOWN'),
+            'verification_success' => (bool) ($verification['success'] ?? false),
+        ]);
         $this->syncOrderPaymentState($order, $verification);
 
         if ($verification['success'] ?? false) {
@@ -38,7 +53,20 @@ class PhonePeCallbackController extends Controller
 
     public function handleCallback(Request $request)
     {
+        Log::info('PhonePe webhook hit', [
+            'ip' => $request->ip(),
+            'headers' => [
+                'user-agent' => (string) $request->header('User-Agent', ''),
+                'authorization_present' => $request->header('Authorization') !== null,
+                'content-type' => (string) $request->header('Content-Type', ''),
+            ],
+            'payload' => $request->all(),
+        ]);
+
         if (! $this->isValidWebhookAuthorization($request)) {
+            Log::warning('PhonePe webhook unauthorized', [
+                'ip' => $request->ip(),
+            ]);
             return response()->json(['success' => false, 'message' => 'Unauthorized webhook request'], 401);
         }
 
@@ -48,12 +76,18 @@ class PhonePeCallbackController extends Controller
             ?? '');
 
         if ($orderNumber === '') {
+            Log::warning('PhonePe webhook missing merchantOrderId', [
+                'payload' => $payload,
+            ]);
             return response()->json(['success' => false, 'message' => 'Missing merchantOrderId'], 422);
         }
 
         $order = Order::query()->where('order_number', $orderNumber)->first();
 
         if (! $order) {
+            Log::warning('PhonePe webhook order not found', [
+                'order_number' => $orderNumber,
+            ]);
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }
 
@@ -69,9 +103,21 @@ class PhonePeCallbackController extends Controller
                 'message' => $event,
             ];
         } else {
+            Log::info('PhonePe webhook falling back to verify API', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'event' => $event,
+                'state' => $webhookState,
+            ]);
             $verification = $this->paymentGateway->verifyPayment($order->order_number);
         }
 
+        Log::info('PhonePe webhook verification result', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'verification_status' => (string) ($verification['status'] ?? 'UNKNOWN'),
+            'verification_success' => (bool) ($verification['success'] ?? false),
+        ]);
         $this->syncOrderPaymentState($order, $verification);
 
         return response()->json([
@@ -82,6 +128,14 @@ class PhonePeCallbackController extends Controller
 
     protected function syncOrderPaymentState(Order $order, array $verification): void
     {
+        Log::info('PhonePe syncOrderPaymentState called', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'incoming_status' => (string) ($verification['status'] ?? 'UNKNOWN'),
+            'incoming_success' => (bool) ($verification['success'] ?? false),
+            'current_payment_status' => (string) $order->payment_status,
+        ]);
+
         $verificationPayload = is_array($verification['payload'] ?? null) ? $verification['payload'] : [];
         $paymentState = strtoupper((string) ($verification['status'] ?? 'UNKNOWN'));
         $gatewayOrderId = (string) (data_get($verificationPayload, 'orderId')
@@ -95,6 +149,10 @@ class PhonePeCallbackController extends Controller
 
         if (($verification['success'] ?? false) === true) {
             if ($order->payment_status === 'paid') {
+                Log::info('PhonePe sync skipped: already paid', [
+                    'order_id' => $order->id,
+                    'order_number' => $order->order_number,
+                ]);
                 return;
             }
 
@@ -119,6 +177,11 @@ class PhonePeCallbackController extends Controller
             ]);
 
             $this->clearCartForOrder($order);
+            Log::info('PhonePe payment marked paid', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'payment_state' => $paymentState,
+            ]);
 
             return;
         }
@@ -158,6 +221,12 @@ class PhonePeCallbackController extends Controller
                 'source' => 'system',
                 'logged_at' => now(),
             ]);
+
+            Log::warning('PhonePe payment marked failed', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'payment_state' => $failureState,
+            ]);
         }
     }
 
@@ -165,6 +234,10 @@ class PhonePeCallbackController extends Controller
     {
         if ($order->user_id) {
             Cart::query()->where('user_id', $order->user_id)->delete();
+            Log::info('PhonePe cart cleared for user', [
+                'order_id' => $order->id,
+                'user_id' => $order->user_id,
+            ]);
             return;
         }
 
@@ -173,6 +246,11 @@ class PhonePeCallbackController extends Controller
                 ->whereNull('user_id')
                 ->where('session_id', $order->session_id)
                 ->delete();
+
+            Log::info('PhonePe cart cleared for guest session', [
+                'order_id' => $order->id,
+                'session_id' => $order->session_id,
+            ]);
         }
     }
 
@@ -185,6 +263,7 @@ class PhonePeCallbackController extends Controller
 
         if ($username === '' || $password === '') {
             if ($isTestMode) {
+                Log::info('PhonePe webhook auth bypassed in test mode due to empty credentials.');
                 return true;
             }
 
@@ -193,6 +272,7 @@ class PhonePeCallbackController extends Controller
         }
 
         if ($incoming === '') {
+            Log::warning('PhonePe webhook authorization header missing');
             return false;
         }
 
@@ -209,10 +289,12 @@ class PhonePeCallbackController extends Controller
 
         foreach ($candidates as $candidate) {
             if (hash_equals($candidate, $normalizedIncoming)) {
+                Log::info('PhonePe webhook authorization validated.');
                 return true;
             }
         }
 
+        Log::warning('PhonePe webhook authorization did not match expected hash.');
         return false;
     }
 }
