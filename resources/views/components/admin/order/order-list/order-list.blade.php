@@ -68,6 +68,7 @@
                     <th class="px-4 py-3 text-left font-semibold">Customer</th>
                     <th class="px-4 py-3 text-left font-semibold">Items</th>
                     <th class="px-4 py-3 text-left font-semibold">Total</th>
+                    <th class="px-4 py-3 text-left font-semibold">Payment</th>
                     <th class="px-4 py-3 text-left font-semibold">Status</th>
                     <th class="px-4 py-3 text-right font-semibold">Action</th>
                 </tr>
@@ -85,6 +86,14 @@
                         </td>
                         <td class="px-4 py-3.5 text-slate-700">{{ $order->items_count }}</td>
                         <td class="px-4 py-3.5 font-semibold text-slate-900">Rs {{ number_format((float) $order->total, 2) }}</td>
+                        <td class="px-4 py-3.5">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-700">{{ strtoupper($order->payment_method) }}</span>
+                                <span class="inline-flex items-center w-fit rounded-full px-2 py-0.5 text-[10px] font-medium {{ $order->payment_status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
+                                    {{ strtoupper($order->payment_status) }}
+                                </span>
+                            </div>
+                        </td>
                         <td class="px-4 py-3.5">
                             <div class="flex items-center gap-2">
                                 <span class="inline-flex items-center rounded-full px-2 py-1 text-[11px] {{ $order->status === 'delivered' ? 'bg-emerald-100 text-emerald-700' : ($order->status === 'cancelled' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700') }}">{{ ucwords(str_replace('-', ' ', $order->status)) }}</span>
@@ -143,6 +152,10 @@
                     <div class="rounded-lg border border-slate-200 bg-slate-50 p-2.5">
                         <p class="text-slate-500">Total</p>
                         <p class="text-slate-900 font-semibold mt-1">Rs {{ number_format((float) $order->total, 2) }}</p>
+                    </div>
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 p-2.5 col-span-2">
+                        <p class="text-slate-500">Payment</p>
+                        <p class="text-slate-900 font-semibold mt-1 text-xs">{{ strtoupper($order->payment_method) }} • {{ strtoupper($order->payment_status) }}</p>
                     </div>
                 </div>
 

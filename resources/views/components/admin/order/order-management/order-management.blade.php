@@ -150,6 +150,57 @@
                 </div>
             </div>
 
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 space-y-3 shadow-sm">
+                <h2 class="text-base font-semibold text-slate-900">Payment Details</h2>
+                <div class="space-y-3">
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs">
+                        <p class="text-slate-500 uppercase tracking-wider">Method & Status</p>
+                        <div class="flex items-center justify-between mt-1">
+                            <p class="text-slate-900 font-semibold">{{ strtoupper($order->payment_method) }}</p>
+                            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium {{ $order->payment_status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
+                                {{ strtoupper($order->payment_status) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    @if($order->payment_gateway_transaction_id || $order->payment_gateway_order_id)
+                        <div class="space-y-2 text-xs">
+                            @if($order->payment_gateway)
+                                <div class="flex items-center justify-between text-slate-600">
+                                    <span>Gateway</span>
+                                    <span class="text-slate-900 font-medium">{{ ucfirst($order->payment_gateway) }}</span>
+                                </div>
+                            @endif
+                            @if($order->payment_gateway_order_id)
+                                <div class="flex flex-col gap-1 py-1 border-t border-slate-100">
+                                    <span class="text-slate-500">Gateway Order ID</span>
+                                    <span class="text-slate-900 font-mono break-all">{{ $order->payment_gateway_order_id }}</span>
+                                </div>
+                            @endif
+                            @if($order->payment_gateway_transaction_id)
+                                <div class="flex flex-col gap-1 py-1 border-t border-slate-100">
+                                    <span class="text-slate-500">Transaction ID</span>
+                                    <span class="text-slate-900 font-mono break-all">{{ $order->payment_gateway_transaction_id }}</span>
+                                </div>
+                            @endif
+                            @if($order->payment_verified_at)
+                                <div class="flex items-center justify-between text-slate-600 pt-1 border-t border-slate-100">
+                                    <span>Verified At</span>
+                                    <span class="text-slate-900">{{ $order->payment_verified_at->format('d M Y, h:i A') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    @if($order->payment_failure_reason)
+                        <div class="rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs">
+                            <p class="text-rose-600 font-semibold mb-1">Failure Reason</p>
+                            <p class="text-rose-700">{{ $order->payment_failure_reason }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <form wire:submit="updateOrder" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 space-y-3 shadow-sm">
                 <h2 class="text-base font-semibold text-slate-900">Update Order</h2>
 
