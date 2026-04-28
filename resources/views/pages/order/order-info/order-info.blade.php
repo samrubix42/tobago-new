@@ -2,7 +2,9 @@
     @php
         $statusOrder = ['pending', 'confirmed', 'packed', 'shipped', 'on-the-way', 'delivered', 'returned', 'cancelled'];
         $statusRank = array_flip($statusOrder);
-        $timelineLogs = $order->statusLogs->sortBy(fn($log) => $statusRank[$log->status] ?? 999)->values();
+        
+        // Sort logs by time (logged_at)
+        $timelineLogs = $order->statusLogs->sortBy('logged_at')->values();
 
         if ($timelineLogs->isEmpty()) {
             $timelineLogs = collect([(object) [
@@ -14,6 +16,19 @@
         }
 
         $shippedRank = $statusRank['shipped'] ?? 999;
+
+        // Visibility flags based on current status
+        $isThirdParty = $order->delivery_type === 'third_party';
+        $currentStatus = $order->status;
+        
+        // Show delivery boy info only for local delivery in 'shipped' or 'on-the-way'
+        $showDeliveryBoy = !$isThirdParty && in_array($currentStatus, ['shipped', 'on-the-way']);
+        
+        // Show full tracking info (AWB + URL) for third party in 'shipped' or 'on-the-way'
+        $showFullTracking = $isThirdParty && in_array($currentStatus, ['shipped', 'on-the-way']);
+        
+        // Show ONLY AWB for third party after delivered
+        $showAwbOnly = $isThirdParty && in_array($currentStatus, ['delivered', 'returned']);
     @endphp
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -118,30 +133,27 @@
                     </div>
                 </div>
 
-                @if($order->payment_gateway || $order->payment_gateway_transaction_id || $order->payment_failure_reason)
+                @if($order->payment_status === 'paid' && $order->payment_gateway_transaction_id)
+                    @php
+                        $payload = $order->payment_response_payload;
+                        $instrument = data_get($payload, 'paymentDetails.0.instrumentType') 
+                                   ?? data_get($payload, 'payload.paymentDetails.0.instrumentType')
+                                   ?? data_get($payload, 'data.paymentInstrument.type');
+                    @endphp
                     <div class="rounded-lg border border-white/10 bg-white/2 p-3 mt-3 text-xs space-y-1.5">
-                        <p class="text-slate-400">Payment Response</p>
-                        @if($order->payment_gateway)
-                            <p class="text-slate-300">Gateway: <span class="text-white uppercase">{{ $order->payment_gateway }}</span></p>
-                        @endif
-                        @if($order->payment_state)
-                            <p class="text-slate-300">Gateway State: <span class="text-white">{{ $order->payment_state }}</span></p>
-                        @endif
-                        @if($order->payment_gateway_transaction_id)
-                            <p class="text-slate-300 break-all">Transaction ID: <span class="text-white">{{ $order->payment_gateway_transaction_id }}</span></p>
-                        @endif
-                        @if($order->payment_gateway_order_id)
-                            <p class="text-slate-300 break-all">Gateway Order ID: <span class="text-white">{{ $order->payment_gateway_order_id }}</span></p>
-                        @endif
-                        @if($order->payment_verified_at)
-                            <p class="text-slate-300">Verified At: <span class="text-white">{{ optional($order->payment_verified_at)->format('d M Y, h:i A') }}</span></p>
-                        @endif
-                        @if($order->payment_failure_reason)
-                            <p class="text-rose-300">Reason: {{ $order->payment_failure_reason }}</p>
-                            <div class="mt-2 p-2 rounded border border-rose-400/30 bg-rose-500/10">
-                                <p class="text-[10px] text-rose-200">Your last payment attempt was not successful. Please use the "Pay Now" button at the top to try again.</p>
-                            </div>
-                        @endif
+                        <p class="text-slate-400">Payment Details</p>
+                        <div class="space-y-1">
+                            <p class="text-slate-300">Payment Mode: <span class="text-white uppercase">{{ $order->payment_gateway ?: $order->payment_method }} {{ $instrument ? '('.$instrument.')' : '' }}</span></p>
+                            <p class="text-slate-300">Transaction ID: <span class="text-white break-all">{{ $order->payment_gateway_transaction_id }}</span></p>
+                        </div>
+                    </div>
+                @endif
+
+                @if($order->payment_status !== 'paid' && $order->payment_failure_reason)
+                    <div class="mt-3 p-3 rounded-lg border border-rose-400/30 bg-rose-500/10">
+                        <p class="text-xs text-rose-200">Payment Status: <span class="font-semibold capitalize text-rose-100">{{ $order->payment_status }}</span></p>
+                        <p class="text-[11px] text-rose-300 mt-1">Reason: {{ $order->payment_failure_reason }}</p>
+                        <p class="text-[10px] text-rose-400 mt-2">Please use the "Pay Now" button at the top to retry your payment.</p>
                     </div>
                 @endif
 
@@ -168,8 +180,6 @@
                 <div class="space-y-0">
                     @foreach($timelineLogs as $index => $log)
                         @php
-                            $logRank = $statusRank[$log->status] ?? 999;
-                            $isAfterShipping = $logRank >= $shippedRank;
                             $isLast = $index === $timelineLogs->count() - 1;
                         @endphp
 
@@ -188,32 +198,40 @@
                             @if($log->note)
                                 <p class="text-slate-300 mt-1.5 text-[11px]">{{ $log->note }}</p>
                             @endif
-
-                            @if($isAfterShipping)
-                                @if($order->delivery_type === 'third_party')
-                                    <div class="mt-2 rounded-md border border-white/10 bg-black/20 p-2.5 space-y-1">
-                                        <p class="text-slate-400">AWB Number</p>
-                                        <p class="text-white font-semibold">{{ $order->awb_number ?: 'Awaiting courier update' }}</p>
-                                        @if($order->tracking_url)
-                                            <a href="{{ $order->tracking_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200">
-                                                Track package
-                                                <i class="ri-external-link-line"></i>
-                                            </a>
-                                        @endif
-                                    </div>
-                                @else
-                                    <div class="mt-2 rounded-md border border-white/10 bg-black/20 p-2.5 space-y-1">
-                                        <p class="text-slate-400">Delivery Boy</p>
-                                        <p class="text-white">{{ $order->delivery_boy_name ?: 'Will be assigned soon' }}</p>
-                                        <p class="text-slate-400">Phone</p>
-                                        <p class="text-white">{{ $order->delivery_boy_phone ?: 'Will be shared after dispatch' }}</p>
-                                    </div>
-                                @endif
-                            @endif
                         </div>
                     @endforeach
                 </div>
             </div>
+            
+            {{-- Unified Tracking Info Section --}}
+            @if($showDeliveryBoy || $showFullTracking || $showAwbOnly)
+                <div class="rounded-lg border border-white/10 bg-white/2 p-3 space-y-2">
+                    <p class="text-slate-400">Delivery Info</p>
+                    @if($showDeliveryBoy)
+                        <div class="space-y-1">
+                            <p class="text-white font-semibold">{{ $order->delivery_boy_name ?: 'Assigning delivery boy...' }}</p>
+                            @if($order->delivery_boy_phone)
+                                <p class="text-slate-300 flex items-center gap-1.5">
+                                    <i class="ri-phone-line text-emerald-400"></i>
+                                    {{ $order->delivery_boy_phone }}
+                                </p>
+                            @endif
+                        </div>
+                    @endif
+
+                    @if($showFullTracking || $showAwbOnly)
+                        <div class="space-y-1">
+                            <p class="text-slate-400">AWB: <span class="text-white font-semibold">{{ $order->awb_number ?: 'Pending' }}</span></p>
+                            @if($showFullTracking && $order->tracking_url)
+                                <a href="{{ $order->tracking_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200 mt-1">
+                                    Track Package
+                                    <i class="ri-external-link-line text-[10px]"></i>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+            @endif
 
             <div class="rounded-lg border border-white/10 bg-white/2 p-3">
                 <p class="text-slate-400">Estimated Delivery</p>
