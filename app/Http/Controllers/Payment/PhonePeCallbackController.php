@@ -45,10 +45,16 @@ class PhonePeCallbackController extends Controller
         $this->syncOrderPaymentState($order, $verification);
 
         if ($verification['success'] ?? false) {
-            return redirect()->route('order.checkout')->with('success', 'Payment completed successfully.');
+            return redirect()->route('order.checkout')->with([
+                'success' => 'Payment completed successfully.',
+                'placed_order_number' => $order->order_number
+            ]);
         }
 
-        return redirect()->route('order.checkout')->with('error', 'Payment was not completed. You can try again.');
+        return redirect()->route('order.checkout')->with([
+            'error' => 'Payment was not completed. You can try again.',
+            'failed_order_number' => $order->order_number
+        ]);
     }
 
     public function handleCallback(Request $request)

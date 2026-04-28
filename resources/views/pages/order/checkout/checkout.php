@@ -618,21 +618,31 @@ new class extends Component
     protected function dispatchFlashToast(): void
     {
         if (session()->has('success')) {
+            $this->showSuccess = true;
+            $this->placedOrderNumber = (string) session('placed_order_number');
+
             $this->dispatch('toast-show', [
                 'message' => (string) session('success'),
                 'type' => 'success',
                 'position' => 'top-right',
             ]);
-            session()->forget('success');
+            session()->forget(['success', 'placed_order_number']);
         }
 
         if (session()->has('error')) {
             // Keep PhonePe failure/cancel feedback visible as an inline card.
             $this->showFailure = true;
             $this->showConfirmationSlide = false;
-            $this->failedOrderNumber = null;
+            $this->failedOrderNumber = (string) session('failed_order_number');
             $this->failedPaymentMessage = (string) session('error');
-            session()->forget('error');
+
+            $this->dispatch('toast-show', [
+                'message' => (string) session('error'),
+                'type' => 'error',
+                'position' => 'top-right',
+            ]);
+
+            session()->forget(['error', 'failed_order_number']);
         }
     }
 
