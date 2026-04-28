@@ -105,7 +105,7 @@
 
             <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
                 <h2 class="text-base font-semibold text-slate-900 mb-4">Tracking Logs</h2>
-                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                <div class="overflow-x-auto rounded-xl border border-slate-200" x-data="{ confirmingDelete: null }">
                     <table class="min-w-full text-sm bg-white text-nowrap">
                         <thead class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
                             <tr>
@@ -113,23 +113,79 @@
                                 <th class="px-3 py-2.5 text-left font-semibold">Note</th>
                                 <th class="px-3 py-2.5 text-left font-semibold">Source</th>
                                 <th class="px-3 py-2.5 text-left font-semibold">Time</th>
+                                <th class="px-3 py-2.5 text-right font-semibold">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @forelse($order->statusLogs as $log)
                                 <tr>
-                                    <td class="px-3 py-3 text-slate-900 font-medium">{{ ucwords(str_replace('-', ' ', $log->status)) }}</td>
-                                    <td class="px-3 py-3 text-slate-600">{{ $log->note ?: 'Status updated.' }}</td>
-                                    <td class="px-3 py-3 text-slate-500 text-xs uppercase">{{ $log->source ?? 'system' }}</td>
+                                    <td class="px-3 py-3">
+                                        <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">
+                                            {{ ucwords(str_replace('-', ' ', $log->status)) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-3 py-3 text-slate-600">
+                                        <div class="max-w-xs truncate" title="{{ $log->note }}">
+                                            {{ $log->note ?: 'Status updated.' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        <span class="text-xs font-medium {{ $log->source === 'admin' ? 'text-blue-600' : 'text-slate-500' }} uppercase">
+                                            {{ $log->source ?? 'system' }}
+                                        </span>
+                                    </td>
                                     <td class="px-3 py-3 text-slate-500 text-xs">{{ optional($log->logged_at)->format('d M Y, h:i A') ?: '-' }}</td>
+                                    <td class="px-3 py-3 text-right">
+                                        <button 
+                                            @click="confirmingDelete = {{ $log->id }}"
+                                            class="inline-flex items-center justify-center h-8 w-8 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition"
+                                            title="Delete Log"
+                                        >
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-3 py-8 text-center text-sm text-slate-500">No logs found yet.</td>
+                                    <td colspan="5" class="px-3 py-8 text-center text-sm text-slate-500">No logs found yet.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
+
+                    {{-- Deletion Confirmation Modal --}}
+                    <div 
+                        x-show="confirmingDelete" 
+                        class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+                        x-cloak
+                    >
+                        <div 
+                            @click.away="confirmingDelete = null" 
+                            class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-sm w-full p-6 space-y-4"
+                        >
+                            <div class="flex items-center gap-3 text-rose-600">
+                                <div class="h-10 w-10 rounded-full bg-rose-50 flex items-center justify-center">
+                                    <i class="ri-error-warning-line text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-slate-900">Delete Status Log?</h3>
+                            </div>
+                            <p class="text-sm text-slate-600">Are you sure you want to delete this log entry? This action cannot be undone.</p>
+                            <div class="flex gap-3 pt-2">
+                                <button 
+                                    @click="confirmingDelete = null" 
+                                    class="flex-1 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    @click="$wire.deleteLog(confirmingDelete).then(() => confirmingDelete = null)" 
+                                    class="flex-1 px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-lg hover:bg-rose-500"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

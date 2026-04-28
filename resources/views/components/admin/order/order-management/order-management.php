@@ -98,6 +98,20 @@ new #[Layout('layouts::admin')] class extends Component
             ->firstOrFail();
     }
 
+    public function deleteLog(int $logId): void
+    {
+        $log = OrderStatusLog::query()->where('order_id', $this->id)->whereKey($logId)->first();
+
+        if ($log) {
+            $log->delete();
+            $this->dispatch('toast-show', [
+                'message' => 'Status log deleted.',
+                'type' => 'success',
+                'position' => 'top-right',
+            ]);
+        }
+    }
+
     public function render()
     {
         return view('components.admin.order.order-management.order-management', [
