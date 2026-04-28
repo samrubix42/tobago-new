@@ -29,6 +29,40 @@ new class extends Component
         }, $filename);
     }
 
+    public function retryPayment(\App\Contracts\PaymentGatewayInterface $paymentGateway)
+    {
+        $order = $this->resolveOrder();
+
+        if ($order->payment_status === 'paid' || $order->status === 'cancelled') {
+            $this->dispatch('toast-show', [
+                'message' => 'Payment already completed or order cancelled.',
+                'type' => 'warning',
+                'position' => 'top-right',
+            ]);
+            return null;
+        }
+
+        $paymentResponse = $paymentGateway->initiatePayment($order);
+
+        $order->update([
+            'payment_gateway' => 'phonepe',
+            'payment_gateway_order_id' => (string) ($paymentResponse['gateway_order_id'] ?? $order->payment_gateway_order_id),
+            'payment_state' => (string) ($paymentResponse['status'] ?? $order->payment_state),
+            'payment_response_payload' => is_array($paymentResponse['payload'] ?? null) ? $paymentResponse['payload'] : null,
+        ]);
+
+        if (! ($paymentResponse['success'] ?? false) || empty($paymentResponse['redirect_url'])) {
+            $this->dispatch('toast-show', [
+                'message' => (string) ($paymentResponse['message'] ?? 'Unable to initiate payment. Please try again later.'),
+                'type' => 'error',
+                'position' => 'top-right',
+            ]);
+            return null;
+        }
+
+        return redirect()->away((string) $paymentResponse['redirect_url']);
+    }
+
     protected function resolveOrder(): Order
     {
         return Order::query()

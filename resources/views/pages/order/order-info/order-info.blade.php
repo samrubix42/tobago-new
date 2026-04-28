@@ -36,6 +36,21 @@
                 <span wire:loading wire:target="downloadBill">Preparing PDF...</span>
             </button>
 
+            @if($order->payment_status !== 'paid' && $order->status !== 'cancelled')
+                <button
+                    type="button"
+                    wire:click="retryPayment"
+                    wire:loading.attr="disabled"
+                    wire:target="retryPayment"
+                    class="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-100 hover:bg-emerald-500/20 transition disabled:opacity-60"
+                >
+                    <i class="ri-secure-payment-line" wire:loading.remove wire:target="retryPayment"></i>
+                    <i class="ri-loader-4-line animate-spin" wire:loading wire:target="retryPayment"></i>
+                    <span wire:loading.remove wire:target="retryPayment">Pay Now</span>
+                    <span wire:loading wire:target="retryPayment">Connecting...</span>
+                </button>
+            @endif
+
             <a href="{{ route('user.orders') }}" wire:navigate class="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white hover:bg-white/10 transition">
                 <i class="ri-arrow-left-line"></i>
                 Back to Orders
@@ -123,6 +138,9 @@
                         @endif
                         @if($order->payment_failure_reason)
                             <p class="text-rose-300">Reason: {{ $order->payment_failure_reason }}</p>
+                            <div class="mt-2 p-2 rounded border border-rose-400/30 bg-rose-500/10">
+                                <p class="text-[10px] text-rose-200">Your last payment attempt was not successful. Please use the "Pay Now" button at the top to try again.</p>
+                            </div>
                         @endif
                     </div>
                 @endif

@@ -33,6 +33,20 @@
                     <p class="text-xs text-slate-300 mt-1">{{ optional($order->placed_at)->format('d M Y, h:i A') ?? $order->created_at->format('d M Y, h:i A') }}</p>
                 </div>
                 <div class="flex sm:justify-end flex-wrap items-center gap-2">
+                    @if($order->payment_status !== 'paid' && $order->status !== 'cancelled')
+                        <button
+                            type="button"
+                            wire:click="retryPayment({{ $order->id }})"
+                            wire:loading.attr="disabled"
+                            wire:target="retryPayment({{ $order->id }})"
+                            class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-100 hover:bg-emerald-500/20 transition disabled:opacity-60"
+                        >
+                            <i class="ri-secure-payment-line" wire:loading.remove wire:target="retryPayment({{ $order->id }})"></i>
+                            <i class="ri-loader-4-line animate-spin" wire:loading wire:target="retryPayment({{ $order->id }})"></i>
+                            <span wire:loading.remove wire:target="retryPayment({{ $order->id }})">Pay Now</span>
+                            <span wire:loading wire:target="retryPayment({{ $order->id }})">...</span>
+                        </button>
+                    @endif
                     <span class="text-xs px-2.5 py-1 rounded-full {{ $order->status === 'delivered' ? 'bg-emerald-500/15 text-emerald-300' : ($order->status === 'cancelled' ? 'bg-rose-500/15 text-rose-300' : 'bg-amber-500/15 text-amber-300') }}">{{ ucfirst($order->status) }}</span>
                 </div>
             </div>
