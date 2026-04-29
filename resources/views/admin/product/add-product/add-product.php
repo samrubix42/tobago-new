@@ -119,7 +119,7 @@ new #[Layout('layouts::admin')] class extends Component
         $product = Product::find($this->copyProductId);
         if (!$product) return;
 
-        $this->name = $product->name . ' (Copy)';
+        $this->name = $product->name;
         $this->slug = Str::slug($this->name);
         // SKU and images are explicitly excluded as per user request
         $this->description = $product->short_description;
