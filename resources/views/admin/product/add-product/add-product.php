@@ -26,8 +26,8 @@ new #[Layout('layouts::admin')] class extends Component
     public ?string $feature_and_specifications = null;
     public ?int $category_id = null;
     public string $status = 'draft';
-    public bool $is_featured = false;
-    public bool $is_trending = false;
+    public $is_featured = false;
+    public $is_trending = false;
     public ?string $meta_title = null;
     public ?string $meta_description = null;
     public ?string $meta_keywords = null;
@@ -35,11 +35,11 @@ new #[Layout('layouts::admin')] class extends Component
 
     // Pricing
     public ?float $cost_price = null;
-    public float $selling_price = 0;
-    public float $compare_price = 0;
+    public $selling_price = 0;
+    public $compare_price = 0;
 
     // Stock
-    public int $stock = 0;
+    public $stock = 0;
     public ?int $hurry_stock = null;
     public $is_out_of_stock = false;
 
@@ -217,7 +217,6 @@ new #[Layout('layouts::admin')] class extends Component
                     'reference_id' => null,
                     'note' => 'Initial stock on product creation',
                 ]);
-            }
             }
         } else {
             $product = Product::findOrFail($this->newlyCreatedProductId);
