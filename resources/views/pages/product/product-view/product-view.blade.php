@@ -23,7 +23,7 @@
         <div class="space-y-4 min-w-0">
 
             <!-- Main Image -->
-            <div class="relative z-0 rounded-3xl border border-subtle bg-[#0b0d0f] overflow-hidden" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
+            <div class="relative z-0 rounded-3xl border border-subtle bg-white overflow-hidden" x-on:mouseenter="stopAuto()" x-on:mouseleave="startAuto()">
                 <div class="absolute -top-24 -left-24 h-56 w-56 rounded-full bg-blue-500/10 blur-[90px]"></div>
                 <div class="absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
                 <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at top, rgba(0,198,255,0.18), transparent 55%);"></div>
@@ -43,7 +43,7 @@
                             <img
                                 :src="img.src"
                                 :alt="img.alt"
-                                class="h-full w-full object-cover">
+                                class="h-full w-full object-contain">
                         </div>
                     </template>
                 </div>
@@ -54,11 +54,11 @@
                 <template x-for="(img, index) in images" :key="img.src + index">
                     <button
                         type="button"
-                        class="shrink-0 w-16 h-16 rounded-xl border bg-[#0b0d0f] border-subtle flex items-center justify-center p-2 transition"
+                        class="shrink-0 w-16 h-16 rounded-xl border bg-white border-subtle flex items-center justify-center p-2 transition"
                         :class="activeIndex === index ? 'border-white/25 ring-2 ring-indigo-400/20' : 'hover:border-white/15'"
                         x-on:click="setActive(index); restartAuto()"
                         :aria-label="`View image ${index + 1}`">
-                        <img :src="img.src" :alt="img.alt" class="h-full w-full object-cover opacity-90">
+                        <img :src="img.src" :alt="img.alt" class="h-full w-full object-contain opacity-90">
                     </button>
                 </template>
             </div>
