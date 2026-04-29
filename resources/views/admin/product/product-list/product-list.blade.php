@@ -11,7 +11,6 @@
 
         <a href="{{ route('admin.products.add') }}" 
            class="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 transition"
-           wire:navigate
         >
             <i class="ri-add-line text-base"></i>
             Add Product
@@ -137,7 +136,6 @@
                                 <a href="{{ route('admin.products.edit', $product->id) }}"
                                    class="h-8 w-8 inline-flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition duration-200 shadow-sm"
                                    title="Edit Product"
-                                   wire:navigate
                                 >
                                     <i class="ri-edit-line text-sm"></i>
                                 </a>
@@ -227,7 +225,6 @@
                         <div class="flex gap-2">
                         <a href="{{ route('admin.products.edit', $product->id) }}"
                            class="h-10 w-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm active:scale-95"
-                           wire:navigate
                         >
                             <i class="ri-edit-line"></i>
                         </a>
