@@ -216,7 +216,7 @@
                     </span>
                 </div>
                 @endif
-                <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-white/[0.06] to-transparent mb-4 border border-white/5">
+                <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/5">
                     <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.18), transparent 60%);"></div>
                     <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
                 </div>
@@ -327,7 +327,7 @@
                     </span>
                 </div>
                 @endif
-                <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-gradient-to-b from-white/[0.06] to-transparent mb-4 overflow-hidden border border-white/5">
+                <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-white mb-4 overflow-hidden border border-white/5">
                     <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
                     <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
                 </div>
@@ -759,7 +759,7 @@
                             </span>
                         </div>
                         @endif
-                        <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white/[0.03] mb-4 border border-white/10">
+                        <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/10">
                             <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
                         </div>
                      
