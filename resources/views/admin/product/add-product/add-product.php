@@ -22,6 +22,7 @@ new #[Layout('layouts::admin')] class extends Component
     // Basic Info
     public string $name = '';
     public string $slug = '';
+    public string $sku = '';
     public ?string $description = null;
     public ?string $feature_and_specifications = null;
     public ?int $category_id = null;
@@ -54,7 +55,15 @@ new #[Layout('layouts::admin')] class extends Component
             1 => [
                 'name' => ['required', 'string', 'max:255'],
                 'slug' => ['required', 'string', 'max:255', 'unique:products,slug'],
+                'sku' => ['nullable', 'string', 'max:50', 'unique:products,sku'],
+                'description' => ['nullable', 'string'],
+                'feature_and_specifications' => ['nullable', 'string'],
                 'category_id' => ['required', 'exists:categories,id'],
+                'is_featured' => ['boolean'],
+                'is_trending' => ['boolean'],
+                'meta_title' => ['nullable', 'string', 'max:255'],
+                'meta_description' => ['nullable', 'string'],
+                'meta_keywords' => ['nullable', 'string'],
             ],
             2 => [
                 'cost_price' => ['nullable', 'numeric', 'min:0'],
@@ -64,6 +73,7 @@ new #[Layout('layouts::admin')] class extends Component
             3 => [
                 'stock' => ['required', 'integer', 'min:0'],
                 'hurry_stock' => ['nullable', 'integer', 'min:0'],
+                'is_out_of_stock' => ['boolean'],
             ],
             4 => [
                 'status' => ['required', 'in:active,inactive,draft'],
@@ -116,18 +126,19 @@ new #[Layout('layouts::admin')] class extends Component
         $data = [
             'name' => $this->name,
             'slug' => Str::slug($this->slug),
+            'sku' => $this->sku ?: Product::generateSkuFromName($this->name, $this->newlyCreatedProductId),
             'short_description' => $this->description,
             'feature_and_specifications' => $this->feature_and_specifications,
             'category_id' => $this->category_id,
             'status' => $this->status,
-            'is_featured' => $this->is_featured,
-            'is_trending' => $this->is_trending,
-            'cost_price' => $this->cost_price,
-            'selling_price' => $this->selling_price,
-            'compare_price' => $this->compare_price,
-            'stock' => $this->stock,
-            'hurry_stock' => $this->hurry_stock,
-            'is_out_of_stock' => $this->is_out_of_stock,
+            'is_featured' => (bool) $this->is_featured,
+            'is_trending' => (bool) $this->is_trending,
+            'cost_price' => (is_numeric($this->cost_price) && $this->cost_price !== '') ? (float) $this->cost_price : null,
+            'selling_price' => (float) $this->selling_price,
+            'compare_price' => (is_numeric($this->compare_price) && $this->compare_price !== '') ? (float) $this->compare_price : null,
+            'stock' => (int) $this->stock,
+            'hurry_stock' => (is_numeric($this->hurry_stock) && $this->hurry_stock !== '') ? (int) $this->hurry_stock : null,
+            'is_out_of_stock' => (bool) $this->is_out_of_stock,
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,
             'meta_keywords' => $this->meta_keywords,
@@ -197,14 +208,14 @@ new #[Layout('layouts::admin')] class extends Component
             $product = Product::create([
                 'name' => $this->name,
                 'slug' => Str::slug($this->slug),
-                'sku' => Product::generateSkuFromName($this->name),
+                'sku' => $this->sku ?: Product::generateSkuFromName($this->name),
                 'short_description' => $this->description,
                 'feature_and_specifications' => $this->feature_and_specifications,
                 'category_id' => $this->category_id,
                 'status' => 'draft', // Force draft until explicitly saved
-                'cost_price' => $this->cost_price,
-                'selling_price' => $this->selling_price,
-                'stock' => $this->stock,
+                'cost_price' => (is_numeric($this->cost_price) && $this->cost_price !== '') ? (float) $this->cost_price : null,
+                'selling_price' => (is_numeric($this->selling_price) && $this->selling_price !== '') ? (float) $this->selling_price : 0,
+                'stock' => (int) ($this->stock ?? 0),
             ]);
             $this->newlyCreatedProductId = $product->id;
 
