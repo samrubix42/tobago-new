@@ -110,9 +110,9 @@ new #[Layout('layouts::admin')] class extends Component
 
     public function updatedName($value): void
     {
-        if ($this->slug === '') {
+        
             $this->slug = Str::slug($value);
-        }
+      
     }
 
     public function setStep(int $step): void
