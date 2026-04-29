@@ -28,7 +28,7 @@ return new class extends Migration
 
             // PRICING 
             $table->decimal('cost_price', 10, 2)
-                ->default(0)
+                ->nullable()
                 ->comment('Purchase cost price');
 
             $table->decimal('selling_price', 10, 2)

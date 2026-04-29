@@ -34,14 +34,14 @@ new #[Layout('layouts::admin')] class extends Component
 
 
     // Pricing
-    public float $cost_price = 0;
+    public ?float $cost_price = null;
     public float $selling_price = 0;
     public float $compare_price = 0;
 
     // Stock
     public int $stock = 0;
     public ?int $hurry_stock = null;
-    public bool $is_out_of_stock = false;
+    public $is_out_of_stock = false;
 
     // Images
     public $images = [];
@@ -57,7 +57,7 @@ new #[Layout('layouts::admin')] class extends Component
                 'category_id' => ['required', 'exists:categories,id'],
             ],
             2 => [
-                'cost_price' => ['required', 'numeric', 'min:0'],
+                'cost_price' => ['nullable', 'numeric', 'min:0'],
                 'selling_price' => ['required', 'numeric', 'min:0'],
                 'compare_price' => ['nullable', 'numeric', 'min:0'],
             ],
@@ -218,6 +218,9 @@ new #[Layout('layouts::admin')] class extends Component
                     'note' => 'Initial stock on product creation',
                 ]);
             }
+            }
+        } else {
+            $product = Product::findOrFail($this->newlyCreatedProductId);
         }
 
         if (!empty($this->images)) {
@@ -240,7 +243,7 @@ new #[Layout('layouts::admin')] class extends Component
             }
         }
 
-        $this->is_out_of_stock = $product->is_out_of_stock;
+        $this->is_out_of_stock = (bool) $product->is_out_of_stock;
         $this->meta_title = $product->meta_title;
         $this->meta_description = $product->meta_description;
         $this->meta_keywords = $product->meta_keywords;
