@@ -522,7 +522,7 @@ new class extends Component
         $this->validate([
             'paymentMethod' => ['required', 'in:online'],
             'fullName' => ['required', 'string', 'min:2', 'max:255'],
-            'phone' => ['required', 'regex:/^[0-9]{10}$/'],
+            'phone' => ['required', 'regex:/^[6-9]\d{9}$/'],
             'email' => ['nullable', 'email', 'max:255'],
             'addressLine1' => ['required', 'string', 'min:5', 'max:255'],
             'addressLine2' => ['nullable', 'string', 'max:255'],
@@ -531,10 +531,10 @@ new class extends Component
             'city' => ['required', 'string', 'min:2', 'max:100'],
             'state' => ['required', 'string', 'min:2', 'max:100'],
             'country' => ['required', 'string', 'max:100'],
-            'pincode' => ['required', 'regex:/^[1-9][0-9]{5}$/'],
+            'pincode' => ['required', 'regex:/^[1-9]\d{5}$/'],
             'customerNote' => ['nullable', 'string', 'max:500'],
         ], [
-            'phone.regex' => 'Phone number must be 10 digits.',
+            'phone.regex' => 'Phone number must be a valid 10-digit mobile number.',
             'pincode.regex' => 'Pincode must be a valid 6-digit Indian pincode.',
         ]);
     }

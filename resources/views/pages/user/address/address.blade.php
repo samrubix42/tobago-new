@@ -251,8 +251,7 @@
                             class="w-8 h-8 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center text-white/50 hover:text-white transition-all">
                         <i class="ri-edit-line text-sm"></i>
                     </button>
-                    <button wire:click="delete({{ $address->id }})"
-                            wire:confirm="Delete this address?"
+                    <button wire:click="$set('confirmingDeletionId', {{ $address->id }})"
                             class="w-8 h-8 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center text-white/50 hover:text-red-400 transition-all">
                         <i class="ri-delete-bin-line text-sm"></i>
                     </button>
@@ -261,6 +260,48 @@
             </div>
         </div>
         @endforeach
+    </div>
+    @endif
+
+    {{-- ── Deletion Confirmation Modal ── --}}
+    @if($confirmingDeletionId)
+    <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#060707]/80 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div class="bg-[#111213] rounded-3xl shadow-2xl border border-white/10 max-w-sm w-full p-6 space-y-6"
+             @click.away="$wire.set('confirmingDeletionId', null)"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100">
+            
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500">
+                    <i class="ri-delete-bin-fill text-3xl"></i>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-xl font-semibold text-white">Delete Address?</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">
+                        This will permanently remove this address from your profile. This action cannot be undone.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button @click="$wire.set('confirmingDeletionId', null)"
+                        class="flex-1 px-4 py-3 rounded-xl border border-white/10 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-all">
+                    Cancel
+                </button>
+                <button wire:click="delete({{ $confirmingDeletionId }})"
+                        class="flex-1 px-4 py-3 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-500 active:scale-[0.98] transition-all">
+                    Confirm Delete
+                </button>
+            </div>
+        </div>
     </div>
     @endif
 

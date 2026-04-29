@@ -11,6 +11,7 @@ new #[Layout('layouts::app')] #[Title('My Addresses')] class extends Component
     // Form fields
     public ?int $editingId = null;
     public bool $showForm  = false;
+    public ?int $confirmingDeletionId = null;
 
     public string $type           = 'home';
     public bool   $is_default     = false;
@@ -37,15 +38,15 @@ new #[Layout('layouts::app')] #[Title('My Addresses')] class extends Component
         return [
             'type'            => ['required', 'in:home,work,other'],
             'full_name'       => ['required', 'string', 'max:255'],
-            'phone'           => ['required', 'string', 'max:20'],
-            'alternate_phone' => ['nullable', 'string', 'max:20'],
+            'phone'           => ['required', 'string', 'regex:/^[6-9]\d{9}$/'], // Indian phone format
+            'alternate_phone' => ['nullable', 'string', 'regex:/^[6-9]\d{9}$/'],
             'address_line1'   => ['required', 'string', 'max:255'],
             'address_line2'   => ['nullable', 'string', 'max:255'],
             'landmark'        => ['nullable', 'string', 'max:255'],
             'city'            => ['required', 'string', 'max:100'],
             'state'           => ['required', 'string', 'max:100'],
             'country'         => ['required', 'string', 'max:100'],
-            'pincode'         => ['required', 'string', 'max:10'],
+            'pincode'         => ['required', 'string', 'regex:/^[1-9]\d{5}$/'], // 6-digit Indian pincode (no leading zero)
         ];
     }
 
@@ -74,7 +75,11 @@ new #[Layout('layouts::app')] #[Title('My Addresses')] class extends Component
 
     public function save(): void
     {
-        $this->validate();
+        $this->validate(null, [
+            'phone.regex' => 'Phone number must be a valid 10-digit mobile number.',
+            'alternate_phone.regex' => 'Alternate phone must be a valid 10-digit mobile number.',
+            'pincode.regex' => 'Pincode must be a valid 6-digit Indian pincode.',
+        ]);
         $user = Auth::user();
 
         // Set all others as non-default if this is set as default
@@ -121,6 +126,7 @@ new #[Layout('layouts::app')] #[Title('My Addresses')] class extends Component
     public function delete(int $addressId): void
     {
         Auth::user()->addresses()->where('id', $addressId)->delete();
+        $this->confirmingDeletionId = null;
     }
 
     private function resetForm(): void
