@@ -85,8 +85,22 @@ new #[Layout('layouts::admin')] class extends Component
 
     public function updatedName($value): void
     {
-            $this->slug = Str::slug($value);
-        
+        $this->slug = Str::slug($value);
+    }
+
+    private function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (Product::where('slug', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
     }
 
     public function setStep(int $step): void
@@ -162,7 +176,7 @@ new #[Layout('layouts::admin')] class extends Component
 
         $data = [
             'name' => $this->name,
-            'slug' => Str::slug($this->slug),
+            'slug' => Str::slug($this->slug ?: $this->name),
             'sku' => $this->sku ?: Product::generateSkuFromName($this->name, $this->newlyCreatedProductId),
             'short_description' => $this->description,
             'feature_and_specifications' => $this->feature_and_specifications,
@@ -244,7 +258,7 @@ new #[Layout('layouts::admin')] class extends Component
             // Auto-save quietly if they upload an image before finalizing
             $product = Product::create([
                 'name' => $this->name,
-                'slug' => Str::slug($this->slug),
+                'slug' => Str::slug($this->slug ?: $this->name),
                 'sku' => $this->sku ?: Product::generateSkuFromName($this->name),
                 'short_description' => $this->description,
                 'feature_and_specifications' => $this->feature_and_specifications,

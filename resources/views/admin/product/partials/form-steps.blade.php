@@ -116,7 +116,11 @@
 
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">URL Slug <span class="text-red-500">*</span></label>
-                        <input type="text" wire:model.live="slug" placeholder="e.g. premium-wireless-headphones"
+                        <input type="text" wire:model.live="slug" 
+                               id="product-url-slug-field"
+                               name="product-url-slug-field"
+                               placeholder="e.g. premium-wireless-headphones"
+                               autocomplete="new-password"
                                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-gray-50/50">
                         @error('slug') <p class="text-xs text-red-500 mt-1.5"><i class="ri-error-warning-line"></i> {{ $message }}</p> @enderror
                     </div>
@@ -299,7 +303,10 @@
 
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">Retail Price (₹) <span class="text-red-500">*</span></label>
-                           <input type="number" step="0.01" wire:model.blur="selling_price" placeholder="0.00"
+                           <input type="number" step="0.01" wire:model="selling_price" 
+                               id="product-selling-price-field"
+                               name="product-selling-price-field"
+                               placeholder="0.00"
                                class="w-full rounded-lg border border-blue-300 px-4 py-2.5 text-sm font-bold text-gray-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm bg-blue-50/10">
                         @error('selling_price') <p class="text-xs text-red-500 mt-1.5">{{ $message }}</p> @enderror
                     </div>
