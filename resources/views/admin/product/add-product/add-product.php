@@ -18,6 +18,8 @@ new #[Layout('layouts::admin')] class extends Component
     use WithFileUploads;
 
     public int $currentStep = 1;
+    public ?int $copyProductId = null;
+    public string $productSearch = '';
 
     // Basic Info
     public string $name = '';
@@ -108,6 +110,42 @@ new #[Layout('layouts::admin')] class extends Component
             $this->currentStep++;
             $this->dispatch('product-step-changed', ['step' => $this->currentStep]);
         }
+    }
+
+    public function copyProductDetails(): void
+    {
+        if (!$this->copyProductId) return;
+
+        $product = Product::find($this->copyProductId);
+        if (!$product) return;
+
+        $this->name = $product->name . ' (Copy)';
+        $this->slug = Str::slug($this->name);
+        // SKU and images are explicitly excluded as per user request
+        $this->description = $product->short_description;
+        $this->feature_and_specifications = $product->feature_and_specifications;
+        $this->category_id = $product->category_id;
+        $this->status = 'draft';
+        $this->is_featured = (bool)$product->is_featured;
+        $this->is_trending = (bool)$product->is_trending;
+        $this->cost_price = (float)$product->cost_price;
+        $this->selling_price = (float)$product->selling_price;
+        $this->compare_price = (float)$product->compare_price;
+        $this->stock = (int)$product->stock;
+        $this->hurry_stock = (int)$product->hurry_stock;
+        $this->is_out_of_stock = (bool)$product->is_out_of_stock;
+        $this->meta_title = $product->meta_title;
+        $this->meta_description = $product->meta_description;
+        $this->meta_keywords = $product->meta_keywords;
+
+        $this->dispatch('toast-show', [
+            'message' => 'Details copied from ' . $product->name,
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+        
+        // If TinyMCE is active, we need to manually update its content
+        $this->dispatch('update-tinymce-content', content: $this->feature_and_specifications ?? '');
     }
 
     public function prevStep(): void
@@ -308,8 +346,16 @@ new #[Layout('layouts::admin')] class extends Component
 
     public function render()
     {
+        $searchProducts = [];
+        if (strlen($this->productSearch) >= 2) {
+            $searchProducts = Product::where('name', 'like', '%' . $this->productSearch . '%')
+                ->limit(5)
+                ->get();
+        }
+
         return view('admin::product.add-product.add-product', [
             'categories' => Category::with('parent')->orderBy('title')->get(),
+            'searchProducts' => $searchProducts,
         ]);
     }
 };

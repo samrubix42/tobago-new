@@ -54,6 +54,55 @@
 
     <!-- Active Step Form Content -->
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-10 min-h-[350px] relative">
+        @if($currentStep == 1 && !isset($productId))
+            <!-- Copy Details Tool -->
+            <div x-data="{ open: false, search: @entangle('productSearch').live }" class="mb-10 bg-blue-50/50 border border-blue-100 rounded-2xl p-6 relative z-30">
+                <div class="flex items-start gap-5">
+                    <div class="w-12 h-12 rounded-2xl bg-white border border-blue-100 shadow-sm flex items-center justify-center shrink-0">
+                        <i class="ri-file-copy-2-line text-2xl text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-1">Copy Existing Product Details</h3>
+                        <p class="text-xs text-gray-500 mb-4">Quickly populate fields by selecting a similar product. <span class="text-blue-600 font-semibold italic">(SKU and Images won't be copied)</span></p>
+                        
+                        <div class="relative max-w-lg">
+                            <div class="relative">
+                                <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" wire:loading.remove wire:target="productSearch"></i>
+                                <i class="ri-loader-4-line absolute left-4 top-1/2 -translate-y-1/2 text-blue-500 animate-spin" wire:loading wire:target="productSearch"></i>
+                                <input type="text" 
+                                       wire:model.live.debounce.300ms="productSearch"
+                                       @focus="open = true"
+                                       placeholder="Search product name to copy from..."
+                                       class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none shadow-sm">
+                            </div>
+
+                            @if(!empty($searchProducts))
+                                <div x-show="open" @click.outside="open = false" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-2xl z-50 py-2 overflow-hidden">
+                                    @foreach($searchProducts as $p)
+                                        <button type="button" 
+                                                wire:click="$set('copyProductId', {{ $p->id }}); copyProductDetails(); open = false;"
+                                                class="w-full text-left px-4 py-3 hover:bg-blue-50 flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0">
+                                            <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center overflow-hidden shrink-0">
+                                                @if($p->primaryImage->first())
+                                                    <img src="{{ asset('storage/' . $p->primaryImage->first()->image) }}" class="w-full h-full object-cover">
+                                                @else
+                                                    <i class="ri-image-line text-gray-400"></i>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-900">{{ $p->name }}</div>
+                                                <div class="text-[10px] text-gray-500 font-medium uppercase">{{ $p->category->title ?? 'No Category' }} • ₹{{ number_format($p->selling_price, 2) }}</div>
+                                            </div>
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         @if($currentStep == 1)
             <!-- Step 1: General Info -->
             <div class="space-y-6 animate-fade-in">
@@ -498,6 +547,14 @@
                     const nextStep = Number(event?.detail?.step);
                     if (!Number.isNaN(nextStep)) {
                         this.step = nextStep;
+                    }
+                });
+
+                window.addEventListener('update-tinymce-content', (event) => {
+                    const content = event.detail.content || '';
+                    const editor = window.tinymce && window.tinymce.get('product-feature-spec-editor');
+                    if (editor) {
+                        editor.setContent(content);
                     }
                 });
 
