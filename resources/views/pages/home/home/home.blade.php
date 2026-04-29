@@ -208,7 +208,14 @@
             $image = optional($product->images->firstWhere('is_primary', true))->image
             ?? optional($product->images->first())->image;
             @endphp
-            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-2xl hover:shadow-cyan-900/30 block">
+            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-2xl hover:shadow-cyan-900/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                @if($product->is_out_of_stock || $product->stock <= 0)
+                <div class="absolute top-5 left-5 z-20">
+                    <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                        Out of Stock
+                    </span>
+                </div>
+                @endif
                 <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-white/[0.06] to-transparent mb-4 border border-white/5">
                     <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.18), transparent 60%);"></div>
                     <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
@@ -312,7 +319,14 @@
             $arrivalImage = optional($product->images->firstWhere('is_primary', true))->image
             ?? optional($product->images->first())->image;
             @endphp
-            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-purple-300/30 hover:shadow-2xl hover:shadow-purple-900/30 block">
+            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-purple-300/30 hover:shadow-2xl hover:shadow-purple-900/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                @if($product->is_out_of_stock || $product->stock <= 0)
+                <div class="absolute top-5 left-5 z-20">
+                    <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                        Out of Stock
+                    </span>
+                </div>
+                @endif
                 <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-gradient-to-b from-white/[0.06] to-transparent mb-4 overflow-hidden border border-white/5">
                     <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
                     <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
@@ -737,7 +751,14 @@
                     $sectionImage = optional($product->images->firstWhere('is_primary', true))->image
                     ?? optional($product->images->first())->image;
                     @endphp
-                    <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block">
+                    <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                        @if($product->is_out_of_stock || $product->stock <= 0)
+                        <div class="absolute top-5 left-5 z-20">
+                            <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                                Out of Stock
+                            </span>
+                        </div>
+                        @endif
                         <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white/[0.03] mb-4 border border-white/10">
                             <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
                         </div>
