@@ -109,7 +109,7 @@
                 ['name' => 'Category', 'route' => 'category', 'icon' => 'ri-function', 'active' => request()->routeIs('category')],
                 ['name' => 'Shop', 'route' => 'products', 'icon' => 'ri-shopping-bag-3', 'active' => request()->routeIs('products')],
                 ['name' => 'Cart', 'route' => 'cart', 'icon' => 'ri-shopping-cart-2', 'active' => request()->routeIs('cart')],
-                ['name' => 'Account', 'route' => 'user.profile', 'icon' => 'ri-user-3', 'active' => request()->routeIs('user.*') || request()->routeIs('login')],
+                ['name' => auth()->check() ? 'Account' : 'Sign In', 'route' => 'user.profile', 'icon' => 'ri-user-3', 'active' => request()->routeIs('user.*') || request()->routeIs('login')],
             ];
         @endphp
 
