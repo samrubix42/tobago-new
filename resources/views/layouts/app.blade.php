@@ -54,7 +54,7 @@
     @endphp
 
     @if ($whatsapp)
-    <div class="fixed bottom-20 right-4 md:bottom-20 md:right-8 z-[9999] whatsapp-sticky">
+    <div class="fixed bottom-20 right-4 sm:bottom-20 lg:bottom-10 md:right-8 z-[9999] whatsapp-sticky">
         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $whatsapp) }}" target="_blank"
             class="relative flex items-center justify-center gap-0 sm:gap-3 bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white h-12 w-12 sm:h-auto sm:w-auto sm:px-5 sm:py-3 md:px-6 md:py-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_15px_40px_rgba(37,211,102,0.4)] group">
             <div class="relative flex items-center justify-center shrink-0">
