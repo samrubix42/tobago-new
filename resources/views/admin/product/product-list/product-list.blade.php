@@ -17,32 +17,57 @@
         </a>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-        <div class="relative w-full sm:w-80">
+    <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row lg:items-center gap-4">
+        <!-- Search -->
+        <div class="relative flex-1 lg:max-w-xs">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 focus-within:text-blue-500 transition-colors">
                 <i class="ri-search-line"></i>
             </span>
             <input
                 type="text"
                 wire:model.live.debounce.300ms="search"
-                placeholder="Search products..."
-                class="w-full rounded-md border border-slate-300 pl-9 pr-4 py-2.5 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition duration-200 shadow-sm sm:shadow-none"
+                placeholder="Search by name or slug..."
+                class="w-full rounded-xl border border-slate-200 pl-9 pr-4 py-2.5 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition duration-200 bg-slate-50/50 focus:bg-white"
             >
         </div>
 
-        <div class="flex items-center gap-2 self-start sm:self-auto sm:ml-auto">
-            <label for="per-page" class="text-xs font-semibold uppercase tracking-wider text-slate-500">Show</label>
+        <!-- Filter Actions -->
+        <div class="flex flex-wrap items-center gap-3">
             <select
-                id="per-page"
-                wire:model.live="perPage"
-                class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
+                wire:model.live="selectedCategory"
+                class="h-10 rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition focus:bg-white min-w-[160px]"
             >
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+                <option value="">All Categories</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}">{{ $cat->title }}</option>
+                @endforeach
             </select>
-            <span class="text-xs text-slate-500">per page</span>
+
+            <select
+                wire:model.live="selectedStatus"
+                class="h-10 rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition focus:bg-white min-w-[140px]"
+            >
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="draft">Draft</option>
+            </select>
+        </div>
+
+        <!-- Settings -->
+        <div class="flex items-center gap-3 lg:ml-auto border-t lg:border-t-0 pt-4 lg:pt-0 border-slate-100">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Show</span>
+                <select
+                    wire:model.live="perPage"
+                    class="h-10 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition focus:bg-white"
+                >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -242,7 +267,7 @@
             <div class="bg-white border border-dashed border-slate-200 rounded-2xl py-12 px-6 text-center text-slate-400 animate-fade-in shadow-inner">
                 <i class="ri-shopping-basket-2-line text-4xl mb-3 block opacity-50"></i>
                 <p class="text-sm font-medium">No products match your search</p>
-                <button wire:click="$set('search', '')" class="text-xs text-blue-600 font-bold mt-2 hover:underline">Clear search filters</button>
+                <button wire:click="$set('search', ''); $set('selectedCategory', ''); $set('selectedStatus', '');" class="text-xs text-blue-600 font-bold mt-2 hover:underline">Clear all filters</button>
             </div>
         @endforelse
 
