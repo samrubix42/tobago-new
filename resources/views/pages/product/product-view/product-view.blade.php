@@ -317,7 +317,7 @@
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
                     @foreach($section['products'] as $recommendedProduct)
                         <a href="{{ route('product', $recommendedProduct->slug) }}" wire:navigate class="group block rounded-2xl border border-subtle bg-[#0b0d0f] p-3 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 sm:p-4 relative {{ ($recommendedProduct->is_out_of_stock || $recommendedProduct->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                            <div class="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-white/3 sm:h-32">
+                            <div class="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-white sm:h-32">
                                 @if($recommendedProduct->is_out_of_stock || $recommendedProduct->stock <= 0)
                                 <div class="absolute top-2 left-2 z-20">
                                     <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
@@ -390,7 +390,7 @@
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
             @forelse($relatedProducts as $relatedProduct)
                 <a href="{{ route('product', $relatedProduct->slug) }}" wire:navigate class="group block rounded-2xl border border-subtle bg-[#0b0d0f] p-3 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 sm:p-4 relative {{ ($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                    <div class="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-white/3 sm:h-32">
+                    <div class="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-white sm:h-32">
                         @if($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0)
                         <div class="absolute top-2 left-2 z-20">
                             <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">

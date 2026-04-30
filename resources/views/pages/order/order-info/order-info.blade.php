@@ -90,7 +90,7 @@
                         @endphp
                         <article class="flex items-start justify-between gap-3 border border-white/10 rounded-xl p-3 bg-white/2">
                             <div class="flex items-start gap-3 min-w-0">
-                                <div class="h-16 w-16 rounded-lg overflow-hidden border border-white/10 bg-white/4 shrink-0 flex items-center justify-center">
+                                <div class="h-16 w-16 rounded-lg overflow-hidden border border-white/10 bg-white shrink-0 flex items-center justify-center">
                                     @if($image)
                                         <img src="{{ str_starts_with($image, 'http') ? $image : asset('storage/' . ltrim($image, '/')) }}" alt="{{ $item->product_name }}" class="h-full w-full object-cover">
                                     @else

@@ -105,7 +105,7 @@
                         @endphp
                         <article wire:key="product-card-{{ $product->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20 relative {{ $isOut ? 'opacity-70 grayscale-[0.5]' : '' }}">
                             <a href="{{ route('product', $product->slug) }}" wire:navigate class="block">
-                                <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white/4">
+                                <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white">
                                     @if($isOut)
                                     <div class="absolute top-2 left-2 z-20">
                                         <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">

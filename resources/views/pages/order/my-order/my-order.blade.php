@@ -61,7 +61,7 @@
 
                 <article class="rounded-xl border border-white/10 bg-white/2 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0 w-full">
-                        <div class="h-14 w-14 rounded-lg overflow-hidden border border-white/10 bg-white/4 shrink-0 flex items-center justify-center">
+                        <div class="h-14 w-14 rounded-lg overflow-hidden border border-white/10 bg-white shrink-0 flex items-center justify-center">
                             @if($image)
                             <img src="{{ str_starts_with($image, 'http') ? $image : asset('storage/' . ltrim($image, '/')) }}" alt="{{ $item->product_name }}" class="h-full w-full object-cover">
                             @else

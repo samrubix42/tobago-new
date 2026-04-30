@@ -54,7 +54,7 @@
 
                     <article wire:key="cart-item-{{ $item->id }}" class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 sm:p-4.5">
                         <div class="grid grid-cols-[80px_1fr] sm:grid-cols-[96px_1fr] gap-3 sm:gap-4 items-start">
-                            <div class="h-20 w-20 sm:h-24 sm:w-24 rounded-xl bg-white/4 border border-white/10 flex items-center justify-center overflow-hidden">
+                            <div class="h-20 w-20 sm:h-24 sm:w-24 rounded-xl bg-white border border-white/10 flex items-center justify-center overflow-hidden">
                                 @if($image)
                                     <img src="{{ str_starts_with($image, 'http') ? $image : asset('storage/' . ltrim($image, '/')) }}" alt="{{ $product?->name }}" class="h-full w-full object-cover">
                                 @else
