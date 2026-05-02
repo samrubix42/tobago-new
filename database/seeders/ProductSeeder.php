@@ -38,7 +38,7 @@ class ProductSeeder extends Seeder
                 $slug = $this->uniqueProductSlug($name, $productIndex);
                 $sku = $this->uniqueSku($name, $productIndex);
 
-                $sellingPrice = fake()->randomFloat(2, 3000, 35000);
+                $sellingPrice = fake()->randomFloat(2, 999, 40000);
                 $costPrice = round($sellingPrice * fake()->randomFloat(2, 0.62, 0.84), 2);
                 $comparePrice = fake()->boolean(75)
                     ? round($sellingPrice + fake()->randomFloat(2, 600, 5000), 2)
