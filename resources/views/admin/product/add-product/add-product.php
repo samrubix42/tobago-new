@@ -17,23 +17,23 @@ new #[Layout('layouts::admin')] class extends Component
 {
     use WithFileUploads;
 
-    public int $currentStep = 1;
-    public ?int $copyProductId = null;
-    public string $productSearch = '';
+    public $currentStep = 1;
+    public $copyProductId = null;
+    public $productSearch = '';
 
     // Basic Info
-    public string $name = '';
-    public string $slug = '';
-    public string $sku = '';
-    public ?string $description = null;
-    public ?string $feature_and_specifications = null;
+    public $name = '';
+    public $slug = '';
+    public $sku = '';
+    public $description = null;
+    public $feature_and_specifications = null;
     public $category_id = null;
-    public string $status = 'draft';
+    public $status = 'draft';
     public $is_featured = false;
     public $is_trending = false;
-    public ?string $meta_title = null;
-    public ?string $meta_description = null;
-    public ?string $meta_keywords = null;
+    public $meta_title = null;
+    public $meta_description = null;
+    public $meta_keywords = null;
 
 
     // Pricing
@@ -49,7 +49,7 @@ new #[Layout('layouts::admin')] class extends Component
     // Images
     public $images = [];
     public $productImages = []; 
-    public ?int $newlyCreatedProductId = null;
+    public $newlyCreatedProductId = null;
 
     protected function rules(): array
     {
