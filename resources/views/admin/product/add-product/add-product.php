@@ -27,7 +27,7 @@ new #[Layout('layouts::admin')] class extends Component
     public string $sku = '';
     public ?string $description = null;
     public ?string $feature_and_specifications = null;
-    public ?int $category_id = null;
+    public $category_id = null;
     public string $status = 'draft';
     public $is_featured = false;
     public $is_trending = false;
@@ -37,13 +37,13 @@ new #[Layout('layouts::admin')] class extends Component
 
 
     // Pricing
-    public ?float $cost_price = null;
+    public $cost_price = null;
     public $selling_price = 0;
     public $compare_price = 0;
 
     // Stock
     public $stock = 0;
-    public ?int $hurry_stock = null;
+    public $hurry_stock = null;
     public $is_out_of_stock = false;
 
     // Images
