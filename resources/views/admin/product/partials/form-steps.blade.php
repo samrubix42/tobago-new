@@ -20,7 +20,7 @@
 
     <div class="bg-white rounded-xl border border-gray-200 p-6 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-100 -z-10 translate-y-[-50%]"></div>
-        <div class="absolute left-0 top-1/2 h-0.5 bg-blue-500 transition-all duration-500 -z-10 translate-y-[-50%]" 
+        <div class="absolute left-0 top-1/2 h-0.5 bg-blue-500 transition-all duration-300 -z-10 translate-y-[-50%]" 
              style="width: {{ (($currentStep - 1) / 3) * 100 }}%"></div>
         
         @php
@@ -35,8 +35,9 @@
         @foreach($steps as $step => $info)
             <button 
                 wire:click="setStep({{ $step }})"
+                wire:loading.attr="disabled"
                 @disabled($step > $currentStep && !isset($productId))
-                class="flex flex-col items-center gap-2 bg-white px-4 transition-all {{ $step > $currentStep && !isset($productId) ? 'opacity-40 cursor-not-allowed' : 'group' }}"
+                class="flex flex-col items-center gap-2 bg-white px-4 transition-all {{ $step > $currentStep && !isset($productId) ? 'opacity-40 cursor-not-allowed' : 'group' }} disabled:cursor-wait"
             >
                 <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 {{ $currentStep == $step ? 'border-blue-500 bg-blue-50 text-blue-600 ring-4 ring-blue-50' : ($currentStep > $step ? 'border-blue-500 bg-blue-500 text-white' : 'border-gray-200 bg-white text-gray-400 group-hover:border-blue-300') }}">
                     @if($currentStep > $step)
@@ -70,7 +71,7 @@
                                 <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" wire:loading.remove wire:target="productSearch"></i>
                                 <i class="ri-loader-4-line absolute left-4 top-1/2 -translate-y-1/2 text-blue-500 animate-spin" wire:loading wire:target="productSearch"></i>
                                 <input type="text" 
-                                       wire:model.live.debounce.300ms="productSearch"
+                                       wire:model.live.debounce.500ms="productSearch"
                                        @focus="open = true"
                                        placeholder="Search product name to copy from..."
                                        class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none shadow-sm">
@@ -116,7 +117,7 @@
 
                     <div>
                         <label class="text-sm font-semibold text-gray-700 block mb-1.5">URL Slug <span class="text-red-500">*</span></label>
-                        <input type="text" wire:model.live="slug" 
+                        <input type="text" wire:model.blur="slug" 
                                id="product-url-slug-field"
                                name="product-url-slug-field"
                                placeholder="e.g. premium-wireless-headphones"
@@ -153,7 +154,7 @@
                                 <label class="text-sm font-semibold text-gray-700 block mb-1.5">Select Category <span class="text-red-500">*</span></label>
                                 <div x-data="{ 
                                         open: false, 
-                                        selectedId: @entangle('category_id').live, 
+                                        selectedId: @entangle('category_id'), 
                                         get selectedTitleHTML() {
                                             if(!this.selectedId) return '<span class=\'text-gray-500\'>Select Category... <span class=\'text-xs italic text-gray-400 ml-1\'>(Optional)</span></span>';
                                             let el = this.$refs.listbox.querySelector('li[data-id=\'' + this.selectedId + '\']');
@@ -385,6 +386,11 @@
                     <p class="text-xs text-blue-700/80 mt-2 font-medium">Supports JPG, PNG, WEBP up to 2MB each</p>
                     
                     <input type="file" wire:model="images" x-ref="fileInput" multiple accept="image/*" class="hidden">
+                    
+                    <div wire:loading wire:target="images" class="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-2xl">
+                        <i class="ri-loader-4-line text-3xl text-blue-600 animate-spin mb-2"></i>
+                        <span class="text-sm font-bold text-blue-600">Uploading to temporary storage...</span>
+                    </div>
                 </div>
                 @error('images.*') <p class="text-xs text-red-500 font-medium"><i class="ri-alert-line"></i> {{ $message }}</p> @enderror
 
@@ -473,15 +479,18 @@
         <!-- Floating Footer Nav -->
         <div class="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between">
             <button wire:click="prevStep" 
-                    class="px-5 py-2.5 text-sm font-semibold text-gray-500 hover:text-gray-900 transition flex items-center gap-2 rounded-lg hover:bg-gray-50 {{ $currentStep == 1 ? 'invisible' : '' }}">
+                    wire:loading.attr="disabled"
+                    class="px-5 py-2.5 text-sm font-semibold text-gray-500 hover:text-gray-900 transition flex items-center gap-2 rounded-lg hover:bg-gray-50 {{ $currentStep == 1 ? 'invisible' : '' }} disabled:opacity-50">
                 <i class="ri-arrow-left-line"></i> Previous Stage
             </button>
 
             <div class="flex items-center gap-3">
                 @if($currentStep < 4)
                     <button wire:click="nextStep"
-                            class="px-7 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 transition flex items-center gap-2 hover:translate-x-1 duration-200">
-                        Continue <i class="ri-arrow-right-line"></i>
+                            wire:loading.attr="disabled"
+                            class="px-7 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 transition flex items-center gap-2 hover:translate-x-1 duration-200 disabled:opacity-70">
+                        <span wire:loading.remove wire:target="nextStep">Continue <i class="ri-arrow-right-line"></i></span>
+                        <span wire:loading wire:target="nextStep"><i class="ri-loader-4-line animate-spin"></i> Validating...</span>
                     </button>
                 @else
                     <button wire:click="saveProduct"
@@ -529,10 +538,10 @@
 
 <style>
 @keyframes fade-in {
-    from { opacity: 0; transform: translateY(15px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-in { animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in { animation: fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 </style>
 
 <script>
@@ -569,16 +578,6 @@
                     this.step = Number(this.$wire?.get('currentStep') || 1);
                     this.$nextTick(() => this.syncEditorsForStep(true));
                 });
-
-                // Re-init after Livewire morphs this component in place.
-                if (window.Livewire?.hook) {
-                    window.Livewire.hook('morph.updated', ({ el }) => {
-                        if (this.$root.contains(el) || this.$root === el) {
-                            this.step = Number(this.$wire?.get('currentStep') || this.step);
-                            this.$nextTick(() => this.syncEditorsForStep());
-                        }
-                    });
-                }
             },
 
             syncEditorsForStep(forceSync = false) {
