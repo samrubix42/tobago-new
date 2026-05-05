@@ -28,7 +28,7 @@
 @section('meta_keywords', $metaKeywords)
 
 @php
-    $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 999));
+    $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 99));
     $priceMaxBound = (int) ceil((float) ($priceLimits->max_price ?? 40000));
     $activeMin = (int) ($minPrice ?? $priceMinBound);
     $activeMax = (int) ($maxPrice ?? $priceMaxBound);

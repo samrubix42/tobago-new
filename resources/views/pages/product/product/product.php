@@ -11,7 +11,7 @@ use Livewire\Component;
 
 new #[Layout('layouts::app')] class extends Component
 {
-    private const PRICE_MIN_BOUND = 999;
+    private const PRICE_MIN_BOUND = 99;
     private const PRICE_MAX_BOUND = 40000;
 
     public string $search = '';
