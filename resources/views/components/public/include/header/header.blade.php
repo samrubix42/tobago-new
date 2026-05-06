@@ -295,7 +295,7 @@ $headerCartCount = current_cart_items_count();
                         </div>
                     </div>
                     <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Lighters</a>
-                    <a href="{{ route('products.category', ['category' => 'astray']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Astray</a>
+                    <a href="{{ route('products.category', ['category' => 'ashtray']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Ashtray</a>
                     <a href="{{ route('blogs') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
                     <a href="{{ route('location.noida') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Noida Store</a>
                     <a href="{{ route('about') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">About</a>
@@ -487,8 +487,8 @@ $headerCartCount = current_cart_items_count();
             <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Lighters
             </a>
-            <a href="{{ route('products.category', ['category' => 'astray']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
-                Astrays
+            <a href="{{ route('products.category', ['category' => 'ashtray']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+                Ashtrays
             </a>
             <a href="{{ route('blogs') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Blogs
