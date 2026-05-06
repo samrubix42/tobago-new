@@ -277,8 +277,6 @@ $headerCartCount = current_cart_items_count();
                             <a href="{{ route('products.category', ['category' => 'cleaning-brush']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Cleaning Brush</a>
                             <a href="{{ route('products.category', ['category' => 'baba chillum']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Baba Chillum</a>
                             <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Accessories</a>
-                            <div class="h-px bg-white/5 mx-2 my-1"></div>
-                            <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Lighters</a>
                             <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Chillum</a>
                             <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Pipe and Handle</a>
                         </div>
@@ -296,6 +294,8 @@ $headerCartCount = current_cart_items_count();
                             <a href="{{ route('products.category', ['category' => 'wooden-smoking-pipes-combo']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Wooden Smoking Pipes Combo</a>
                         </div>
                     </div>
+                    <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Lighters</a>
+                    <a href="{{ route('products.category', ['category' => 'astray']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Astray</a>
                     <a href="{{ route('blogs') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
                     <a href="{{ route('location.noida') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Noida Store</a>
                     <a href="{{ route('about') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">About</a>
@@ -467,8 +467,6 @@ $headerCartCount = current_cart_items_count();
                     <a href="{{ route('products.category', ['category' => 'cleaning-brush']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Cleaning Brush</a>
                     <a href="{{ route('products.category', ['category' => 'baba-chillum']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Baba Chillum</a>
                     <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Accessories</a>
-                    <div class="h-px bg-white/5 mx-2 my-1"></div>
-                    <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Lighters</a>
                     <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Chillum</a>
                     <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Pipe and Handle</a>
                 </div>
@@ -486,6 +484,12 @@ $headerCartCount = current_cart_items_count();
                     <a href="{{ route('products.category', ['category' => 'wooden-smoking-pipes-combo']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Wooden Smoking Pipes Combo</a>
                 </div>
             </div>
+            <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+                Lighters
+            </a>
+            <a href="{{ route('products.category', ['category' => 'astray']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+                Astrays
+            </a>
             <a href="{{ route('blogs') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Blogs
             </a>
