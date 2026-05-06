@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductImage extends Model
 {
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($image) {
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($image->image)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image);
+            }
+        });
+    }
+
     protected $fillable = [
         'product_id',
         'image',

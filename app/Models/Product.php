@@ -9,6 +9,18 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            // Delete all associated images to trigger their own deleting hooks
+            $product->images()->each(function ($image) {
+                $image->delete();
+            });
+        });
+    }
+
     protected $fillable = [
         'category_id',
         'name',

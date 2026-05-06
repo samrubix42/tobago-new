@@ -317,6 +317,13 @@ new #[Layout('layouts::admin')] class extends Component
         ]);
     }
 
+    public function removePendingImage($index): void
+    {
+        if (isset($this->images[$index])) {
+            array_splice($this->images, $index, 1);
+        }
+    }
+
     public function deleteImage(int $imageId): void
     {
         $image = ProductImage::findOrFail($imageId);

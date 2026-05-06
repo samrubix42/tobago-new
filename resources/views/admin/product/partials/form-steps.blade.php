@@ -402,9 +402,15 @@
                         </div>
                         <div class="flex items-center gap-5 flex-wrap lg:flex-nowrap">
                             <div class="flex flex-wrap gap-4 flex-1">
-                                @foreach($images as $img)
-                                    <div class="relative w-20 h-20 rounded-xl border border-blue-100 shadow-sm overflow-hidden bg-white">
+                                @foreach($images as $index => $img)
+                                    <div class="relative w-20 h-20 rounded-xl border border-blue-100 shadow-sm overflow-hidden bg-white group">
                                         <img src="{{ $img->temporaryUrl() }}" class="w-full h-full object-cover">
+                                        <button wire:click="removePendingImage({{ $index }})" 
+                                                class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg z-10"
+                                                title="Remove Image">
+                                            <i class="ri-delete-bin-4-line text-[12px]"></i>
+                                        </button>
+                                        <div class="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                                     </div>
                                 @endforeach
                             </div>
