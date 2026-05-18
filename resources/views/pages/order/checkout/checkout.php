@@ -523,7 +523,7 @@ new class extends Component
             'paymentMethod' => ['required', 'in:online'],
             'fullName' => ['required', 'string', 'min:2', 'max:255'],
             'phone' => ['required', 'regex:/^[6-9]\d{9}$/'],
-            'email' => ['nullable', 'email', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
             'addressLine1' => ['required', 'string', 'min:5', 'max:255'],
             'addressLine2' => ['nullable', 'string', 'max:255'],
             'landmark' => ['nullable', 'string', 'max:255'],

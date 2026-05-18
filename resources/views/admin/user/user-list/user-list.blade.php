@@ -91,7 +91,7 @@
                             </td>
                             <!-- Role -->
                             <td class="px-6 py-4 text-center">
-                                <button wire:click="toggleAdmin({{ $user->id }})" 
+                                <button wire:click="editUser({{ $user->id }})" 
                                         class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase transition
                                         {{ $user->is_admin ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'bg-gray-100 text-gray-500' }}">
                                     {{ $user->is_admin ? 'Admin' : 'Customer' }}
@@ -100,6 +100,11 @@
                             <!-- Actions -->
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2 pr-2">
+                                    <button
+                                        wire:click="editUser({{ $user->id }})"
+                                        class="p-2.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm">
+                                        <i class="ri-pencil-line text-lg"></i>
+                                    </button>
                                     <button
                                         @click="$dispatch('open-delete-modal'); $wire.confirmDelete({{ $user->id }})"
                                         class="p-2.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition shadow-sm">
@@ -131,5 +136,6 @@
     </div>
 
     @include('livewire.user.delete')
+    @include('livewire.user.edit')
 
 </div>

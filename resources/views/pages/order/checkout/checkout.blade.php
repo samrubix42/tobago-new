@@ -198,25 +198,25 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">Full Name</label>
+                        <label class="mb-1 block text-xs text-slate-400">Full Name <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="fullName" type="text" placeholder="Full Name" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('fullName') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">Phone Number</label>
+                        <label class="mb-1 block text-xs text-slate-400">Phone Number <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="phone" type="text" placeholder="Phone Number" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('phone') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="mb-1 block text-xs text-slate-400">Email</label>
-                        <input wire:model.defer="email" type="email" placeholder="Email (optional)" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
+                        <label class="mb-1 block text-xs text-slate-400">Email <span class="text-rose-500">*</span></label>
+                        <input wire:model.defer="email" type="email" placeholder="Email Address" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('email') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="mb-1 block text-xs text-slate-400">Address Line 1</label>
+                        <label class="mb-1 block text-xs text-slate-400">Address Line 1 <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="addressLine1" type="text" placeholder="Address Line 1" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('addressLine1') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
@@ -234,7 +234,7 @@
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="mb-1 block text-xs text-slate-400">Address Type</label>
+                        <label class="mb-1 block text-xs text-slate-400">Address Type <span class="text-rose-500">*</span></label>
                         <div class="grid grid-cols-3 gap-2">
                             <label class="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/3 px-3 py-2 text-xs sm:text-sm text-slate-200">
                                 <input wire:model="addressType" type="radio" value="home" class="mr-2 text-blue-500 focus:ring-blue-500/20">
@@ -253,7 +253,7 @@
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">Pincode</label>
+                        <label class="mb-1 block text-xs text-slate-400">Pincode <span class="text-rose-500">*</span></label>
                         <input wire:model.live="pincode" x-on:input.debounce.200ms="lookupPincode($event.target.value)" type="text" maxlength="6" placeholder="Pincode" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('pincode') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                         @if($isPincodeLoading)
@@ -264,19 +264,19 @@
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">City</label>
+                        <label class="mb-1 block text-xs text-slate-400">City <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="city" type="text" placeholder="City" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('city') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">State</label>
+                        <label class="mb-1 block text-xs text-slate-400">State <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="state" type="text" placeholder="State" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('state') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-xs text-slate-400">Country</label>
+                        <label class="mb-1 block text-xs text-slate-400">Country <span class="text-rose-500">*</span></label>
                         <input wire:model.defer="country" type="text" placeholder="Country" class="w-full rounded-md border border-white/15 bg-white/3 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-blue-500">
                         @error('country') <p class="text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
+use App\Mail\OrderBillMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -184,6 +186,24 @@ class PhonePeCallbackController extends Controller
             ]);
 
             $this->clearCartForOrder($order);
+
+            // Send bill/invoice to the user on their email
+            if ($order->customer_email) {
+                try {
+                    Mail::to($order->customer_email)->send(new OrderBillMail($order));
+                    Log::info('PhonePe order bill email sent successfully', [
+                        'order_id' => $order->id,
+                        'email' => $order->customer_email,
+                    ]);
+                } catch (\Throwable $e) {
+                    Log::error('PhonePe order bill email failed to send', [
+                        'order_id' => $order->id,
+                        'email' => $order->customer_email,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+
             Log::info('PhonePe payment marked paid', [
                 'order_id' => $order->id,
                 'order_number' => $order->order_number,

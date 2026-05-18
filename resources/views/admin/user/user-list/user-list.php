@@ -14,6 +14,13 @@ new #[Layout('layouts::admin')] class extends Component
     public string $role = 'all'; // all, admin, user
     public ?int $deleteId = null;
 
+    // Edit fields
+    public ?int $editId = null;
+    public string $editName = '';
+    public string $editEmail = '';
+    public string $editPhone = '';
+    public bool $editIsAdmin = false;
+
     protected $queryString = [
         'search' => ['except' => ''],
         'role' => ['except' => 'all'],
@@ -67,6 +74,70 @@ new #[Layout('layouts::admin')] class extends Component
         $this->dispatch('close-delete-modal');
         $this->deleteId = null;
         $this->dispatch('refresh-user-list');
+    }
+
+    public function editUser(int $id): void
+    {
+        $user = User::findOrFail($id);
+        $this->editId = $user->id;
+        $this->editName = $user->name;
+        $this->editEmail = $user->email;
+        $this->editPhone = $user->phone ?? '';
+        $this->editIsAdmin = (bool) $user->is_admin;
+
+        $this->dispatch('open-edit-modal');
+    }
+
+    public function saveUser(): void
+    {
+        $this->validate([
+            'editName' => ['required', 'string', 'min:2', 'max:255'],
+            'editEmail' => ['required', 'email', 'max:255', 'unique:users,email,' . $this->editId],
+            'editPhone' => ['nullable', 'string', 'max:50'],
+            'editIsAdmin' => ['required', 'boolean'],
+        ], [], [
+            'editName' => 'name',
+            'editEmail' => 'email',
+            'editPhone' => 'phone number',
+            'editIsAdmin' => 'role',
+        ]);
+
+        $user = User::findOrFail($this->editId);
+
+        // Prevent admin from removing their own admin rights
+        if ($user->id === auth()->id() && !$this->editIsAdmin) {
+            $this->dispatch('toast-show', [
+                'message' => 'You cannot revoke your own admin rights!',
+                'type' => 'error',
+                'position' => 'top-right',
+            ]);
+            return;
+        }
+
+        $user->update([
+            'name' => $this->editName,
+            'email' => $this->editEmail,
+            'phone' => $this->editPhone ?: null,
+            'is_admin' => $this->editIsAdmin,
+        ]);
+
+        $this->dispatch('toast-show', [
+            'message' => 'User updated successfully!',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
+        $this->dispatch('close-edit-modal');
+        $this->resetEditFields();
+    }
+
+    private function resetEditFields(): void
+    {
+        $this->editId = null;
+        $this->editName = '';
+        $this->editEmail = '';
+        $this->editPhone = '';
+        $this->editIsAdmin = false;
     }
 
     public function toggleAdmin($id)
