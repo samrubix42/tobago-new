@@ -119,10 +119,12 @@
                                 <h3 class="mt-3 text-sm font-semibold text-white line-clamp-2 min-h-10">{{ $product->name }}</h3>
                                 <p class="text-[11px] text-white/50 mt-1 truncate">{{ $product->sku ?: 'SKU N/A' }}</p>
                                 <p class="text-[11px] text-cyan-200/90 mt-1 truncate">{{ $product->category?->title ?: 'General Category' }}</p>
-                                <div class="mt-2 flex items-center justify-between gap-2">
-                                    <p class="text-sm font-semibold text-white">Rs {{ number_format((float) $product->selling_price, 2) }}</p>
-                                    @if($product->compare_price && $product->compare_price > $product->selling_price)
-                                        <p class="text-[11px] text-white/40 line-through">Rs {{ number_format((float) $product->compare_price, 2) }}</p>
+                                <div class="mt-2 flex items-center justify-between gap-2 min-h-5">
+                                    @if(!$isOut)
+                                        <p class="text-sm font-semibold text-white">Rs {{ number_format((float) $product->selling_price, 2) }}</p>
+                                        @if($product->compare_price && $product->compare_price > $product->selling_price)
+                                            <p class="text-[11px] text-white/40 line-through">Rs {{ number_format((float) $product->compare_price, 2) }}</p>
+                                        @endif
                                     @endif
                                 </div>
                             </a>

@@ -339,11 +339,13 @@
                             <h3 class="mt-2 line-clamp-2 min-h-9 text-xs font-semibold leading-snug text-white sm:text-sm">{{ $recommendedProduct->name }}</h3>
                             <p class="mt-1 line-clamp-1 text-[11px] text-muted sm:text-xs">{{ $this->shortText($recommendedProduct->short_description, 38) }}</p>
 
-                            <div class="mt-3 flex items-center justify-between gap-3 sm:mt-4">
+                            <div class="mt-3 flex items-center justify-between gap-3 sm:mt-4 min-h-[36px]">
                                 <div>
-                                    <p class="text-xs font-semibold text-white sm:text-sm">&#8377;{{ $this->price($recommendedProduct->selling_price) }}</p>
-                                    @if($recommendedProduct->compare_price && $recommendedProduct->compare_price > $recommendedProduct->selling_price)
-                                    <p class="text-[10px] text-white/45 line-through sm:text-xs">&#8377;{{ $this->price($recommendedProduct->compare_price) }}</p>
+                                    @if (!($recommendedProduct->is_out_of_stock || $recommendedProduct->stock <= 0))
+                                        <p class="text-xs font-semibold text-white sm:text-sm">&#8377;{{ $this->price($recommendedProduct->selling_price) }}</p>
+                                        @if($recommendedProduct->compare_price && $recommendedProduct->compare_price > $recommendedProduct->selling_price)
+                                        <p class="text-[10px] text-white/45 line-through sm:text-xs">&#8377;{{ $this->price($recommendedProduct->compare_price) }}</p>
+                                        @endif
                                     @endif
                                 </div>
                                 <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View {{ $recommendedProduct->name }}">
@@ -412,11 +414,13 @@
                     <h3 class="mt-2 line-clamp-2 min-h-9 text-xs font-semibold leading-snug text-white sm:text-sm">{{ $relatedProduct->name }}</h3>
                     <p class="mt-1 line-clamp-1 text-[11px] text-muted sm:text-xs">{{ $this->shortText($relatedProduct->short_description, 38) }}</p>
 
-                    <div class="mt-3 flex items-center justify-between gap-3 sm:mt-4">
+                    <div class="mt-3 flex items-center justify-between gap-3 sm:mt-4 min-h-[36px]">
                         <div>
-                            <p class="text-xs font-semibold text-white sm:text-sm">&#8377;{{ $this->price($relatedProduct->selling_price) }}</p>
-                            @if($relatedProduct->compare_price && $relatedProduct->compare_price > $relatedProduct->selling_price)
-                            <p class="text-[10px] text-white/45 line-through sm:text-xs">&#8377;{{ $this->price($relatedProduct->compare_price) }}</p>
+                            @if (!($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0))
+                                <p class="text-xs font-semibold text-white sm:text-sm">&#8377;{{ $this->price($relatedProduct->selling_price) }}</p>
+                                @if($relatedProduct->compare_price && $relatedProduct->compare_price > $relatedProduct->selling_price)
+                                <p class="text-[10px] text-white/45 line-through sm:text-xs">&#8377;{{ $this->price($relatedProduct->compare_price) }}</p>
+                                @endif
                             @endif
                         </div>
                         <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View {{ $relatedProduct->name }}">

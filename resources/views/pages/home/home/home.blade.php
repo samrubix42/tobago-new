@@ -225,11 +225,13 @@
                 </div>
                 <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
                 <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
-                <div class="mt-4 flex items-end justify-between gap-3">
+                <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
                     <div>
-                        <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
-                        @if($product->compare_price && $product->compare_price > $product->selling_price)
-                        <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                        @if (!($product->is_out_of_stock || $product->stock <= 0))
+                            <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
+                            @if($product->compare_price && $product->compare_price > $product->selling_price)
+                            <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                            @endif
                         @endif
                     </div>
                     <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-cyan-200 transition">
@@ -338,10 +340,12 @@
                     <i class="ri-sparkling-2-line text-purple-300/80"></i>
                 </div>
                 <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
-                <p class="text-muted text-xs mt-1">
-                    <span class="text-white font-semibold">&#8377;{{ $this->price($product->selling_price) }}</span>
-                    @if($product->compare_price && $product->compare_price > $product->selling_price)
-                    <span class="line-through text-white/45 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
+                <p class="text-muted text-xs mt-1 min-h-[16px]">
+                    @if (!($product->is_out_of_stock || $product->stock <= 0))
+                        <span class="text-white font-semibold">&#8377;{{ $this->price($product->selling_price) }}</span>
+                        @if($product->compare_price && $product->compare_price > $product->selling_price)
+                        <span class="line-through text-white/45 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
+                        @endif
                     @endif
                 </p>
             </a>
@@ -765,11 +769,13 @@
                      
                         <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
                         <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
-                        <div class="mt-4 flex items-end justify-between gap-3">
+                        <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
                             <div>
-                                <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
-                                @if($product->compare_price && $product->compare_price > $product->selling_price)
-                                <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                                @if (!($product->is_out_of_stock || $product->stock <= 0))
+                                    <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
+                                    @if($product->compare_price && $product->compare_price > $product->selling_price)
+                                    <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                                    @endif
                                 @endif
                             </div>
                             <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-white transition">
