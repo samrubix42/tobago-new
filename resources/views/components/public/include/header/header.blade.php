@@ -69,7 +69,8 @@ $headerCartCount = current_cart_items_count();
                 <div class="relative w-full" @click.outside="closeSearch()">
                     <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                     <input type="text"
-                        wire:model.live="search"
+                        wire:model.live.debounce.300ms="search"
+                        wire:key="desktop-search-input"
                         @focus="searchOpen = true"
                         @keydown.escape="closeSearch()"
                         placeholder="Search by product or SKU..."
@@ -308,7 +309,8 @@ $headerCartCount = current_cart_items_count();
             <div class="relative" @click.outside="closeSearch()">
                 <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                 <input type="text"
-                    wire:model.live="search"
+                    wire:model.live.debounce.300ms="search"
+                    wire:key="mobile-search-input"
                     @focus="searchOpen = true"
                     @keydown.escape="closeSearch()"
                     placeholder="Search by product or SKU..."
