@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home4/mobiyqdc/public_html/
+    - export DEPLOYPATH=/home3/mobiyuln/tobacgo.in/
     - /bin/cp -R * $DEPLOYPATH 
