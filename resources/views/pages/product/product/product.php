@@ -181,11 +181,31 @@ new #[Layout('layouts::app')] class extends Component
             $query->where('selling_price', '<=', $this->maxPrice);
         }
 
+        $hookahCategoryIds = cache()->remember('hookah_category_ids', 3600, function () {
+            $parent = Category::where('slug', 'premium-hookah')->first();
+            if (!$parent) {
+                return [];
+            }
+            return Category::query()
+                ->where('is_active', true)
+                ->where(function ($q) use ($parent) {
+                    $q->whereKey($parent->id)
+                        ->orWhere('parent_id', $parent->id);
+                })
+                ->pluck('id')
+                ->all();
+        });
+
+        if (!empty($hookahCategoryIds)) {
+            $idsString = implode(',', $hookahCategoryIds);
+            $query->orderByRaw("CASE WHEN category_id IN ($idsString) THEN 0 ELSE 1 END");
+        }
+
         return match ($this->sort) {
             'price_asc' => $query->orderBy('selling_price'),
             'price_desc' => $query->orderByDesc('selling_price'),
             'name_asc' => $query->orderBy('name'),
-            default => $query->latest('id'),
+            default => $query->orderBy('id'),
         };
     }
 
