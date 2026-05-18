@@ -24,40 +24,34 @@ new class extends Component
             ->get();
     }
 
+   
     #[Computed]
     public function featuredProducts(): Collection
     { 
-        // Fetch products specifically belonging to the "tobac-go-hookah" category slug
+        // Fetch products specifically belonging to the "tobac-go-hookah" category slug and are featured
         $exclusive = Product::query()
             ->with(['images', 'category'])
             ->where('status', 'active')
+            ->where('is_featured', true)
             ->whereHas('category', function($q) {
                 $q->where('slug', 'tobac-go-hookah');
             })
             ->latest()
             ->take(8)
             ->get();
+         
 
         if ($exclusive->isNotEmpty()) {
             return $exclusive;
         }
 
-        // Fallback to standard featured products
-        $featured = Product::query()
-            ->with(['images', 'category'])
-            ->where('status', 'active')
-            ->where('is_featured', true)
-            ->latest()
-            ->take(8)
-            ->get();
-
-        if ($featured->isNotEmpty()) {
-            return $featured;
-        }
-
+        // Fallback to active products specifically belonging to the "tobac-go-hookah" category
         return Product::query()
             ->with(['images', 'category'])
             ->where('status', 'active')
+            ->whereHas('category', function($q) {
+                $q->where('slug', 'tobac-go-hookah');
+            })
             ->latest()
             ->take(8)
             ->get();
