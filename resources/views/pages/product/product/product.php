@@ -29,6 +29,18 @@ new #[Layout('layouts::app')] class extends Component
     {
         $this->routeCategorySlug = $category;
         $this->routeSubcategorySlug = $subcategory;
+
+        if ($category !== null) {
+            $activeCategory = $this->activeCategory();
+            if (! $activeCategory) {
+                abort(404);
+            }
+
+            if ($subcategory !== null && ! $this->activeSubcategory($activeCategory)) {
+                abort(404);
+            }
+        }
+
         $this->minPrice = $this->sanitizePrice($this->minPrice, self::PRICE_MIN_BOUND);
         $this->maxPrice = $this->sanitizePrice($this->maxPrice, self::PRICE_MAX_BOUND);
         $this->normalizePriceRange();
