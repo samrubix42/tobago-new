@@ -19,7 +19,7 @@ Route::livewire('/return-refund', 'pages::return-refund')->name('return-refund')
 Route::livewire('/shipping-policy', 'pages::shipping-policy')->name('shipping-policy');
 Route::livewire('/terms-conditions', 'pages::term-condition')->name('terms-conditions');
 Route::livewire('/privacy-policy', 'pages::privacy-policy')->name('privacy-policy');
-Route::livewire('/hookah-shop-noida', 'pages::location')->name('location.noida');
+Route::livewire('/hookah-shop-in-noida', 'pages::location')->name('location.noida');
 Route::livewire('/blog/{slug}', 'pages::blog-view')->name('blog.view');
 Route::livewire('/login', 'auth::login')->middleware('guest')->name('login');
 Route::livewire('/register', 'auth::register')->middleware('guest')->name('register');

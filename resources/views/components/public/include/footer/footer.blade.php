@@ -14,7 +14,9 @@
 
         <!-- BRAND -->
         <div>
-            <img src="{{ asset('logo.webp') }}" class="h-11 mb-4">
+            <a href="{{ route('home') }}" wire:navigate>
+                <img src="{{ asset('logo.webp') }}" class="h-11 mb-4" alt="Tobac-Go">
+            </a>
 
             <p class="text-sm text-muted leading-relaxed max-w-xs">
                 Premium hookah store delivering quality products and smooth experiences.

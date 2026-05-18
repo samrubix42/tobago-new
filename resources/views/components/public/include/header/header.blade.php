@@ -52,16 +52,16 @@ $headerCartCount = current_cart_items_count();
         {{-- Main row --}}
         <div class="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center gap-4 lg:gap-6">
 
-            <div class="relative inline-block">
+            <a href="{{ route('home') }}" wire:navigate class="relative inline-block">
                 <!-- Glow Effect -->
                 <span
-                    class="pointer-events-none absolute -inset-x-3 -inset-y-3 rounded-full opacity-60 blur-2xl"
-                    style="background: radial-gradient(circle, rgba(236,72,153,0.5) 0%, rgba(168,85,247,0.4) 42%, rgba(168,85,247,0) 76%);">
+                    class="pointer-events-none absolute -inset-x-3 -inset-y-3 rounded-full opacity-90 blur-2xl"
+                    style="background: radial-gradient(circle, rgba(236,72,153,0.7) 0%, rgba(168,85,247,0.55) 42%, rgba(168,85,247,0) 76%);">
                 </span>
 
                 <!-- Logo -->
                 <img src="{{ asset('logo.webp') }}" class="relative h-9 lg:h-10" alt="Tobac-Go">
-            </div>
+            </a>
             <div class="flex-1"></div>
 
             {{-- DESKTOP SEARCH --}}
