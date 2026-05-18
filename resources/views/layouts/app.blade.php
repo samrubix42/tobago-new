@@ -73,6 +73,8 @@
     </div>
     @endif
 
+    @include('components.premium-toast')
+
     @livewireScripts
 </body>
 
