@@ -7,8 +7,7 @@
     <meta name="description" content="@yield('meta_description', 'Tobac-Go premium hookah ecommerce store for shoppers in India. Explore luxury hookah products, premium setups, and WhatsApp-assisted buying.')">
     <meta name="keywords" content="@yield('meta_keywords', 'premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store')">
     <meta name="theme-color" content="#080909">
-    <meta name="robots" content="noindex, nofollow">
-
+    <meta name="robots" content="index,follow">
     <title>@yield('meta_title', $title ?? 'Tobac-Go | Premium Hookah Store India')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
