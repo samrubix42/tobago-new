@@ -1,6 +1,5 @@
-@section('meta_title', 'Tobac-Go | Premium Hookah Store India')
-@section('meta_description', 'Tobac-Go is your premier destination for high-quality hookahs, premium shisha flavors, and accessories. Shop now for the best smoking experience across India.')
-@section('meta_keywords', 'hookah india, buy shisha online, premium hookahs, Tobac-Go store, shisha accessories')
+@section('meta_title', 'Buy Hookah Online in India | Premium Hookahs at Best Prices')
+@section('meta_description', ' Buy Hookah Online in India at Tobac-Go and explore premium hookahs at best prices. Find modern designs, smooth performance, and fast delivery across India.')
 
 <div>
 
