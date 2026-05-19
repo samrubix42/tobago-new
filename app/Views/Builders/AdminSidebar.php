@@ -94,6 +94,13 @@ class AdminSidebar
                 'submenu' => [],
             ],
             (object)[
+                'title' => 'SEO Pages',
+                'icon' => 'ri-global-line',
+                'url' => route('admin.seo-pages'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+            (object)[
                 'title' => 'Settings',
                 'icon' => 'ri-settings-3-line',
                 'url' => route('admin.settings'),

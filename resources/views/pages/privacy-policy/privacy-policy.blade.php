@@ -1,6 +1,3 @@
-@section('meta_title', 'Privacy Policy | Tobac-Go Hookah Store')
-@section('meta_description', 'Read the privacy policy of Tobac-Go. Learn how we collect, use, and protect your personal information when you shop for hookahs with us.')
-
 <div class="relative overflow-hidden">
 
     <div class="absolute inset-0 pointer-events-none">

@@ -23,9 +23,11 @@
             : 'buy hookah online, premium shisha, hookah accessories, Tobac-Go shop');
 @endphp
 
-@section('meta_title', $metaTitle)
-@section('meta_description', $metaDescription)
-@section('meta_keywords', $metaKeywords)
+@if($activeSubcategory || $activeCategory || !empty($search))
+    @section('meta_title', $metaTitle)
+    @section('meta_description', $metaDescription)
+    @section('meta_keywords', $metaKeywords)
+@endif
 
 @php
     $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 99));

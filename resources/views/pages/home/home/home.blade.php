@@ -1,6 +1,3 @@
-@section('meta_title', 'Buy Hookah Online in India | Premium Hookahs at Best Prices')
-@section('meta_description', ' Buy Hookah Online in India at Tobac-Go and explore premium hookahs at best prices. Find modern designs, smooth performance, and fast delivery across India.')
-
 <div>
 
     <section class="relative overflow-hidden">

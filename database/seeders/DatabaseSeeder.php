@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             RecommendedCategorySeeder::class,
             ProductSeeder::class,
             BlogSeeder::class,
+            SeoContentSeeder::class,
         ]);
 
         User::firstOrCreate(

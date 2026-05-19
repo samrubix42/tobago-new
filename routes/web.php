@@ -92,6 +92,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     //coupons
     Route::livewire('/coupons', 'admin::coupon-list')->name('coupons');
 
+    //seo pages
+    Route::livewire('/seo-pages', 'admin::seo-pages')->name('seo-pages');
+
     //settings
     Route::livewire('/settings', 'admin::setting.setting-list')->name('settings');
 });

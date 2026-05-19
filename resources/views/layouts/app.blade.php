@@ -2,15 +2,21 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    @php
+        $currentPath = request()->path();
+        $seoSlug = ($currentPath === '/') ? '/' : trim($currentPath, '/');
+        $seoContent = \App\Models\SeoContent::where('page_slug', $seoSlug)->first();
+    @endphp
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="@yield('meta_description', 'Tobac-Go premium hookah ecommerce store for shoppers in India. Explore luxury hookah products, premium setups, and WhatsApp-assisted buying.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store')">
+    <meta name="description" content="@yield('meta_description', $seoContent && !empty($seoContent->meta_description) ? $seoContent->meta_description : ($metaDescription ?? 'Tobac-Go premium hookah ecommerce store for shoppers in India. Explore luxury hookah products, premium setups, and WhatsApp-assisted buying.'))">
+    <meta name="keywords" content="@yield('meta_keywords', $seoContent && !empty($seoContent->meta_keywords) ? $seoContent->meta_keywords : ($metaKeywords ?? 'premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store'))">
     <meta name="theme-color" content="#080909">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="{{ url()->current() }}">
 
-    <title>@yield('meta_title', $title ?? 'Tobac-Go | Premium Hookah Store India')</title>
+    <title>@yield('meta_title', $seoContent && !empty($seoContent->meta_title) ? $seoContent->meta_title : ($title ?? 'Tobac-Go | Premium Hookah Store India'))</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">

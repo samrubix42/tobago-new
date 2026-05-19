@@ -1,0 +1,100 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\SeoContent;
+use Illuminate\Database\Seeder;
+
+class SeoContentSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $pages = [
+            [
+                'name' => 'Home Page',
+                'meta_title' => 'Tobac-Go | Premium Hookah Store India',
+                'meta_description' => 'Buy Hookah Online in India at Tobac-Go and explore premium hookahs at best prices. Find modern designs, smooth performance, and fast delivery across India.',
+                'meta_keywords' => 'premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store',
+                'page_slug' => '/',
+            ],
+            [
+                'name' => 'Shop / All Products',
+                'meta_title' => 'Shop Premium Hookahs & Accessories Online - Tobac-Go',
+                'meta_description' => 'Explore our wide collection of premium hookahs, shisha flavors, charcoals, and premium accessories at Tobac-Go. Safe shipping and best prices in India.',
+                'meta_keywords' => 'buy hookah online, hookah accessories india, shisha flavors online, premium hookah store',
+                'page_slug' => 'shop',
+            ],
+            [
+                'name' => 'Categories Catalog',
+                'meta_title' => 'Browse Hookah Categories - Tobac-Go Hookah Store',
+                'meta_description' => 'Discover premium hookahs organized by category. From Russian hookahs to acrylic, glass, and brass hookah setups, find the perfect shisha for your sessions.',
+                'meta_keywords' => 'hookah types, russian hookah india, glass hookahs, acrylic shisha, brass hookahs',
+                'page_slug' => 'categories',
+            ],
+            [
+                'name' => 'Blogs & Guides',
+                'meta_title' => 'Hookah Guides, Reviews & Shisha News - Tobac-Go Blog',
+                'meta_description' => 'Read the latest shisha guides, expert hookah setup tips, flavor mix recipes, and premium shisha reviews on the official Tobac-Go blog.',
+                'meta_keywords' => 'hookah blog, shisha guides, how to setup hookah, hookah flavor mix, hookah reviews',
+                'page_slug' => 'blogs',
+            ],
+            [
+                'name' => 'About Us',
+                'meta_title' => 'About Tobac-Go - India\'s Ultimate Premium Hookah Store',
+                'meta_description' => 'Learn about Tobac-Go, our mission to bring premium hookahs and absolute convenience to hookah enthusiasts across India with unmatched customer service.',
+                'meta_keywords' => 'about tobac-go, premium hookah brand, shisha shop history, hookah store india',
+                'page_slug' => 'about',
+            ],
+            [
+                'name' => 'Return & Refund Policy',
+                'meta_title' => 'Easy Returns & Refund Policy - Tobac-Go Hookah Store',
+                'meta_description' => 'Read our customer-friendly return and refund policy. Learn how to return products or claim refunds for damaged shisha accessories.',
+                'meta_keywords' => 'hookah return policy, refund policy, shisha store returns, order cancellation',
+                'page_slug' => 'return-refund',
+            ],
+            [
+                'name' => 'Shipping Policy',
+                'meta_title' => 'Fast & Secure Hookah Delivery Across India - Shipping Policy',
+                'meta_description' => 'Read the Tobac-Go shipping policy. We provide express shipping, secure packaging for fragile glass bases, and real-time tracking.',
+                'meta_keywords' => 'hookah shipping india, shisha home delivery, cash on delivery hookah, hookah shipping time',
+                'page_slug' => 'shipping-policy',
+            ],
+            [
+                'name' => 'Terms & Conditions',
+                'meta_title' => 'Terms of Service & Conditions - Tobac-Go Hookah Store',
+                'meta_description' => 'Read the terms and conditions for using the Tobac-Go website and purchasing our premium hookah products.',
+                'meta_keywords' => 'terms of service, user agreement, tobac-go terms, online shopping rules',
+                'page_slug' => 'terms-conditions',
+            ],
+            [
+                'name' => 'Privacy Policy',
+                'meta_title' => 'Your Privacy & Data Security - Privacy Policy | Tobac-Go',
+                'meta_description' => 'Read the privacy policy of Tobac-Go. Learn how we collect, use, and protect your personal information when you shop for hookahs with us.',
+                'meta_keywords' => 'privacy policy, user data protection, secure payments, cookies policy',
+                'page_slug' => 'privacy-policy',
+            ],
+            [
+                'name' => 'Hookah Shop in Noida',
+                'meta_title' => 'Premium Hookah Shop in Noida - Best Shisha & Accessories',
+                'meta_description' => 'Looking for the best hookah shop in Noida? Buy premium hookahs, shisha flavors, organic coconut charcoal, and shisha accessories with super fast delivery in Noida.',
+                'meta_keywords' => 'hookah shop in noida, shisha store noida, buy shisha noida, hookah delivery noida',
+                'page_slug' => 'hookah-shop-in-noida',
+            ],
+        ];
+
+        foreach ($pages as $page) {
+            SeoContent::updateOrCreate(
+                ['page_slug' => $page['page_slug']],
+                [
+                    'name' => $page['name'],
+                    'meta_title' => $page['meta_title'],
+                    'meta_description' => $page['meta_description'],
+                    'meta_keywords' => $page['meta_keywords'],
+                ]
+            );
+        }
+    }
+}
