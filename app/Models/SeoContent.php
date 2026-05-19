@@ -12,5 +12,6 @@ class SeoContent extends Model
         'meta_description',
         'meta_keywords',
         'page_slug',
+        'content',
     ];
 }

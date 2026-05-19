@@ -2,28 +2,31 @@
     // --- SEO Meta resolution: subcategory > category > search > generic ---
     $metaContextName = $activeSubcategory?->title ?? $activeCategory?->title ?? null;
 
-    $metaTitle = $activeSubcategory?->meta_title
+    $metaTitle = $seoPage?->meta_title
+        ?? $activeSubcategory?->meta_title
         ?? ($activeSubcategory ? ($activeSubcategory->title . ' | Tobac-Go') : null)
         ?? $activeCategory?->meta_title
         ?? ($activeCategory ? ($activeCategory->title . ' Hookah Collection | Tobac-Go') : null)
         ?? ($search ? 'Search: ' . $search . ' | Tobac-Go' : null) 
         ?? 'Shop Premium Hookahs & Shisha | Tobac-Go';
 
-    $metaDescription = $activeSubcategory?->meta_description
+    $metaDescription = $seoPage?->meta_description
+        ?? $activeSubcategory?->meta_description
         ?? $activeCategory?->meta_description
         ?? ($metaContextName
             ? 'Browse our ' . $metaContextName . ' collection at Tobac-Go. Premium hookahs, shisha flavors, and accessories with fast delivery across India.'
             : 'Explore the full range of premium hookahs, flavors, and accessories at Tobac-Go. Shop curated hookah products delivered across India.')
         ;
 
-    $metaKeywords = $activeSubcategory?->meta_keywords
+    $metaKeywords = $seoPage?->meta_keywords
+        ?? $activeSubcategory?->meta_keywords
         ?? $activeCategory?->meta_keywords
         ?? ($metaContextName
             ? $metaContextName . ', buy hookah online, shisha accessories, Tobac-Go'
             : 'buy hookah online, premium shisha, hookah accessories, Tobac-Go shop');
 @endphp
 
-@if($activeSubcategory || $activeCategory || !empty($search))
+@if($seoPage || $activeSubcategory || $activeCategory || !empty($search))
     @section('meta_title', $metaTitle)
     @section('meta_description', $metaDescription)
     @section('meta_keywords', $metaKeywords)
@@ -68,7 +71,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h1 class="text-2xl sm:text-4xl mb-4 font-semibold text-white mt-1 leading-tight">
-                        {{ $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
+                        {{ $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
                     </h1>
                     <p class="text-sm  text-white/70 mt-3 max-w-2xl">Showing {{ $products->count() }} products</p>
                 </div>
@@ -149,7 +152,13 @@
             @endif
         </section>
 
-        @if($activeSubcategory?->description || $activeCategory?->description)
+        @if($seoPage?->content)
+            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
+                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
+                    {!! $seoPage->content !!}
+                </div>
+            </section>
+        @elseif($activeSubcategory?->description || $activeCategory?->description)
             <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
                 <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
                     {!! $activeSubcategory?->description ?? $activeCategory?->description !!}
@@ -198,6 +207,7 @@
                             </select>
                         </div>
 
+                        @if(!$isPriceSeoRoute)
                         <div x-data="{ min: {{ $activeMin }}, max: {{ $activeMax }}, floor: {{ $priceMinBound }}, ceil: {{ max($priceMaxBound, $priceMinBound + 1) }} }" class="space-y-2">
                             <label class="text-xs text-white/60 uppercase tracking-wider">Price Range</label>
                             <div class="rounded-xl border border-white/10 bg-white/5 p-3">
@@ -212,6 +222,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
 
                         <div>
                             <h4 class="text-xs text-white/60 uppercase tracking-wider">Categories</h4>

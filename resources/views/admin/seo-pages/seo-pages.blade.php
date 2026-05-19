@@ -230,6 +230,44 @@
                                 ></textarea>
                                 @error('meta_keywords')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
                             </div>
+
+                            <div>
+                                <label class="text-xs font-medium text-gray-600">Content</label>
+                                <div
+                                    wire:ignore
+                                    x-data="{
+                                        editor: null,
+                                        init() {
+                                            const textarea = this.$refs.textarea;
+                                            const existing = window.tinymce?.get(textarea.id);
+                                            if (existing) existing.remove();
+
+                                            window.tinymce.init({
+                                                target: textarea,
+                                                height: 320,
+                                                menubar: false,
+                                                plugins: 'lists link image paste help wordcount',
+                                                toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+                                                setup: (editor) => {
+                                                    this.editor = editor;
+                                                    editor.on('init', () => editor.setContent(textarea.value || ''));
+                                                    editor.on('Change KeyUp Undo Redo', () => this.$wire.set('content', editor.getContent()));
+                                                },
+                                            });
+                                        },
+                                        destroy() {
+                                            if (this.editor) this.editor.remove();
+                                        },
+                                    }"
+                                >
+                                    <textarea
+                                        id="seo-content-add"
+                                        x-ref="textarea"
+                                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900"
+                                        placeholder="Add custom content (for specific landing pages)...">{{ $content }}</textarea>
+                                </div>
+                                @error('content')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+                            </div>
                         </div>
                     </div>
 

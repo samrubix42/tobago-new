@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('meta_description');
             $table->text('meta_keywords');
             $table->string('page_slug')->unique();
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }

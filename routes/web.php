@@ -20,6 +20,9 @@ Route::livewire('/shipping-policy', 'pages::shipping-policy')->name('shipping-po
 Route::livewire('/terms-conditions', 'pages::term-condition')->name('terms-conditions');
 Route::livewire('/privacy-policy', 'pages::privacy-policy')->name('privacy-policy');
 Route::livewire('/hookah-shop-in-noida', 'pages::location')->name('location.noida');
+Route::livewire('/hookah-under-3000', 'pages::product.product')->name('seo.hookah-under-3000');
+Route::livewire('/hookah-under-5000', 'pages::product.product')->name('seo.hookah-under-5000');
+Route::livewire('/hookah-above-7000', 'pages::product.product')->name('seo.hookah-above-7000');
 Route::livewire('/blog/{slug}', 'pages::blog-view')->name('blog.view');
 Route::livewire('/login', 'auth::login')->middleware('guest')->name('login');
 Route::livewire('/register', 'auth::register')->middleware('guest')->name('register');
@@ -108,7 +111,7 @@ Route::get('/clear-cache', function() {
 })->name('clear.cache');
 
 Route::livewire('shop/{category}', 'pages::product.product')
-    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$)[a-z0-9-]+$')
+    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$|hookah-under-3000$|hookah-under-5000$|hookah-above-7000$)[a-z0-9-]+$')
     ->name('products.category');
 
 Route::livewire('shop/{category}/{subcategory}', 'pages::product.product')

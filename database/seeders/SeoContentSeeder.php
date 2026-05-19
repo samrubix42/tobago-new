@@ -83,6 +83,30 @@ class SeoContentSeeder extends Seeder
                 'meta_keywords' => 'hookah shop in noida, shisha store noida, buy shisha noida, hookah delivery noida',
                 'page_slug' => 'hookah-shop-in-noida',
             ],
+            [
+                'name' => 'Hookah under 3000',
+                'meta_title' => 'Hookah under 3000 - Buy Best Hookahs in Budget',
+                'meta_description' => 'Explore the best hookahs under ₹3000 at Tobac-Go. Shop premium and affordable hookahs online in India.',
+                'meta_keywords' => 'hookah under 3000, cheap hookah, affordable hookah india, buy hookah online',
+                'page_slug' => 'hookah-under-3000',
+                'content' => '<p>Find premium quality hookahs that fit your budget.</p>',
+            ],
+            [
+                'name' => 'Hookah under 5000',
+                'meta_title' => 'Hookah under 5000 - Premium Hookahs at Best Prices',
+                'meta_description' => 'Shop the best premium hookahs under ₹5000 at Tobac-Go. Enjoy top-quality shisha sessions without breaking the bank.',
+                'meta_keywords' => 'hookah under 5000, premium hookah india, best hookah under 5k',
+                'page_slug' => 'hookah-under-5000',
+                'content' => '<p>Upgrade your shisha experience with our top picks under 5K.</p>',
+            ],
+            [
+                'name' => 'Hookah Above ₹7000',
+                'meta_title' => 'Luxury Hookah Above ₹7000 - Exclusive Premium Collection',
+                'meta_description' => 'Discover luxury and exclusive hookahs above ₹7000 at Tobac-Go. Shop high-end Russian, glass, and brass hookahs.',
+                'meta_keywords' => 'luxury hookah, premium hookah above 7000, expensive hookah, high-end shisha',
+                'page_slug' => 'hookah-above-7000',
+                'content' => '<p>Experience the ultimate luxury with our exclusive high-end hookah collection.</p>',
+            ],
         ];
 
         foreach ($pages as $page) {
@@ -93,6 +117,7 @@ class SeoContentSeeder extends Seeder
                     'meta_title' => $page['meta_title'],
                     'meta_description' => $page['meta_description'],
                     'meta_keywords' => $page['meta_keywords'],
+                    'content' => $page['content'] ?? null,
                 ]
             );
         }

@@ -18,6 +18,7 @@ new class extends Component
     public string $meta_description = '';
     public string $meta_keywords = '';
     public string $page_slug = '';
+    public string $content = '';
 
     protected array $rules = [
         'name' => 'required|string|max:255',
@@ -25,6 +26,7 @@ new class extends Component
         'meta_description' => 'required|string',
         'meta_keywords' => 'required|string',
         'page_slug' => 'required|string|max:255',
+        'content' => 'nullable|string',
     ];
 
     public function updatedSearch(): void
@@ -40,6 +42,7 @@ new class extends Component
         $this->meta_description = '';
         $this->meta_keywords = '';
         $this->page_slug = '';
+        $this->content = '';
         $this->resetErrorBag();
     }
 
@@ -53,6 +56,7 @@ new class extends Component
         $this->meta_description = $seo->meta_description;
         $this->meta_keywords = $seo->meta_keywords;
         $this->page_slug = $seo->page_slug;
+        $this->content = $seo->content ?? '';
     }
 
     public function save(): void
@@ -75,6 +79,7 @@ new class extends Component
                 'meta_description' => $this->meta_description,
                 'meta_keywords' => $this->meta_keywords,
                 'page_slug' => $this->page_slug,
+                'content' => $this->content,
             ]
         );
 

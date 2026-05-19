@@ -30,6 +30,15 @@ new #[Layout('layouts::app')] class extends Component
         $this->routeCategorySlug = $category;
         $this->routeSubcategorySlug = $subcategory;
 
+        $path = trim(request()->path(), '/');
+        if ($path === 'hookah-under-3000') {
+            $this->maxPrice = 3000;
+        } elseif ($path === 'hookah-under-5000') {
+            $this->maxPrice = 5000;
+        } elseif ($path === 'hookah-above-7000') {
+            $this->minPrice = 7000;
+        }
+
         if ($category !== null) {
             $activeCategory = $this->activeCategory();
             if (! $activeCategory) {
@@ -46,12 +55,27 @@ new #[Layout('layouts::app')] class extends Component
         $this->normalizePriceRange();
     }
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'sort' => ['except' => 'latest'],
-        'minPrice' => ['except' => self::PRICE_MIN_BOUND],
-        'maxPrice' => ['except' => self::PRICE_MAX_BOUND],
-    ];
+    protected function queryString()
+    {
+        $path = trim(request()->path(), '/');
+        $defaultMin = self::PRICE_MIN_BOUND;
+        $defaultMax = self::PRICE_MAX_BOUND;
+
+        if ($path === 'hookah-under-3000') {
+            $defaultMax = 3000;
+        } elseif ($path === 'hookah-under-5000') {
+            $defaultMax = 5000;
+        } elseif ($path === 'hookah-above-7000') {
+            $defaultMin = 7000;
+        }
+
+        return [
+            'search' => ['except' => ''],
+            'sort' => ['except' => 'latest'],
+            'minPrice' => ['except' => $defaultMin],
+            'maxPrice' => ['except' => $defaultMax],
+        ];
+    }
 
     public function updatedSearch(): void
     {
@@ -95,8 +119,19 @@ new #[Layout('layouts::app')] class extends Component
     {
         $this->search = '';
         $this->sort = 'latest';
+        
+        $path = trim(request()->path(), '/');
         $this->minPrice = self::PRICE_MIN_BOUND;
         $this->maxPrice = self::PRICE_MAX_BOUND;
+
+        if ($path === 'hookah-under-3000') {
+            $this->maxPrice = 3000;
+        } elseif ($path === 'hookah-under-5000') {
+            $this->maxPrice = 5000;
+        } elseif ($path === 'hookah-above-7000') {
+            $this->minPrice = 7000;
+        }
+
         $this->resetFeed();
     }
 
@@ -363,6 +398,11 @@ new #[Layout('layouts::app')] class extends Component
             'max_price' => self::PRICE_MAX_BOUND,
         ];
 
+        $path = trim(request()->path(), '/');
+        $seoPage = \App\Models\SeoContent::where('page_slug', $path)->first();
+
+        $isPriceSeoRoute = in_array($path, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
+
         return view('pages.product.product.product', [
             'products' => $products,
             'hasMore' => $this->hasMoreProducts(),
@@ -370,6 +410,8 @@ new #[Layout('layouts::app')] class extends Component
             'activeCategory' => $this->activeCategory(),
             'activeSubcategory' => $this->activeSubcategory($this->activeCategory()),
             'priceLimits' => $priceLimits,
+            'seoPage' => $seoPage,
+            'isPriceSeoRoute' => $isPriceSeoRoute,
         ]);
     }
 };
