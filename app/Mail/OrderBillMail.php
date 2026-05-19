@@ -3,11 +3,9 @@
 namespace App\Mail;
 
 use App\Models\Order;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -38,6 +36,9 @@ class OrderBillMail extends Mailable
      */
     public function content(): Content
     {
+        // Eager load order items to prevent query issues
+        $this->order->loadMissing('items');
+
         return new Content(
             view: 'emails.order-bill',
             with: [
@@ -54,14 +55,6 @@ class OrderBillMail extends Mailable
      */
     public function attachments(): array
     {
-        // Eager load order items to prevent query issues
-        $this->order->loadMissing('items');
-
-        return [
-            Attachment::fromData(fn () => Pdf::loadView('pdf.order-invoice', [
-                'order' => $this->order,
-            ])->setPaper('a4')->output(), 'invoice-' . $this->order->order_number . '.pdf')
-            ->withMime('application/pdf'),
-        ];
+        return [];
     }
 }
