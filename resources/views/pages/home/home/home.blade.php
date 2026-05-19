@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="relative w-full max-w-[320px] sm:max-w-[450px]">
-                    <img src="{{ asset('images/hero.png') }}"
+                    <img src="{{ asset('images/hero-img.png') }}"
                         alt="Premium Modern Hookah"
                         class="w-[90%] h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-2">
 
@@ -206,186 +206,186 @@
             @endphp
             <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-2xl hover:shadow-cyan-900/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
                 @if($product->is_out_of_stock || $product->stock <= 0)
-                <div class="absolute top-5 left-5 z-20">
+                    <div class="absolute top-5 left-5 z-20">
                     <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
                         Out of Stock
                     </span>
-                </div>
-                @endif
-                <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/5">
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.18), transparent 60%);"></div>
-                    <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
-                </div>
-                <div class="flex items-center justify-between gap-2 mb-2">
-                   
-                </div>
-                <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
-                <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
-                <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
-                    <div>
-                        @if (!($product->is_out_of_stock || $product->stock <= 0))
-                            <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
-                            @if($product->compare_price && $product->compare_price > $product->selling_price)
-                            <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
-                            @endif
-                        @endif
-                    </div>
-                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-cyan-200 transition">
-                        <i class="ri-arrow-right-up-line"></i>
-                    </span>
-                </div>
-            </a>
-            @empty
-            <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
-                Featured products are coming soon.
-            </div>
-            @endforelse
         </div>
-
-        <div class="mt-8 flex justify-center">
-            <a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
-                View More <i class="ri-arrow-right-line"></i>
-            </a>
+        @endif
+        <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/5">
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.18), transparent 60%);"></div>
+            <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
         </div>
-        @endisland
-    </section>
+        <div class="flex items-center justify-between gap-2 mb-2">
 
-
-
-    <section id="shop-by-budget" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
-        <div class="absolute top-8 right-0 h-72 w-72 rounded-full bg-blue-500/10 blur-[110px]"></div>
-        <div class="relative">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Find Your Fit</p>
-                <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
-                    Shop by <span class="text-gradient">Budget</span>
-                </h2>
-                <p class="text-muted text-sm leading-6">
-                    No matter your budget, choosing the right hookah should feel simple. Pick your price range below and explore options that match your needs.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                @foreach([
-                ['title' => 'Standard', 'range' => 'Under ₹3000', 'icon' => 'ri-shopping-bag-3-line', 'url' => route('products', ['maxPrice' => 3000])],
-                ['title' => 'Premium', 'range' => 'Under ₹5000', 'icon' => 'ri-vip-crown-line', 'url' => route('products', ['maxPrice' => 5000])],
-                ['title' => 'Luxury', 'range' => 'Hookah Above ₹7000', 'icon' => 'ri-gemini-line', 'url' => route('products', ['minPrice' => 7000])],
-                ] as $budget)
-                <a href="{{ $budget['url'] }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition hover:-translate-y-1 hover:border-white/20">
-                    <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
-                        <i class="{{ $budget['icon'] }} text-2xl"></i>
-                    </div>
-                    <p class="text-muted text-[10px] uppercase tracking-[0.22em]">{{ $budget['title'] }}</p>
-                    <h3 class="text-white text-base sm:text-lg font-semibold mt-2">{{ $budget['range'] }}</h3>
-                </a>
-                @endforeach
-            </div>
         </div>
-    </section>
+        <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
+        <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
+        <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
+            <div>
+                @if (!($product->is_out_of_stock || $product->stock <= 0))
+                    <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
+                    @if($product->compare_price && $product->compare_price > $product->selling_price)
+                    <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                    @endif
+                    @endif
+            </div>
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-cyan-200 transition">
+                <i class="ri-arrow-right-up-line"></i>
+            </span>
+        </div>
+        </a>
+        @empty
+        <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
+            Featured products are coming soon.
+        </div>
+        @endforelse
+</div>
 
-    <section id="new-arrivals" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
-        <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
+<div class="mt-8 flex justify-center">
+    <a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
+        View More <i class="ri-arrow-right-line"></i>
+    </a>
+</div>
+@endisland
+</section>
 
-        <div class="text-center max-w-3xl mx-auto mb-10">
-            <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Just Landed</p>
+
+
+<section id="shop-by-budget" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
+    <div class="absolute top-8 right-0 h-72 w-72 rounded-full bg-blue-500/10 blur-[110px]"></div>
+    <div class="relative">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Find Your Fit</p>
             <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
-                New <span class="text-gradient">Arrivals</span>
+                Shop by <span class="text-gradient">Budget</span>
             </h2>
             <p class="text-muted text-sm leading-6">
-                We add new products every month. From limited-edition luxury hookahs to practical accessories, there's always something new to discover. If you've been putting off buying a hookah pot online, these fresh arrivals are worth a look.
+                No matter your budget, choosing the right hookah should feel simple. Pick your price range below and explore options that match your needs.
             </p>
         </div>
 
-        @island(name: 'home-new-arrivals')
-        @placeholder
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-pulse">
-            @for($i = 0; $i < 4; $i++)
-                <article class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3 sm:p-4">
-                <div class="h-36 sm:h-44 rounded-xl bg-white/10 mb-4"></div>
-                <div class="h-3 w-20 rounded bg-purple-300/20 mb-3"></div>
-                <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
-                <div class="h-3 w-8/12 rounded bg-white/10"></div>
-                </article>
-                @endfor
-        </div>
-        @endplaceholder
-
-
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            @forelse($this->latestProducts as $product)
-            @php
-            $arrivalImage = optional($product->images->firstWhere('is_primary', true))->image
-            ?? optional($product->images->first())->image;
-            @endphp
-            <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-purple-300/30 hover:shadow-2xl hover:shadow-purple-900/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                @if($product->is_out_of_stock || $product->stock <= 0)
-                <div class="absolute top-5 left-5 z-20">
-                    <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                        Out of Stock
-                    </span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            @foreach([
+            ['title' => 'Standard', 'range' => 'Under ₹3000', 'icon' => 'ri-shopping-bag-3-line', 'url' => route('products', ['maxPrice' => 3000])],
+            ['title' => 'Premium', 'range' => 'Under ₹5000', 'icon' => 'ri-vip-crown-line', 'url' => route('products', ['maxPrice' => 5000])],
+            ['title' => 'Luxury', 'range' => 'Hookah Above ₹7000', 'icon' => 'ri-gemini-line', 'url' => route('products', ['minPrice' => 7000])],
+            ] as $budget)
+            <a href="{{ $budget['url'] }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition hover:-translate-y-1 hover:border-white/20">
+                <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
+                    <i class="{{ $budget['icon'] }} text-2xl"></i>
                 </div>
-                @endif
-                <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-white mb-4 overflow-hidden border border-white/5">
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
-                    <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
-                </div>
-                <div class="flex items-center justify-between gap-2 mb-2">
-                    <span class="rounded-full border border-purple-300/20 bg-purple-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-purple-200">
-                        New Drop
-                    </span>
-                    <i class="ri-sparkling-2-line text-purple-300/80"></i>
-                </div>
-                <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
-                <p class="text-muted text-xs mt-1 min-h-[16px]">
-                    @if (!($product->is_out_of_stock || $product->stock <= 0))
-                        <span class="text-white font-semibold">&#8377;{{ $this->price($product->selling_price) }}</span>
-                        @if($product->compare_price && $product->compare_price > $product->selling_price)
-                        <span class="line-through text-white/45 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
-                        @endif
-                    @endif
-                </p>
+                <p class="text-muted text-[10px] uppercase tracking-[0.22em]">{{ $budget['title'] }}</p>
+                <h3 class="text-white text-base sm:text-lg font-semibold mt-2">{{ $budget['range'] }}</h3>
             </a>
-            @empty
-            <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
-                New arrivals will appear here shortly.
-            </div>
-            @endforelse
+            @endforeach
         </div>
-        @endisland
-    </section>
+    </div>
+</section>
 
-    <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <div class="text-center mb-12">
-            <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Browse</p>
-            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
-                Shop by <span class="text-gradient">Category</span>
-            </h2>
-            <p class="text-muted text-sm max-w-3xl mx-auto leading-6">
-                We're more than just a hookah store. We stock everything you need, from the hookah itself to charcoal, foil, chillums, bongs, ashtrays, and lighters. Buy everything in one place and save on shipping.
-            </p>
-        </div>
-        @island(name: 'home-categories')
-        @placeholder
-        <div class="space-y-6 animate-pulse">
-            <div class="flex items-center justify-between">
-                <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
-                <div class="h-3 w-28 rounded bg-white/10"></div>
-                <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                @for($i = 0; $i < 4; $i++)
-                    <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5">
-                    <div class="h-24 rounded-xl bg-white/10 mb-4"></div>
-                    <div class="h-4 w-7/12 rounded bg-white/15 mb-2"></div>
-                    <div class="h-3 w-5/12 rounded bg-white/10"></div>
-            </div>
+<section id="new-arrivals" class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 overflow-hidden">
+    <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/10 blur-[90px]"></div>
+
+    <div class="text-center max-w-3xl mx-auto mb-10">
+        <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Just Landed</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
+            New <span class="text-gradient">Arrivals</span>
+        </h2>
+        <p class="text-muted text-sm leading-6">
+            We add new products every month. From limited-edition luxury hookahs to practical accessories, there's always something new to discover. If you've been putting off buying a hookah pot online, these fresh arrivals are worth a look.
+        </p>
+    </div>
+
+    @island(name: 'home-new-arrivals')
+    @placeholder
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-pulse">
+        @for($i = 0; $i < 4; $i++)
+            <article class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3 sm:p-4">
+            <div class="h-36 sm:h-44 rounded-xl bg-white/10 mb-4"></div>
+            <div class="h-3 w-20 rounded bg-purple-300/20 mb-3"></div>
+            <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
+            <div class="h-3 w-8/12 rounded bg-white/10"></div>
+            </article>
             @endfor
+    </div>
+    @endplaceholder
+
+
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        @forelse($this->latestProducts as $product)
+        @php
+        $arrivalImage = optional($product->images->firstWhere('is_primary', true))->image
+        ?? optional($product->images->first())->image;
+        @endphp
+        <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition hover:-translate-y-1 hover:border-purple-300/30 hover:shadow-2xl hover:shadow-purple-900/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+            @if($product->is_out_of_stock || $product->stock <= 0)
+                <div class="absolute top-5 left-5 z-20">
+                <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                    Out of Stock
+                </span>
+    </div>
+    @endif
+    <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-white mb-4 overflow-hidden border border-white/5">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
+        <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
+    </div>
+    <div class="flex items-center justify-between gap-2 mb-2">
+        <span class="rounded-full border border-purple-300/20 bg-purple-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-purple-200">
+            New Drop
+        </span>
+        <i class="ri-sparkling-2-line text-purple-300/80"></i>
+    </div>
+    <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
+    <p class="text-muted text-xs mt-1 min-h-[16px]">
+        @if (!($product->is_out_of_stock || $product->stock <= 0))
+            <span class="text-white font-semibold">&#8377;{{ $this->price($product->selling_price) }}</span>
+            @if($product->compare_price && $product->compare_price > $product->selling_price)
+            <span class="line-through text-white/45 ml-1">&#8377;{{ $this->price($product->compare_price) }}</span>
+            @endif
+            @endif
+    </p>
+    </a>
+    @empty
+    <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
+        New arrivals will appear here shortly.
+    </div>
+    @endforelse
+    </div>
+    @endisland
+</section>
+
+<section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    <div class="text-center mb-12">
+        <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Browse</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
+            Shop by <span class="text-gradient">Category</span>
+        </h2>
+        <p class="text-muted text-sm max-w-3xl mx-auto leading-6">
+            We're more than just a hookah store. We stock everything you need, from the hookah itself to charcoal, foil, chillums, bongs, ashtrays, and lighters. Buy everything in one place and save on shipping.
+        </p>
+    </div>
+    @island(name: 'home-categories')
+    @placeholder
+    <div class="space-y-6 animate-pulse">
+        <div class="flex items-center justify-between">
+            <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
+            <div class="h-3 w-28 rounded bg-white/10"></div>
+            <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
         </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            @for($i = 0; $i < 4; $i++)
+                <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5">
+                <div class="h-24 rounded-xl bg-white/10 mb-4"></div>
+                <div class="h-4 w-7/12 rounded bg-white/15 mb-2"></div>
+                <div class="h-3 w-5/12 rounded bg-white/10"></div>
+        </div>
+        @endfor
+    </div>
 
-        @endplaceholder
+    @endplaceholder
 
-        <div
-            x-data="{
+    <div
+        x-data="{
             items: @js($this->categoryCards),
             active: 2,
             ticking: false,
@@ -459,342 +459,342 @@
                 });
             },
         }"
-            class="relative"
-            @mouseenter="stopAutoSlide()"
-            @mouseleave="startAutoSlide()"
-            @touchstart="stopAutoSlide()"
-            @touchend="startAutoSlide()">
+        class="relative"
+        @mouseenter="stopAutoSlide()"
+        @mouseleave="startAutoSlide()"
+        @touchstart="stopAutoSlide()"
+        @touchend="startAutoSlide()">
 
-            <div class="absolute inset-y-0 left-2 sm:-left-6 flex items-center z-10 pointer-events-none">
-                <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="prev()" aria-label="Previous category">
-                    <i class="ri-arrow-left-s-line text-2xl sm:text-3xl"></i>
-                </button>
-            </div>
-            <div class="absolute inset-y-0 right-2 sm:-right-6 flex items-center z-10 pointer-events-none">
-                <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="next()" aria-label="Next category">
-                    <i class="ri-arrow-right-s-line text-2xl sm:text-3xl"></i>
-                </button>
-            </div>
-
-            <div
-                x-ref="viewport"
-                class="-mx-4 px-4 sm:mx-0 sm:px-0 py-8 overflow-x-auto overflow-y-visible scroll-smooth snap-x snap-mandatory flex gap-4 sm:gap-6 items-center"
-                style="-ms-overflow-style: none; scrollbar-width: none;">
-                <style>
-                    [x-ref='viewport']::-webkit-scrollbar {
-                        display: none;
-                    }
-                </style>
-
-                <template x-for="(item, index) in items" :key="index">
-                    <a
-                        data-cat-card
-                        :href="'/shop/' + item.slug"
-                        wire:navigate
-                        class="snap-center shrink-0 w-[55vw] max-w-[200px] sm:w-[40vw] md:w-[28vw] lg:w-[16vw] group rounded-[2rem] border bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center transition-all duration-500 hover:border-purple-500/30"
-                        x-bind:class="active === index ? 'scale-[1.08] border-purple-500/30 shadow-[0_15px_40px_rgba(168,85,247,0.15)] bg-white/[0.07] z-20' : 'scale-95 border-white/5 opacity-50 hover:opacity-80'"
-                        @click="scrollTo(index)">
-
-                        <div class="relative mx-auto mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#0b0d0f] shadow-inner transition-all duration-500 group-hover:border-purple-500/30"
-                            x-bind:class="active === index ? 'border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : ''">
-                            <div class="absolute inset-0 opacity-0 transition-opacity duration-500" x-bind:class="active === index ? 'opacity-100' : 'group-hover:opacity-50'" style="background: radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%);"></div>
-                            <img x-bind:src="item.image" x-bind:alt="item.title" class="relative h-16 w-16 sm:h-20 sm:w-20 object-contain transition-all duration-500 group-hover:scale-105"
-                                x-bind:class="active === index ? 'scale-105 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]' : ''">
-                        </div>
-
-                        <h3 class="text-white font-bold tracking-wide transition-all duration-500" x-bind:class="active === index ? 'text-base sm:text-lg' : 'text-sm sm:text-base opacity-70'" x-text="item.title"></h3>
-                        <div class="mt-2 overflow-hidden h-5">
-                            <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-500 transform"
-                                x-bind:class="active === index ? 'text-purple-300 translate-y-0 opacity-100' : 'text-muted translate-y-4 opacity-0'">
-                                Shop Now
-                            </p>
-                        </div>
-                    </a>
-                </template>
-            </div>
+        <div class="absolute inset-y-0 left-2 sm:-left-6 flex items-center z-10 pointer-events-none">
+            <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="prev()" aria-label="Previous category">
+                <i class="ri-arrow-left-s-line text-2xl sm:text-3xl"></i>
+            </button>
         </div>
-        @endisland
-    </section>
+        <div class="absolute inset-y-0 right-2 sm:-right-6 flex items-center z-10 pointer-events-none">
+            <button type="button" class="pointer-events-auto flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/30 hover:scale-110 hover:text-white shadow-[0_0_15px_rgba(0,0,0,0.5)]" x-on:click="next()" aria-label="Next category">
+                <i class="ri-arrow-right-s-line text-2xl sm:text-3xl"></i>
+            </button>
+        </div>
 
-    <section id="why-tobacgo" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
-                Why Choose <span class="text-gradient">Tobac-Go</span>
-            </h2>
-            <p class="text-muted text-sm max-w-3xl mx-auto leading-6">
-                There are many places to buy hookah online in India. Here’s what makes us different and why our customers keep coming back.
-            </p>
-        </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach ([
-            ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
-            ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
-            ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
-            ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
-            ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use.'],
-            ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
-            ] as $reason)
-            <article
-                class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
-                <div
-                    class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
-                    <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
-                </div>
-                <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
-                <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
-                @if ($reason[1] === 'Real Support on WhatsApp')
-                <p class="text-muted text-sm leading-6 mt-1">Our number is {{ app_setting('whatsapp_number', '+91 78384 49604') }}.</p>
-                @endif
-            </article>
-            @endforeach
-        </div>
-    </section>
+        <div
+            x-ref="viewport"
+            class="-mx-4 px-4 sm:mx-0 sm:px-0 py-8 overflow-x-auto overflow-y-visible scroll-smooth snap-x snap-mandatory flex gap-4 sm:gap-6 items-center"
+            style="-ms-overflow-style: none; scrollbar-width: none;">
+            <style>
+                [x-ref='viewport']::-webkit-scrollbar {
+                    display: none;
+                }
+            </style>
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <div class="relative overflow-hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-6 sm:p-10 text-center">
-            <div class="absolute left-1/2 top-0 h-52 w-52 -translate-x-1/2 rounded-full bg-orange-500/10 blur-[90px]"></div>
-            <div class="relative max-w-3xl mx-auto">
-                <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Need Help?</p>
-                <h2 class="text-3xl sm:text-4xl font-semibold mb-4">Not Sure Which Hookah to Buy?</h2>
-                <p class="text-muted text-sm leading-6 mb-8">
-                    Tell us your budget and what you're looking for. We'll suggest the best options in under 5 minutes.
-                </p>
-                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', app_setting('whatsapp_number', '917838449604')) }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition hover:scale-105" style="background: var(--gradient-acrylic);">
-                    <i class="ri-whatsapp-line text-lg"></i>
-                    Chat on WhatsApp
-                </a>
-            </div>
-        </div>
-    </section>
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        @island(name: 'home-testimonials')
-        @placeholder
-        <div class="space-y-8 animate-pulse">
-            <div class="text-center mb-2">
-                <div class="h-7 w-64 mx-auto rounded bg-white/15 mb-2"></div>
-                <div class="h-3 w-52 mx-auto rounded bg-white/10"></div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                @for($i = 0; $i < 3; $i++)
-                    <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-6">
-                    <div class="h-4 w-24 rounded bg-amber-300/20 mb-4"></div>
-                    <div class="h-3 w-full rounded bg-white/15 mb-2"></div>
-                    <div class="h-3 w-10/12 rounded bg-white/10 mb-2"></div>
-                    <div class="h-3 w-8/12 rounded bg-white/10 mb-5"></div>
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 rounded-full bg-white/10"></div>
-                        <div class="space-y-2">
-                            <div class="h-3 w-24 rounded bg-white/20"></div>
-                            <div class="h-3 w-16 rounded bg-white/10"></div>
-                        </div>
+            <template x-for="(item, index) in items" :key="index">
+                <a
+                    data-cat-card
+                    :href="'/shop/' + item.slug"
+                    wire:navigate
+                    class="snap-center shrink-0 w-[55vw] max-w-[200px] sm:w-[40vw] md:w-[28vw] lg:w-[16vw] group rounded-[2rem] border bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center transition-all duration-500 hover:border-purple-500/30"
+                    x-bind:class="active === index ? 'scale-[1.08] border-purple-500/30 shadow-[0_15px_40px_rgba(168,85,247,0.15)] bg-white/[0.07] z-20' : 'scale-95 border-white/5 opacity-50 hover:opacity-80'"
+                    @click="scrollTo(index)">
+
+                    <div class="relative mx-auto mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#0b0d0f] shadow-inner transition-all duration-500 group-hover:border-purple-500/30"
+                        x-bind:class="active === index ? 'border-purple-500/30 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : ''">
+                        <div class="absolute inset-0 opacity-0 transition-opacity duration-500" x-bind:class="active === index ? 'opacity-100' : 'group-hover:opacity-50'" style="background: radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%);"></div>
+                        <img x-bind:src="item.image" x-bind:alt="item.title" class="relative h-16 w-16 sm:h-20 sm:w-20 object-contain transition-all duration-500 group-hover:scale-105"
+                            x-bind:class="active === index ? 'scale-105 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]' : ''">
                     </div>
-            </div>
-            @endfor
+
+                    <h3 class="text-white font-bold tracking-wide transition-all duration-500" x-bind:class="active === index ? 'text-base sm:text-lg' : 'text-sm sm:text-base opacity-70'" x-text="item.title"></h3>
+                    <div class="mt-2 overflow-hidden h-5">
+                        <p class="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-500 transform"
+                            x-bind:class="active === index ? 'text-purple-300 translate-y-0 opacity-100' : 'text-muted translate-y-4 opacity-0'">
+                            Shop Now
+                        </p>
+                    </div>
+                </a>
+            </template>
         </div>
-</div>
-@endplaceholder
+    </div>
+    @endisland
+</section>
 
-<div
-    x-data="testimonialSlider()"
-    x-init="start()">
-
-    <!-- Heading -->
+<section id="why-tobacgo" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
     <div class="text-center mb-12">
-        <h2 class="text-2xl sm:text-3xl font-semibold mb-2">
-            What People Say <span class="text-gradient">About Us</span>
+        <h2 class="text-3xl sm:text-4xl font-semibold mb-4">
+            Why Choose <span class="text-gradient">Tobac-Go</span>
         </h2>
-        <p class="text-muted text-sm">
-            Client testimonials from real Tobac-Go customers
+        <p class="text-muted text-sm max-w-3xl mx-auto leading-6">
+            There are many places to buy hookah online in India. Here’s what makes us different and why our customers keep coming back.
         </p>
     </div>
-
-    <!-- Slider -->
-    <div class="relative">
-        <button
-            type="button"
-            class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full border border-subtle bg-[#0b0d0f]/80 text-white/70 backdrop-blur hover:bg-white/5 hover:border-white/20 transition"
-            x-on:click="prev()"
-            aria-label="Previous testimonial">
-            <i class="ri-arrow-left-s-line text-2xl"></i>
-        </button>
-        <button
-            type="button"
-            class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full border border-subtle bg-[#0b0d0f]/80 text-white/70 backdrop-blur hover:bg-white/5 hover:border-white/20 transition"
-            x-on:click="next()"
-            aria-label="Next testimonial">
-            <i class="ri-arrow-right-s-line text-2xl"></i>
-        </button>
-
-        <div class="overflow-hidden">
-            <div class="flex transition-transform duration-500 ease-in-out"
-                :style="`transform: translateX(-${current * 100}%)`">
-
-                <template x-for="(group, index) in grouped" :key="index">
-                    <div class="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-
-                        <template x-for="item in group" :key="item.name">
-
-                            <!-- CARD -->
-                            <div class="group relative rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6 transition hover:-translate-y-1 hover:border-white/20 overflow-hidden">
-                                <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at top, rgba(0,198,255,0.10), transparent 55%);"></div>
-                                <div class="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl opacity-70"></div>
-
-                                <!-- Top Row -->
-                                <div class="relative flex items-center justify-between mb-4">
-                                    <div class="flex gap-1 text-amber-300 text-sm">
-                                        <template x-for="i in 5">
-                                            <i class="ri-star-fill"></i>
-                                        </template>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-muted">
-                                        <i class="ri-verified-badge-line text-indigo-300 text-base normal-case tracking-normal"></i>
-                                        Verified
-                                    </div>
-                                </div>
-
-                                <!-- Review -->
-                                <div class="relative">
-                                    <i class="ri-double-quotes-l text-4xl text-indigo-300/20 absolute -top-2 -left-1"></i>
-                                    <p class="text-white/85 text-sm leading-relaxed line-clamp-5 pl-5"
-                                        x-text="item.review"></p>
-                                </div>
-
-                                <!-- User -->
-                                <div class="relative mt-6 flex items-center gap-3">
-
-                                    <!-- Avatar -->
-                                    <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-xs font-semibold text-white">
-                                        <span x-text="item.name.charAt(0)"></span>
-                                    </div>
-
-                                    <!-- Info -->
-                                    <div class="min-w-0">
-                                        <p class="text-white text-sm font-semibold truncate" x-text="item.name"></p>
-                                        <p class="text-muted text-xs truncate" x-text="item.city"></p>
-                                    </div>
-
-                                    <div class="ml-auto text-indigo-300/70">
-                                        <i class="ri-chat-3-line text-lg"></i>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </template>
-
-                    </div>
-                </template>
-
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @foreach ([
+        ['ri-store-3-line', 'We Sell Our Own Brand', 'Tobac-Go is our own hookah brand, not a resale product. We design it, set the price, and sell it directly to you. With no middlemen involved, you get a better hookah at a better price.'],
+        ['ri-shield-check-line', '100% Original Products', 'Every product in our shisha store is genuine, whether it’s our own Tobac-Go brand or any other brand we carry. We do not stock copies, duplicates, or grey-market items. What you see is exactly what you get.'],
+        ['ri-money-rupee-circle-line', 'Fair Prices, Every Day', 'We keep our pricing fair, clear, and honest. Our prices are reviewed regularly to make sure you get real value with every purchase. We focus on quality products at reasonable prices, backed by service you can rely on.'],
+        ['ri-archive-2-line', 'We Pack Every Order Ourselves', 'Hookahs and glass bongs can break easily if packed carelessly. We use bubble wrap, foam, and strong outer boxes for every order. You don’t need to worry about receiving a damaged package, that’s our responsibility to prevent.'],
+        ['ri-whatsapp-line', 'Real Support on WhatsApp', 'Not sure which hookah is right for you? Just message us. We reply quickly, give honest advice, and won\'t push you toward the most expensive thing if it is not right for your use.'],
+        ['ri-map-pin-2-line', 'We Have a Real Store in Noida', 'We\'re not just a website. You can visit us at Sector 76, Noida and see every product in person before you decide. We\'ve been open for years and we know our products well. Walk in anytime.'],
+        ] as $reason)
+        <article
+            class="rounded-2xl border border-subtle bg-[#0b0d0f] p-6 transition hover:-translate-y-1 hover:border-white/20">
+            <div
+                class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
+                <i class="{{ $reason[0] ?? 'ri-shield-check-line' }} text-2xl"></i>
             </div>
+            <h3 class="text-white text-lg font-semibold mb-3">{{ $reason[1] ?? 'Why Tobac-Go' }}</h3>
+            <p class="text-muted text-sm leading-6">{{ $reason[2] ?? 'Premium experience with trusted products and support.' }}</p>
+            @if ($reason[1] === 'Real Support on WhatsApp')
+            <p class="text-muted text-sm leading-6 mt-1">Our number is {{ app_setting('whatsapp_number', '+91 78384 49604') }}.</p>
+            @endif
+        </article>
+        @endforeach
+    </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    <div class="relative overflow-hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-6 sm:p-10 text-center">
+        <div class="absolute left-1/2 top-0 h-52 w-52 -translate-x-1/2 rounded-full bg-orange-500/10 blur-[90px]"></div>
+        <div class="relative max-w-3xl mx-auto">
+            <p class="text-sm uppercase tracking-[0.28em] text-muted mb-3">Need Help?</p>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">Not Sure Which Hookah to Buy?</h2>
+            <p class="text-muted text-sm leading-6 mb-8">
+                Tell us your budget and what you're looking for. We'll suggest the best options in under 5 minutes.
+            </p>
+            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', app_setting('whatsapp_number', '917838449604')) }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-black transition hover:scale-105" style="background: var(--gradient-acrylic);">
+                <i class="ri-whatsapp-line text-lg"></i>
+                Chat on WhatsApp
+            </a>
+        </div>
+    </div>
+</section>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    @island(name: 'home-testimonials')
+    @placeholder
+    <div class="space-y-8 animate-pulse">
+        <div class="text-center mb-2">
+            <div class="h-7 w-64 mx-auto rounded bg-white/15 mb-2"></div>
+            <div class="h-3 w-52 mx-auto rounded bg-white/10"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            @for($i = 0; $i < 3; $i++)
+                <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-6">
+                <div class="h-4 w-24 rounded bg-amber-300/20 mb-4"></div>
+                <div class="h-3 w-full rounded bg-white/15 mb-2"></div>
+                <div class="h-3 w-10/12 rounded bg-white/10 mb-2"></div>
+                <div class="h-3 w-8/12 rounded bg-white/10 mb-5"></div>
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-full bg-white/10"></div>
+                    <div class="space-y-2">
+                        <div class="h-3 w-24 rounded bg-white/20"></div>
+                        <div class="h-3 w-16 rounded bg-white/10"></div>
+                    </div>
+                </div>
+        </div>
+        @endfor
+    </div>
+    </div>
+    @endplaceholder
+
+    <div
+        x-data="testimonialSlider()"
+        x-init="start()">
+
+        <!-- Heading -->
+        <div class="text-center mb-12">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-2">
+                What People Say <span class="text-gradient">About Us</span>
+            </h2>
+            <p class="text-muted text-sm">
+                Client testimonials from real Tobac-Go customers
+            </p>
+        </div>
+
+        <!-- Slider -->
+        <div class="relative">
+            <button
+                type="button"
+                class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full border border-subtle bg-[#0b0d0f]/80 text-white/70 backdrop-blur hover:bg-white/5 hover:border-white/20 transition"
+                x-on:click="prev()"
+                aria-label="Previous testimonial">
+                <i class="ri-arrow-left-s-line text-2xl"></i>
+            </button>
+            <button
+                type="button"
+                class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full border border-subtle bg-[#0b0d0f]/80 text-white/70 backdrop-blur hover:bg-white/5 hover:border-white/20 transition"
+                x-on:click="next()"
+                aria-label="Next testimonial">
+                <i class="ri-arrow-right-s-line text-2xl"></i>
+            </button>
+
+            <div class="overflow-hidden">
+                <div class="flex transition-transform duration-500 ease-in-out"
+                    :style="`transform: translateX(-${current * 100}%)`">
+
+                    <template x-for="(group, index) in grouped" :key="index">
+                        <div class="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
+                            <template x-for="item in group" :key="item.name">
+
+                                <!-- CARD -->
+                                <div class="group relative rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-6 transition hover:-translate-y-1 hover:border-white/20 overflow-hidden">
+                                    <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at top, rgba(0,198,255,0.10), transparent 55%);"></div>
+                                    <div class="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl opacity-70"></div>
+
+                                    <!-- Top Row -->
+                                    <div class="relative flex items-center justify-between mb-4">
+                                        <div class="flex gap-1 text-amber-300 text-sm">
+                                            <template x-for="i in 5">
+                                                <i class="ri-star-fill"></i>
+                                            </template>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-muted">
+                                            <i class="ri-verified-badge-line text-indigo-300 text-base normal-case tracking-normal"></i>
+                                            Verified
+                                        </div>
+                                    </div>
+
+                                    <!-- Review -->
+                                    <div class="relative">
+                                        <i class="ri-double-quotes-l text-4xl text-indigo-300/20 absolute -top-2 -left-1"></i>
+                                        <p class="text-white/85 text-sm leading-relaxed line-clamp-5 pl-5"
+                                            x-text="item.review"></p>
+                                    </div>
+
+                                    <!-- User -->
+                                    <div class="relative mt-6 flex items-center gap-3">
+
+                                        <!-- Avatar -->
+                                        <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-xs font-semibold text-white">
+                                            <span x-text="item.name.charAt(0)"></span>
+                                        </div>
+
+                                        <!-- Info -->
+                                        <div class="min-w-0">
+                                            <p class="text-white text-sm font-semibold truncate" x-text="item.name"></p>
+                                            <p class="text-muted text-xs truncate" x-text="item.city"></p>
+                                        </div>
+
+                                        <div class="ml-auto text-indigo-300/70">
+                                            <i class="ri-chat-3-line text-lg"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </template>
+
+                        </div>
+                    </template>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dots -->
+        <div class="flex justify-center gap-2 mt-6">
+            <template x-for="(item, i) in grouped">
+                <button @click="go(i)"
+                    class="h-2 rounded-full transition-all"
+                    :class="current === i ? 'w-5 bg-white' : 'w-2 bg-white/30'">
+                </button>
+            </template>
         </div>
 
     </div>
-
-    <!-- Dots -->
-    <div class="flex justify-center gap-2 mt-6">
-        <template x-for="(item, i) in grouped">
-            <button @click="go(i)"
-                class="h-2 rounded-full transition-all"
-                :class="current === i ? 'w-5 bg-white' : 'w-2 bg-white/30'">
-            </button>
-        </template>
-    </div>
-
-</div>
-@endisland
+    @endisland
 </section>
 
 
-    <section id="category-focus" class="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
-        @php
-        $categorySections = [
-        [
-        'title' => 'Hookah Chillum',
-        'description' => 'Top picks from our Hookah Chillum category for better airflow and cleaner sessions.',
-        'slug' => 'hookah-chillum',
-        'products' => $this->hookahChillumProducts,
-        ],
-        [
-        'title' => 'Pipe and Handle',
-        'description' => 'Explore durable pipe and handle options that match your setup and style.',
-        'slug' => 'pipe-and-handle',
-        'products' => $this->pipeAndHandleProducts,
-        ],
-        ];
-        @endphp
+<section id="category-focus" class="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
+    @php
+    $categorySections = [
+    [
+    'title' => 'Hookah Chillum',
+    'description' => 'Top picks from our Hookah Chillum category for better airflow and cleaner sessions.',
+    'slug' => 'hookah-chillum',
+    'products' => $this->hookahChillumProducts,
+    ],
+    [
+    'title' => 'Pipe and Handle',
+    'description' => 'Explore durable pipe and handle options that match your setup and style.',
+    'slug' => 'pipe-and-handle',
+    'products' => $this->pipeAndHandleProducts,
+    ],
+    ];
+    @endphp
 
-        <div class="md:py-4 flex flex-col justify-center items-center gap-6 mb-12">
-            <div class="space-y-4">
-                
-                <h2 class="text-3xl sm:text-4xl font-semibold leading-tight">
-                    Complete <span class="text-gradient">your setup</span>
-                </h2>
-            </div>
-            <p class="text-muted text-sm max-w-5xl">
-                Cleanly curated picks from our most popular accessories. Explore the collection and jump straight to products that match your setup.
-            </p>
+    <div class="md:py-4 flex flex-col justify-center items-center gap-6 mb-12">
+        <div class="space-y-4">
+
+            <h2 class="text-3xl sm:text-4xl font-semibold leading-tight">
+                Complete <span class="text-gradient">your setup</span>
+            </h2>
         </div>
+        <p class="text-muted text-sm max-w-5xl">
+            Cleanly curated picks from our most popular accessories. Explore the collection and jump straight to products that match your setup.
+        </p>
+    </div>
 
-        <div class="space-y-10">
-            @foreach($categorySections as $section)
-            <div>
-                <div class="mb-6">
-                    <div>
-                        <h3 class="text-2xl sm:text-3xl font-semibold">{{ $section['title'] }}</h3>
-                        <p class="text-muted text-sm mt-2 max-w-2xl leading-6">{{ $section['description'] }}</p>
-                    </div>
+    <div class="space-y-10">
+        @foreach($categorySections as $section)
+        <div>
+            <div class="mb-6">
+                <div>
+                    <h3 class="text-2xl sm:text-3xl font-semibold">{{ $section['title'] }}</h3>
+                    <p class="text-muted text-sm mt-2 max-w-2xl leading-6">{{ $section['description'] }}</p>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                    @forelse($section['products'] as $product)
-                    @php
-                    $sectionImage = optional($product->images->firstWhere('is_primary', true))->image
-                    ?? optional($product->images->first())->image;
-                    @endphp
-                    <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                        @if($product->is_out_of_stock || $product->stock <= 0)
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                @forelse($section['products'] as $product)
+                @php
+                $sectionImage = optional($product->images->firstWhere('is_primary', true))->image
+                ?? optional($product->images->first())->image;
+                @endphp
+                <a href="{{ route('product', $product->slug) }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-3 sm:p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 block relative {{ ($product->is_out_of_stock || $product->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                    @if($product->is_out_of_stock || $product->stock <= 0)
                         <div class="absolute top-5 left-5 z-20">
-                            <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                                Out of Stock
-                            </span>
-                        </div>
-                        @endif
-                        <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/10">
-                            <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
-                        </div>
-                     
-                        <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
-                        <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
-                        <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
-                            <div>
-                                @if (!($product->is_out_of_stock || $product->stock <= 0))
-                                    <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
-                                    @if($product->compare_price && $product->compare_price > $product->selling_price)
-                                    <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
-                                    @endif
-                                @endif
-                            </div>
-                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-white transition">
-                                <i class="ri-arrow-right-up-line"></i>
-                            </span>
-                        </div>
-                    </a>
-                    @empty
-                    <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
-                        Products are coming soon in {{ $section['title'] }}.
-                    </div>
-                    @endforelse
-                </div>
-
-                <div class=" mt-7 md:mt-12 flex justify-center">
-                    <a href="{{ route('products.category', ['category' => $section['slug']]) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
-                        View More <i class="ri-arrow-right-line"></i>
-                    </a>
-                </div>
+                        <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                            Out of Stock
+                        </span>
             </div>
-            @endforeach
+            @endif
+            <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/10">
+                <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
+            </div>
+
+            <h3 class="text-white text-sm font-semibold leading-snug min-h-[40px] line-clamp-2">{{ $product->name }}</h3>
+            <p class="text-muted text-xs mt-1 min-h-[34px] line-clamp-2">{{ $this->shortText($product->short_description, 62) }}</p>
+            <div class="mt-4 flex items-end justify-between gap-3 min-h-[38px]">
+                <div>
+                    @if (!($product->is_out_of_stock || $product->stock <= 0))
+                        <p class="text-white font-semibold text-sm">&#8377;{{ $this->price($product->selling_price) }}</p>
+                        @if($product->compare_price && $product->compare_price > $product->selling_price)
+                        <p class="text-white/45 text-xs line-through">&#8377;{{ $this->price($product->compare_price) }}</p>
+                        @endif
+                        @endif
+                </div>
+                <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 group-hover:bg-white/5 group-hover:text-white transition">
+                    <i class="ri-arrow-right-up-line"></i>
+                </span>
+            </div>
+            </a>
+            @empty
+            <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
+                Products are coming soon in {{ $section['title'] }}.
+            </div>
+            @endforelse
         </div>
-    </section>
+
+        <div class=" mt-7 md:mt-12 flex justify-center">
+            <a href="{{ route('products.category', ['category' => $section['slug']]) }}" wire:navigate class="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition hover:border-white/35 hover:bg-white/[0.08] hover:text-white">
+                View More <i class="ri-arrow-right-line"></i>
+            </a>
+        </div>
+    </div>
+    @endforeach
+    </div>
+</section>
 
 <section id="blogs" class="max-w-7xl mx-auto px-4 sm:px-6 pb-24">
     <div class="flex items-end justify-between gap-6 mb-10">
@@ -876,7 +876,7 @@
 </section>
 
 <script type="application/json" id="testimonial-items-data">
-    @json($this->testimonialItems)
+    @json($this-> testimonialItems)
 </script>
 <script>
     function testimonialSlider() {

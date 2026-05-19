@@ -61,28 +61,16 @@
         }
     }"
 >
-    <section class="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_18%_22%,rgba(20,184,166,0.22),transparent_48%),radial-gradient(circle_at_82%_70%,rgba(37,99,235,0.2),transparent_50%),#0b0d0f] p-5 sm:p-8">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-            <div>
-                <p class="text-xs uppercase tracking-[0.2em] text-white/60">Collection</p>
-                <h1 class="text-2xl sm:text-4xl font-semibold text-white mt-1 leading-tight">Find Your Perfect Hookah Setup</h1>
-                <p class="text-sm sm:text-base text-white/70 mt-3 max-w-2xl">Clean filtering, fast browsing, and category-first navigation for a premium storefront experience.</p>
-            </div>
-            <a href="{{ route('cart') }}" wire:navigate class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/15 transition">
-                <i class="ri-shopping-cart-2-line"></i>
-                Go to Cart
-            </a>
-        </div>
-    </section>
+
 
     <div class="space-y-4">
         <section class="space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
-                    <h2 class="text-lg font-semibold text-white">
+                    <h1 class="text-2xl sm:text-4xl mb-4 font-semibold text-white mt-1 leading-tight">
                         {{ $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
-                    </h2>
-                    <p class="text-xs text-white/60 mt-0.5">Showing {{ $products->count() }} products</p>
+                    </h1>
+                    <p class="text-sm  text-white/70 mt-3 max-w-2xl">Showing {{ $products->count() }} products</p>
                 </div>
                 <div class="flex items-center gap-2 self-start sm:self-auto">
                     <button type="button" x-on:click="mobileFilters = true" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-white/10 transition">
@@ -160,6 +148,14 @@
                 @endif
             @endif
         </section>
+
+        @if($activeSubcategory?->description || $activeCategory?->description)
+            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
+                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
+                    {!! $activeSubcategory?->description ?? $activeCategory?->description !!}
+                </div>
+            </section>
+        @endif
     </div>
 
     <div x-show="mobileFilters" x-cloak class="fixed inset-0 z-[70]"

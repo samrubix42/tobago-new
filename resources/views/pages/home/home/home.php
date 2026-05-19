@@ -16,6 +16,7 @@ new class extends Component
         return Product::query()
             ->with(['images', 'category'])
             ->where('status', 'active')
+            ->where('is_featured', true)
             ->whereHas('category', function ($query) use ($slug) {
                 $query->where('slug', $slug);
             })
