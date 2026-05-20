@@ -18,6 +18,7 @@
     </div>
 
     {{-- ── Google OAuth ── --}}
+    {{--
     <a href="{{ route('google.redirect') }}"
        class="flex items-center justify-center gap-3 w-full py-2.5 px-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-all">
         <svg width="17" height="17" viewBox="0 0 48 48" fill="none">
@@ -29,12 +30,12 @@
         Sign up with Google
     </a>
 
-    {{-- ── Divider ── --}}
     <div class="flex items-center gap-3 my-6">
         <div class="flex-1 h-px bg-white/8"></div>
         <span class="text-xs text-white/30">or with email</span>
         <div class="flex-1 h-px bg-white/8"></div>
     </div>
+    --}}
 
     {{-- ── Form ── --}}
     <form wire:submit="register" class="space-y-4">
