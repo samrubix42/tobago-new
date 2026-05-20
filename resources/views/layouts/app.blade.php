@@ -23,6 +23,7 @@
     <meta name="theme-color" content="#080909">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 
     <title>@yield('meta_title', $seoContent && !empty($seoContent->meta_title) ? $seoContent->meta_title : ($title ?? 'Tobac-Go | Premium Hookah Store India'))</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
