@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\SeoContent;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,19 +14,19 @@ new class extends Component
 
     // Form fields
     public ?int $selectedId = null;
-    public string $name = '';
-    public string $meta_title = '';
-    public string $meta_description = '';
-    public string $meta_keywords = '';
-    public string $page_slug = '';
-    public string $content = '';
+    public ?string $name = null;
+    public ?string $meta_title = null;
+    public ?string $meta_description = null;
+    public ?string $meta_keywords = null;
+    public ?string $page_slug = null;
+    public ?string $content = null;
 
     protected array $rules = [
-        'name' => 'required|string|max:255',
-        'meta_title' => 'required|string|max:255',
-        'meta_description' => 'required|string',
-        'meta_keywords' => 'required|string',
-        'page_slug' => 'required|string|max:255',
+        'name' => 'nullable|string|max:255',
+        'meta_title' => 'nullable|string|max:255',
+        'meta_description' => 'nullable|string',
+        'meta_keywords' => 'nullable|string',
+        'page_slug' => 'nullable|string|max:255',
         'content' => 'nullable|string',
     ];
 
@@ -37,12 +38,12 @@ new class extends Component
     public function resetForm(): void
     {
         $this->selectedId = null;
-        $this->name = '';
-        $this->meta_title = '';
-        $this->meta_description = '';
-        $this->meta_keywords = '';
-        $this->page_slug = '';
-        $this->content = '';
+        $this->name = null;
+        $this->meta_title = null;
+        $this->meta_description = null;
+        $this->meta_keywords = null;
+        $this->page_slug = null;
+        $this->content = null;
         $this->resetErrorBag();
     }
 
@@ -61,14 +62,15 @@ new class extends Component
 
     public function save(): void
     {
-        // Require unique page_slug unless it belongs to the currently edited item
-        $slugRule = 'unique:seo_contents,page_slug';
-        if ($this->selectedId) {
-            $slugRule .= ',' . $this->selectedId;
-        }
+        $this->normalizeNullableFields();
 
         $this->validate(array_merge($this->rules, [
-            'page_slug' => ['required', 'string', 'max:255', $slugRule],
+            'page_slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('seo_contents', 'page_slug')->ignore($this->selectedId),
+            ],
         ]));
 
         SeoContent::updateOrCreate(
@@ -96,6 +98,13 @@ new class extends Component
     public function confirmDelete(int $id): void
     {
         $this->selectedId = $id;
+    }
+
+    private function normalizeNullableFields(): void
+    {
+        foreach (['name', 'meta_title', 'meta_description', 'meta_keywords', 'page_slug', 'content'] as $field) {
+            $this->{$field} = blank($this->{$field}) ? null : trim($this->{$field});
+        }
     }
 
     public function delete(): void

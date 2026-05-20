@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('meta_title');
             $table->text('meta_description');
-            $table->text('meta_keywords');
+            $table->text('meta_keywords'); 
             $table->string('page_slug')->unique();
             $table->longText('content')->nullable();
             $table->timestamps();
