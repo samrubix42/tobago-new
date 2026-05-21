@@ -179,6 +179,56 @@ new class extends Component
         ]);
     }
 
+    public function addToCartById(int $productId): void
+    {
+        $product = Product::query()
+            ->whereKey($productId)
+            ->where('status', 'active')
+            ->first();
+
+        if (! $product) {
+            $this->dispatch('toast-show', [
+                'message' => 'Product not available.',
+                'type' => 'warning',
+                'position' => 'top-right',
+            ]);
+
+            return;
+        }
+
+        if ($product->is_out_of_stock || (int) $product->stock <= 0) {
+            $this->dispatch('toast-show', [
+                'message' => 'Product is out of stock.',
+                'type' => 'warning',
+                'position' => 'top-right',
+            ]);
+
+            return;
+        }
+
+        $cart = $this->resolveCart();
+
+        $item = CartItem::query()->firstOrNew([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+        ]);
+
+        $item->price = (float) $product->selling_price;
+        $item->quantity = (int) ($item->exists ? $item->quantity + 1 : 1);
+        $item->total = $item->quantity * $item->price;
+        $item->save();
+
+        $this->recalculateCart($cart->fresh());
+
+        $this->dispatch('toast-show', [
+            'message' => 'Product added to cart.',
+            'type' => 'success',
+            'position' => 'top-right',
+        ]);
+
+        $this->dispatch('cart-updated', count: current_cart_items_count());
+    }
+
     public function buyNow(int $qty = 1): void
     {
         if (! $this->syncCartItem($qty)) {

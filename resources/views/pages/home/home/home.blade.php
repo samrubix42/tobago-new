@@ -171,33 +171,6 @@
             </p>
         </div>
 
-        @island(name: 'home-featured-products')
-        @placeholder
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-pulse">
-            @for($i = 0; $i < 8; $i++)
-                <article class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3 sm:p-4 overflow-hidden relative">
-                <div class="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-cyan-500/10 blur-2xl"></div>
-                <div class="relative h-36 sm:h-44 rounded-xl bg-white/5 border border-white/10 mb-4"></div>
-                <div class="flex items-center justify-between mb-3 gap-2">
-                    <div class="h-5 w-16 rounded-full bg-cyan-500/15"></div>
-                    <div class="h-3 w-14 rounded-full bg-white/10"></div>
-                </div>
-                <div class="h-4 w-11/12 rounded bg-white/15 mb-2"></div>
-                <div class="h-4 w-8/12 rounded bg-white/10 mb-4"></div>
-                <div class="h-3 w-full rounded bg-white/10 mb-2"></div>
-                <div class="h-3 w-7/12 rounded bg-white/10 mb-4"></div>
-                <div class="flex items-end justify-between">
-                    <div>
-                        <div class="h-4 w-20 rounded bg-white/20 mb-2"></div>
-                        <div class="h-3 w-14 rounded bg-white/10"></div>
-                    </div>
-                    <div class="h-8 w-8 rounded-full border border-white/10 bg-white/5"></div>
-                </div>
-                </article>
-                @endfor
-        </div>
-        @endplaceholder
-
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             @forelse($this->featuredProducts as $product)
             @php
@@ -234,6 +207,24 @@
                 <i class="ri-arrow-right-up-line"></i>
             </span>
         </div>
+        @php
+            $isOut = $product->is_out_of_stock || (int) $product->stock <= 0;
+        @endphp
+        <button
+            type="button"
+            x-on:click.stop.prevent="$wire.addToCart({{ $product->id }})"
+            wire:loading.attr="disabled"
+            wire:target="addToCart({{ $product->id }})"
+            @disabled($isOut)
+            class="mt-3.5 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+        >
+            <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart({{ $product->id }})"></i>
+            <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart({{ $product->id }})"></i>
+            <span wire:loading.remove wire:target="addToCart({{ $product->id }})">
+                {{ $isOut ? 'Out of Stock' : 'Add to Cart' }}
+            </span>
+            <span wire:loading wire:target="addToCart({{ $product->id }})">Adding...</span>
+        </button>
         </a>
         @empty
         <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
@@ -247,7 +238,6 @@
         View More <i class="ri-arrow-right-line"></i>
     </a>
 </div>
-@endisland
 </section>
 
 
@@ -296,21 +286,6 @@
         </p>
     </div>
 
-    @island(name: 'home-new-arrivals')
-    @placeholder
-    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-pulse">
-        @for($i = 0; $i < 4; $i++)
-            <article class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-3 sm:p-4">
-            <div class="h-36 sm:h-44 rounded-xl bg-white/10 mb-4"></div>
-            <div class="h-3 w-20 rounded bg-purple-300/20 mb-3"></div>
-            <div class="h-4 w-11/12 rounded bg-white/20 mb-2"></div>
-            <div class="h-3 w-8/12 rounded bg-white/10"></div>
-            </article>
-            @endfor
-    </div>
-    @endplaceholder
-
-
     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         @forelse($this->latestProducts as $product)
         @php
@@ -344,6 +319,24 @@
             @endif
             @endif
     </p>
+    @php
+        $isOut = $product->is_out_of_stock || (int) $product->stock <= 0;
+    @endphp
+    <button
+        type="button"
+        x-on:click.stop.prevent="$wire.addToCart({{ $product->id }})"
+        wire:loading.attr="disabled"
+        wire:target="addToCart({{ $product->id }})"
+        @disabled($isOut)
+        class="mt-3.5 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-purple-500 hover:text-black hover:border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+    >
+        <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart({{ $product->id }})"></i>
+        <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart({{ $product->id }})"></i>
+        <span wire:loading.remove wire:target="addToCart({{ $product->id }})">
+            {{ $isOut ? 'Out of Stock' : 'Add to Cart' }}
+        </span>
+        <span wire:loading wire:target="addToCart({{ $product->id }})">Adding...</span>
+    </button>
     </a>
     @empty
     <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
@@ -351,7 +344,6 @@
     </div>
     @endforelse
     </div>
-    @endisland
 </section>
 
 <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -364,25 +356,6 @@
             We're more than just a hookah store. We stock everything you need, from the hookah itself to charcoal, foil, chillums, bongs, ashtrays, and lighters. Buy everything in one place and save on shipping.
         </p>
     </div>
-    @island(name: 'home-categories')
-    @placeholder
-    <div class="space-y-6 animate-pulse">
-        <div class="flex items-center justify-between">
-            <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
-            <div class="h-3 w-28 rounded bg-white/10"></div>
-            <div class="h-10 w-10 rounded-full border border-white/10 bg-white/5"></div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            @for($i = 0; $i < 4; $i++)
-                <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5">
-                <div class="h-24 rounded-xl bg-white/10 mb-4"></div>
-                <div class="h-4 w-7/12 rounded bg-white/15 mb-2"></div>
-                <div class="h-3 w-5/12 rounded bg-white/10"></div>
-        </div>
-        @endfor
-    </div>
-
-    @endplaceholder
 
     <div
         x-data="{
@@ -513,7 +486,6 @@
             </template>
         </div>
     </div>
-    @endisland
 </section>
 
 <section id="why-tobacgo" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -567,32 +539,6 @@
     </div>
 </section>
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-    @island(name: 'home-testimonials')
-    @placeholder
-    <div class="space-y-8 animate-pulse">
-        <div class="text-center mb-2">
-            <div class="h-7 w-64 mx-auto rounded bg-white/15 mb-2"></div>
-            <div class="h-3 w-52 mx-auto rounded bg-white/10"></div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            @for($i = 0; $i < 3; $i++)
-                <div class="rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-6">
-                <div class="h-4 w-24 rounded bg-amber-300/20 mb-4"></div>
-                <div class="h-3 w-full rounded bg-white/15 mb-2"></div>
-                <div class="h-3 w-10/12 rounded bg-white/10 mb-2"></div>
-                <div class="h-3 w-8/12 rounded bg-white/10 mb-5"></div>
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-full bg-white/10"></div>
-                    <div class="space-y-2">
-                        <div class="h-3 w-24 rounded bg-white/20"></div>
-                        <div class="h-3 w-16 rounded bg-white/10"></div>
-                    </div>
-                </div>
-        </div>
-        @endfor
-    </div>
-    </div>
-    @endplaceholder
 
     <div
         x-data="testimonialSlider()"
@@ -701,7 +647,6 @@
         </div>
 
     </div>
-    @endisland
 </section>
 
 
@@ -778,6 +723,24 @@
                     <i class="ri-arrow-right-up-line"></i>
                 </span>
             </div>
+            @php
+                $isOut = $product->is_out_of_stock || (int) $product->stock <= 0;
+            @endphp
+            <button
+                type="button"
+                x-on:click.stop.prevent="$wire.addToCart({{ $product->id }})"
+                wire:loading.attr="disabled"
+                wire:target="addToCart({{ $product->id }})"
+                @disabled($isOut)
+                class="mt-3.5 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-white hover:text-black hover:border-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+            >
+                <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart({{ $product->id }})"></i>
+                <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart({{ $product->id }})"></i>
+                <span wire:loading.remove wire:target="addToCart({{ $product->id }})">
+                    {{ $isOut ? 'Out of Stock' : 'Add to Cart' }}
+                </span>
+                <span wire:loading wire:target="addToCart({{ $product->id }})">Adding...</span>
+            </button>
             </a>
             @empty
             <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center text-white/70">
@@ -811,23 +774,6 @@
             View all <i class="ri-arrow-right-line"></i>
         </a>
     </div>
-
-    @island(name: 'home-blogs')
-    @placeholder
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
-        @for($i = 0; $i < 3; $i++)
-            <article class="rounded-2xl border border-subtle bg-[#0b0d0f] overflow-hidden">
-            <div class="h-44 bg-white/10"></div>
-            <div class="p-5">
-                <div class="h-4 w-7/12 rounded bg-white/15 mb-3"></div>
-                <div class="h-4 w-full rounded bg-white/20 mb-2"></div>
-                <div class="h-4 w-10/12 rounded bg-white/10 mb-4"></div>
-                <div class="h-3 w-24 rounded bg-indigo-300/20"></div>
-            </div>
-            </article>
-            @endfor
-    </div>
-    @endplaceholder
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         @forelse($this->latestBlogs as $post)
@@ -872,7 +818,6 @@
         </div>
         @endforelse
     </div>
-    @endisland
 </section>
 
 <script type="application/json" id="testimonial-items-data">

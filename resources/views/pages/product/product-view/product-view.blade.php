@@ -92,8 +92,13 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
+                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart"></i>
+                            <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart"></i>
+                            <span wire:loading.remove wire:target="addToCart">
+                                {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
+                            </span>
+                            <span wire:loading wire:target="addToCart">Adding...</span>
                         </button>
                         <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
                             {{ $this->isOutOfStock() ? 'Out of Stock' : 'Buy Now' }}
@@ -257,8 +262,13 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-subtle text-sm text-white hover:border-white/20 hover:bg-white/5 transition disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
-                            {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
+                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                            <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart"></i>
+                            <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart"></i>
+                            <span wire:loading.remove wire:target="addToCart">
+                                {{ $this->isOutOfStock() ? 'Out of Stock' : 'Add to Cart' }}
+                            </span>
+                            <span wire:loading wire:target="addToCart">Adding...</span>
                         </button>
                         <button type="button" class="flex-1 py-3 rounded-full bg-white text-sm font-bold text-black transition hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.buyNow(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
                             {{ $this->isOutOfStock() ? 'Out of Stock' : 'Buy Now' }}
@@ -348,10 +358,28 @@
                                         @endif
                                     @endif
                                 </div>
-                                <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View {{ $recommendedProduct->name }}">
-                                    <i class="ri-add-line"></i>
+                                <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View recommended product">
+                                    <i class="ri-arrow-right-up-line"></i>
                                 </span>
                             </div>
+                            @php
+                                $isRecOut = $recommendedProduct->is_out_of_stock || (int) $recommendedProduct->stock <= 0;
+                            @endphp
+                            <button
+                                type="button"
+                                x-on:click.stop.prevent="$wire.addToCartById({{ $recommendedProduct->id }})"
+                                wire:loading.attr="disabled"
+                                wire:target="addToCartById({{ $recommendedProduct->id }})"
+                                @disabled($isRecOut)
+                                class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+                            >
+                                <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCartById({{ $recommendedProduct->id }})"></i>
+                                <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCartById({{ $recommendedProduct->id }})"></i>
+                                <span wire:loading.remove wire:target="addToCartById({{ $recommendedProduct->id }})">
+                                    {{ $isRecOut ? 'Out of Stock' : 'Add to Cart' }}
+                                </span>
+                                <span wire:loading wire:target="addToCartById({{ $recommendedProduct->id }})">Adding...</span>
+                            </button>
                         </a>
                     @endforeach
                 </div>
@@ -423,10 +451,28 @@
                                 @endif
                             @endif
                         </div>
-                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View {{ $relatedProduct->name }}">
-                            <i class="ri-add-line"></i>
+                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-subtle text-white/70 transition group-hover:border-white/20 group-hover:bg-white/5 sm:h-9 sm:w-9" aria-label="View related product">
+                            <i class="ri-arrow-right-up-line"></i>
                         </span>
                     </div>
+                    @php
+                        $isRelOut = $relatedProduct->is_out_of_stock || (int) $relatedProduct->stock <= 0;
+                    @endphp
+                    <button
+                        type="button"
+                        x-on:click.stop.prevent="$wire.addToCartById({{ $relatedProduct->id }})"
+                        wire:loading.attr="disabled"
+                        wire:target="addToCartById({{ $relatedProduct->id }})"
+                        @disabled($isRelOut)
+                        class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+                    >
+                        <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCartById({{ $relatedProduct->id }})"></i>
+                        <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCartById({{ $relatedProduct->id }})"></i>
+                        <span wire:loading.remove wire:target="addToCartById({{ $relatedProduct->id }})">
+                            {{ $isRelOut ? 'Out of Stock' : 'Add to Cart' }}
+                        </span>
+                        <span wire:loading wire:target="addToCartById({{ $relatedProduct->id }})">Adding...</span>
+                    </button>
                 </a>
             @empty
                 <div class="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/2 px-6 py-10 text-center text-white/70">
