@@ -21,6 +21,7 @@ new #[Layout('layouts::app')] class extends Component
 
     public ?string $routeCategorySlug = null;
     public ?string $routeSubcategorySlug = null;
+    public ?string $currentPath = null;
 
     public int $perPage = 12;
     public int $loadedCount = 12;
@@ -31,6 +32,7 @@ new #[Layout('layouts::app')] class extends Component
         $this->routeSubcategorySlug = $subcategory;
 
         $path = trim(request()->path(), '/');
+        $this->currentPath = $path;
         if ($path === 'hookah-under-3000') {
             $this->maxPrice = 3000;
         } elseif ($path === 'hookah-under-5000') {
@@ -184,6 +186,26 @@ new #[Layout('layouts::app')] class extends Component
         $query = Product::query()
             ->with(['images', 'category'])
             ->where('status', 'active');
+
+        $isPriceSeoRoute = in_array($this->currentPath, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
+        if ($isPriceSeoRoute) {
+            $hookahCategoryIds = cache()->remember('hookah_category_ids', 3600, function () {
+                $parent = Category::where('slug', 'premium-hookah')->first();
+                if (!$parent) {
+                    return [];
+                }
+                return Category::query()
+                    ->where('is_active', true)
+                    ->where(function ($q) use ($parent) {
+                        $q->whereKey($parent->id)
+                            ->orWhere('parent_id', $parent->id);
+                    })
+                    ->pluck('id')
+                    ->all();
+            });
+
+            $query->whereIn('category_id', $hookahCategoryIds);
+        }
 
         if ($activeSubcategory) {
             $query->where('category_id', $activeSubcategory->id);
@@ -398,7 +420,7 @@ new #[Layout('layouts::app')] class extends Component
             'max_price' => self::PRICE_MAX_BOUND,
         ];
 
-        $path = trim(request()->path(), '/');
+        $path = $this->currentPath ?: trim(request()->path(), '/');
         $seoPage = \App\Models\SeoContent::where('page_slug', $path)->first();
 
         $isPriceSeoRoute = in_array($path, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
