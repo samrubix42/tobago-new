@@ -1,4 +1,4 @@
-<div>
+﻿<div>
 
     <section class="relative overflow-hidden">
 
@@ -257,9 +257,9 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             @foreach([
-            ['title' => 'Standard', 'range' => 'Under ₹3000', 'icon' => 'ri-shopping-bag-3-line', 'url' => route('products', ['maxPrice' => 3000])],
-            ['title' => 'Premium', 'range' => 'Under ₹5000', 'icon' => 'ri-vip-crown-line', 'url' => route('products', ['maxPrice' => 5000])],
-            ['title' => 'Luxury', 'range' => 'Hookah Above ₹7000', 'icon' => 'ri-gemini-line', 'url' => route('products', ['minPrice' => 7000])],
+            ['title' => 'Standard', 'range' => 'Under ₹3000', 'icon' => 'ri-shopping-bag-3-line', 'url' => route('seo.hookah-under-3000')],
+            ['title' => 'Premium', 'range' => 'Under ₹5000', 'icon' => 'ri-vip-crown-line', 'url' => route('seo.hookah-under-5000')],
+            ['title' => 'Luxury', 'range' => 'Hookah Above ₹7000', 'icon' => 'ri-gemini-line', 'url' => route('seo.hookah-above-7000')],
             ] as $budget)
             <a href="{{ $budget['url'] }}" wire:navigate class="group rounded-2xl border border-subtle bg-[#0b0d0f] p-5 text-center transition hover:-translate-y-1 hover:border-white/20">
                 <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-indigo-300">
