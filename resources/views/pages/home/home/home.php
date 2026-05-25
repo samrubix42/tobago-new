@@ -41,7 +41,7 @@ new class extends Component
                 $q->where('slug', 'tobac-go-hookah');
             })
             ->latest()
-            ->take(8)
+            ->take(12)
             ->get();
          
 

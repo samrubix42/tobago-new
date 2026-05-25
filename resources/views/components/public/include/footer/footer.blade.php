@@ -24,13 +24,16 @@
 
             <!-- Social -->
             <div class="flex gap-3 mt-5">
-                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
+                <a href="https://www.instagram.com/tobacgonoida" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
                     <i class="ri-instagram-line text-sm"></i>
                 </a>
-                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
+                <a href="https://www.facebook.com/noidatobacgo" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
                     <i class="ri-facebook-line text-sm"></i>
                 </a>
-                <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
+                <a href="https://in.pinterest.com/tobacgonoida/" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
+                    <i class="ri-pinterest-line text-sm"></i>
+                </a>
+                <a href="https://www.youtube.com/@tobac-go-noida/" target="_blank" rel="noopener" class="w-9 h-9 flex items-center justify-center rounded-full border border-subtle bg-white/5 hover:border-white/20 transition">
                     <i class="ri-youtube-line text-sm"></i>
                 </a>
             </div>

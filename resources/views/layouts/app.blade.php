@@ -22,7 +22,12 @@
     <meta name="keywords" content="@yield('meta_keywords', $seoContent && !empty($seoContent->meta_keywords) ? $seoContent->meta_keywords : ($metaKeywords ?? 'premium hookah india, buy hookah online india, Tobac-Go, luxury hookah, premium hookah store'))">
     <meta name="theme-color" content="#080909">
     <meta name="robots" content="index,follow">
-    <link rel="canonical" href="{{ url()->current() }}">
+    @php
+        $canonicalBase = 'https://www.tobacgo.in';
+        $canonicalPath = request()->path();
+        $canonicalUrl = rtrim($canonicalBase, '/') . '/' . ltrim($canonicalPath, '/');
+    @endphp
+    <link rel="canonical" href="{{ $canonicalUrl }}">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 
     <title>@yield('meta_title', $seoContent && !empty($seoContent->meta_title) ? $seoContent->meta_title : ($title ?? 'Tobac-Go | Premium Hookah Store India'))</title>
