@@ -153,6 +153,88 @@
             @endif
         </section>
 
+        @if($recommendedSections && $recommendedSections->isNotEmpty())
+            @foreach($recommendedSections as $section)
+                <section class="mt-14 sm:mt-20 space-y-6">
+                    <div class="flex items-end justify-between gap-6">
+                        <div>
+                            <h2 class="text-2xl font-semibold text-white">{{ $section['title'] }}</h2>
+                            <p class="text-muted text-xs text-white/50 mt-1">Products from {{ $section['category']->title }}</p>
+                        </div>
+                        <a
+                            href="{{ !empty($section['category']->parent?->slug)
+                                ? route('products.category.subcategory', ['category' => $section['category']->parent->slug, 'subcategory' => $section['category']->slug])
+                                : (!empty($section['category']->slug) ? route('products.category', ['category' => $section['category']->slug]) : route('products')) }}"
+                            wire:navigate
+                            class="text-sm text-white/70 hover:text-white transition hidden sm:inline-flex items-center gap-2"
+                        >
+                            View all <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                        @foreach($section['products'] as $recommendedProduct)
+                            @php
+                                $isRecOut = $recommendedProduct->is_out_of_stock || (int) $recommendedProduct->stock <= 0;
+                            @endphp
+                            <article wire:key="recommended-product-card-{{ $recommendedProduct->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20 relative {{ $isRecOut ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                                <a href="{{ route('product', $recommendedProduct->slug) }}" wire:navigate class="block">
+                                    <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white">
+                                        @if($isRecOut)
+                                        <div class="absolute top-2 left-2 z-20">
+                                            <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                                                Out of Stock
+                                            </span>
+                                        </div>
+                                        @endif
+                                        <img src="{{ $this->productImage($recommendedProduct) }}" alt="{{ $recommendedProduct->name }}" class="h-24 object-contain transition duration-300 group-hover:scale-105">
+                                    </div>
+
+                                    <h3 class="mt-3 text-sm font-semibold text-white line-clamp-2 min-h-10">{{ $recommendedProduct->name }}</h3>
+                                    <p class="text-[11px] text-white/50 mt-1 truncate">{{ $recommendedProduct->sku ?: 'SKU N/A' }}</p>
+                                    <p class="text-[11px] text-cyan-200/90 mt-1 truncate">{{ $recommendedProduct->category?->title ?: 'General Category' }}</p>
+                                    <div class="mt-2 flex items-center justify-between gap-2 min-h-5">
+                                        @if(!$isRecOut)
+                                            <p class="text-sm font-semibold text-white">Rs {{ number_format((float) $recommendedProduct->selling_price, 2) }}</p>
+                                            @if($recommendedProduct->compare_price && $recommendedProduct->compare_price > $recommendedProduct->selling_price)
+                                                <p class="text-[11px] text-white/40 line-through">Rs {{ number_format((float) $recommendedProduct->compare_price, 2) }}</p>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </a>
+
+                                <button
+                                    type="button"
+                                    wire:click="addToCart({{ $recommendedProduct->id }})"
+                                    wire:loading.attr="disabled"
+                                    wire:target="addToCart({{ $recommendedProduct->id }})"
+                                    @disabled($isRecOut)
+                                    class="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10"
+                                >
+                                    <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart({{ $recommendedProduct->id }})"></i>
+                                    <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart({{ $recommendedProduct->id }})"></i>
+                                    <span wire:loading.remove wire:target="addToCart({{ $recommendedProduct->id }})">{{ $isRecOut ? 'Out of Stock' : 'Add to Cart' }}</span>
+                                    <span wire:loading wire:target="addToCart({{ $recommendedProduct->id }})">Adding...</span>
+                                </button>
+                            </article>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4 sm:hidden">
+                        <a
+                            href="{{ !empty($section['category']->parent?->slug)
+                                ? route('products.category.subcategory', ['category' => $section['category']->parent->slug, 'subcategory' => $section['category']->slug])
+                                : (!empty($section['category']->slug) ? route('products.category', ['category' => $section['category']->slug]) : route('products')) }}"
+                            wire:navigate
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white/80 transition hover:border-white/20 hover:text-white"
+                        >
+                            View more <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                </section>
+            @endforeach
+        @endif
+
         @if($seoPage?->content)
             <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
                 <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">

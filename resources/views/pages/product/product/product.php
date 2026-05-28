@@ -4,6 +4,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\RecommendedCategory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -293,6 +294,11 @@ new #[Layout('layouts::app')] class extends Component
             : asset('images/hero.png');
     }
 
+    public function shortText(?string $text, int $limit = 80): string
+    {
+        return \Illuminate\Support\Str::limit(trim(strip_tags((string) $text)), $limit);
+    }
+
     public function addToCart(int $productId): void
     {
         $product = Product::query()
@@ -425,15 +431,66 @@ new #[Layout('layouts::app')] class extends Component
 
         $isPriceSeoRoute = in_array($path, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
 
+        $activeCategory = $this->activeCategory();
+        $activeSubcategory = $this->activeSubcategory($activeCategory);
+        $targetCategoryId = $activeSubcategory?->id ?? $activeCategory?->id;
+
+        $recommendedSections = collect();
+
+        if ($targetCategoryId) {
+            $recommendations = RecommendedCategory::query()
+                ->with(['recommendedCategory.parent'])
+                ->where('category_id', $targetCategoryId)
+                ->get();
+
+            if ($recommendations->isEmpty() && $activeSubcategory && $activeCategory) {
+                $recommendations = RecommendedCategory::query()
+                    ->with(['recommendedCategory.parent'])
+                    ->where('category_id', $activeCategory->id)
+                    ->get();
+            }
+
+            $recommendedSections = $recommendations
+                ->map(function (RecommendedCategory $recommendation) {
+                    $recommendedCategory = $recommendation->recommendedCategory;
+
+                    if (! $recommendedCategory) {
+                        return null;
+                    }
+
+                    $products = Product::query()
+                        ->with(['images', 'category'])
+                        ->where('status', 'active')
+                        ->where('category_id', $recommendedCategory->id)
+                        ->latest('id')
+                        ->limit(4)
+                        ->get();
+
+                    if ($products->isEmpty()) {
+                        return null;
+                    }
+
+                    return [
+                        'id' => $recommendedCategory->id,
+                        'title' => trim((string) ($recommendation->title ?? '')) ?: $recommendedCategory->title,
+                        'category' => $recommendedCategory,
+                        'products' => $products,
+                    ];
+                })
+                ->filter()
+                ->values();
+        }
+
         return view('pages.product.product.product', [
             'products' => $products,
             'hasMore' => $this->hasMoreProducts(),
             'categories' => $this->categories(),
-            'activeCategory' => $this->activeCategory(),
-            'activeSubcategory' => $this->activeSubcategory($this->activeCategory()),
+            'activeCategory' => $activeCategory,
+            'activeSubcategory' => $activeSubcategory,
             'priceLimits' => $priceLimits,
             'seoPage' => $seoPage,
             'isPriceSeoRoute' => $isPriceSeoRoute,
+            'recommendedSections' => $recommendedSections,
         ]);
     }
 };
