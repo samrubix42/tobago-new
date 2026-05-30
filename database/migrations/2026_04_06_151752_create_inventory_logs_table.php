@@ -23,10 +23,7 @@ return new class extends Migration
                 'out',
                 'sale',
                 'return',
-                'adjust',
-                'reserve',
-                'release',
-                'replace'
+                'adjust'
             ])->comment('Type of stock movement');
 
             $table->integer('quantity')

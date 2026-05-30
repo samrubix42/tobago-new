@@ -22,7 +22,7 @@ new #[Layout('layouts::admin')] class extends Component
     public string $productSku = '';
     public int $currentStock = 0;
 
-    public string $type = 'in'; // in|out|sale|return|adjust|reserve|release|replace
+    public string $type = 'in'; // in|out|sale|return|adjust
     public int $quantity = 0; // for adjust, can be negative
     public ?string $reference_type = null;
     public $reference_id = null;
@@ -75,7 +75,7 @@ new #[Layout('layouts::admin')] class extends Component
     {
         $this->validate([
             'productId' => ['required', 'integer', 'exists:products,id'],
-            'type' => ['required', 'in:in,out,sale,return,adjust,reserve,release,replace'],
+            'type' => ['required', 'in:in,out,sale,return,adjust'],
             'quantity' => ['required', 'integer'],
             'reference_type' => ['nullable', 'string', 'max:50'],
             'reference_id' => ['nullable', 'integer', 'min:1'],
@@ -98,7 +98,7 @@ new #[Layout('layouts::admin')] class extends Component
         }
 
         $qtyAbs = abs($qty);
-        $decreaseTypes = ['out', 'sale', 'reserve'];
+        $decreaseTypes = ['out', 'sale'];
         $delta = $type === 'adjust'
             ? $qty
             : (in_array($type, $decreaseTypes, true) ? -$qtyAbs : $qtyAbs);
@@ -210,8 +210,8 @@ new #[Layout('layouts::admin')] class extends Component
                 $newerDeltaSum = (clone $logsQuery)
                     ->limit($offset)
                     ->selectRaw("COALESCE(SUM(CASE
-                        WHEN type IN ('in','return','release','replace') THEN ABS(quantity)
-                        WHEN type IN ('out','sale','reserve') THEN -ABS(quantity)
+                        WHEN type IN ('in','return') THEN ABS(quantity)
+                        WHEN type IN ('out','sale') THEN -ABS(quantity)
                         WHEN type = 'adjust' THEN quantity
                         ELSE 0
                     END), 0) as delta_sum")

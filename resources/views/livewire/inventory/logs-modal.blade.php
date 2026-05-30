@@ -43,8 +43,8 @@
                 <div class="flex-1 overflow-y-auto px-5 py-5 custom-scrollbar bg-white">
                     @if($logs)
                         @php
-                            $increaseTypes = ['in', 'return', 'release', 'replace'];
-                            $decreaseTypes = ['out', 'sale', 'reserve'];
+                            $increaseTypes = ['in', 'return'];
+                            $decreaseTypes = ['out', 'sale'];
                             $runningBalance = (int) ($logsStartBalance ?? $currentStock);
 
                             $typeMeta = [

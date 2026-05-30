@@ -32,8 +32,8 @@
                     {{-- Adjustment Type --}}
                     <div class="space-y-2">
                         <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Adjustment Type</label>
-                        <div class="grid grid-cols-4 sm:grid-cols-7 gap-1 pt-0.5">
-                            @foreach(['in' => 'In', 'out' => 'Out', 'sale' => 'Sale', 'return' => 'Ret', 'adjust' => 'Adj', 'reserve' => 'Res', 'release' => 'Rel'] as $key => $label)
+                        <div class="grid grid-cols-3 sm:grid-cols-5 gap-1 pt-0.5">
+                            @foreach(['in' => 'In', 'out' => 'Out', 'sale' => 'Sale', 'return' => 'Ret', 'adjust' => 'Adj'] as $key => $label)
                                 <label class="cursor-pointer">
                                     <input type="radio" wire:model.live="type" value="{{ $key }}" class="peer hidden">
                                     <div class="py-1.5 text-center rounded-lg border border-slate-100 text-[9px] font-bold uppercase transition 
