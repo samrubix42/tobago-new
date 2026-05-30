@@ -61,16 +61,16 @@
             </h3>
 
             <ul class="space-y-2 text-sm text-muted">
-                <li><a href="{{ route('products.category', ['category' => 'tobac-go-hookah']) }}" class="hover:text-white transition">Tobac-Go Hookah</a></li>
+                <li><a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-hookah']) }}" class="hover:text-white transition">Tobac-Go Hookah</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'premium-hookah']) }}" class="hover:text-white transition">Premium Hookah</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" class="hover:text-white transition">Pipe and Handle</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" class="hover:text-white transition">Smoking Accessories</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'lighters']) }}" class="hover:text-white transition">Lighters</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" class="hover:text-white transition">Hookah Chillum</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" class="hover:text-white transition">Hookah Accessories</a></li>
-                <li><a href="{{ route('products.category', ['category' => 'glass-percolator-bongs']) }}" class="hover:text-white transition">Glass Percolator Bongs</a></li>
+                <li><a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'glass-percolator-bongs']) }}" class="hover:text-white transition">Glass Percolator Bongs</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'combos']) }}" class="hover:text-white transition">Combos</a></li>
-                <li><a href="{{ route('products.category', ['category' => 'acrylic-bongs']) }}" class="hover:text-white transition">Acrylic Bongs</a></li>
+                <li><a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'acrylic-bongs']) }}" class="hover:text-white transition">Acrylic Bongs</a></li>
                 <li><a href="{{ route('products.category', ['category' => 'ashtray']) }}" class="hover:text-white transition">Ashtray</a></li>
             </ul>
         </div>

@@ -48,6 +48,10 @@ new #[Layout('layouts::app')] class extends Component
                 abort(404);
             }
 
+            if ($subcategory === null && !empty($activeCategory->parent_id)) {
+                abort(404);
+            }
+
             if ($subcategory !== null && ! $this->activeSubcategory($activeCategory)) {
                 abort(404);
             }

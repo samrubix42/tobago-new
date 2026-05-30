@@ -116,11 +116,11 @@ Route::get('/clear-cache', function() {
     return "Cache cleared!";
 })->name('clear.cache');
 
-Route::livewire('shop/{category}', 'pages::product.product')
-    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$|hookah-under-3000$|hookah-under-5000$|hookah-above-7000$)[a-z0-9-]+$')
+Route::livewire('{category}', 'pages::product.product')
+    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$|hookah-under-3000$|hookah-under-5000$|hookah-above-7000$|categories$|blogs$|about$|return-refund$|shipping-policy$|terms-conditions$|privacy-policy$|hookah-shop-in-noida$|blog$|shop$|logout$|payment$)[a-z0-9-]+$')
     ->name('products.category');
 
-Route::livewire('shop/{category}/{subcategory}', 'pages::product.product')
-    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$)[a-z0-9-]+$')
+Route::livewire('{category}/{subcategory}', 'pages::product.product')
+    ->where('category', '^(?!admin$|login$|register$|cart$|checkout$|product$|products$|clear-cache$|demo$|account$|auth$|blog$|payment$)[a-z0-9-]+$')
     ->where('subcategory', '^[a-z0-9-]+$')
     ->name('products.category.subcategory');
