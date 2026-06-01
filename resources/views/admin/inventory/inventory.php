@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\InventoryLog;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,6 +14,7 @@ new #[Layout('layouts::admin')] class extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $categoryId = '';
     public int $perPage = 10;
 
     public ?int $productId = null;
@@ -31,6 +33,11 @@ new #[Layout('layouts::admin')] class extends Component
     public int $logsPerPage = 10;
 
     public function updatedSearch(): void
+    {
+        $this->resetPage('productsPage');
+    }
+
+    public function updatedCategoryId(): void
     {
         $this->resetPage('productsPage');
     }
@@ -191,6 +198,9 @@ new #[Layout('layouts::admin')] class extends Component
                         ->orWhere('sku', 'like', '%' . $this->search . '%');
                 });
             })
+            ->when($this->categoryId !== '', function (Builder $query) {
+                $query->where('category_id', $this->categoryId);
+            })
             ->orderBy('name')
             ->paginate($this->perPage, ['*'], 'productsPage');
 
@@ -221,10 +231,16 @@ new #[Layout('layouts::admin')] class extends Component
             }
         }
 
+        $categories = Category::query()
+            ->select(['id', 'title'])
+            ->orderBy('title')
+            ->get();
+
         return view('admin.inventory.inventory', [
             'products' => $products,
             'logs' => $logs,
             'logsStartBalance' => $logsStartBalance,
+            'categories' => $categories,
         ]);
     }
 };

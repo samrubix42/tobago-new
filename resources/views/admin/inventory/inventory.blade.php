@@ -13,16 +13,33 @@
     </div>
 
     <!-- Search/Filters -->
-    <div class="relative w-full sm:w-80">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-            <i class="ri-search-line"></i>
-        </span>
-        <input
-            type="text"
-            wire:model.live="search"
-            placeholder="Search by SKU or Product..."
-            class="w-full rounded-md border border-slate-300 pl-9 pr-4 py-2.5 text-sm
-                   focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+        <!-- Search -->
+        <div class="relative flex-1 sm:max-w-xs">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <i class="ri-search-line"></i>
+            </span>
+            <input
+                type="text"
+                wire:model.live="search"
+                placeholder="Search by SKU or Product..."
+                class="w-full rounded-md border border-slate-300 pl-9 pr-4 py-2.5 text-sm
+                       focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition">
+        </div>
+
+        <!-- Category Filter -->
+        <div class="w-full sm:w-64">
+            <select
+                wire:model.live="categoryId"
+                class="w-full rounded-md border border-slate-300 px-4 py-2.5 text-sm
+                       focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition text-slate-700 bg-white"
+            >
+                <option value="">All Categories</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}">{{ $cat->title }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 
     <!-- Desktop Table -->
@@ -38,7 +55,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-                @foreach($products as $product)
+                @forelse($products as $product)
                 <tr wire:key="product-row-{{ $product->id }}" class="hover:bg-slate-50 transition">
                     <td class="px-6 py-5">
                         <div class="flex flex-col">
@@ -78,12 +95,23 @@
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                        <p class="text-sm">No products found.</p>
+                        @if($search !== '' || $categoryId !== '')
+                            <button wire:click="$set('search', ''); $set('categoryId', '');" class="text-xs text-blue-600 font-bold mt-2 hover:underline">Clear filters</button>
+                        @endif
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+        @if($products->hasPages())
         <div class="px-6 py-4 border-t border-slate-100">
             {{ $products->onEachSide(1)->links() }}
         </div>
+        @endif
     </div>
 
     <!-- Mobile Cards -->
@@ -129,7 +157,10 @@
         </div>
         @empty
         <div class="rounded-md border border-dashed border-slate-200 bg-slate-50 py-10 text-center text-slate-400">
-            No products found.
+            <p class="text-sm">No products found.</p>
+            @if($search !== '' || $categoryId !== '')
+                <button wire:click="$set('search', ''); $set('categoryId', '');" class="text-xs text-blue-600 font-bold mt-2 hover:underline">Clear filters</button>
+            @endif
         </div>
         @endforelse
         <div class="mt-4">
