@@ -28,6 +28,7 @@ new class extends Component
             ->firstOrFail();
 
         $this->galleryImages = $this->product->images
+            ->sortByDesc('is_primary')
             ->map(function ($image): array {
                 return [
                     'src' => asset('storage/' . ltrim((string) $image->image, '/')),
