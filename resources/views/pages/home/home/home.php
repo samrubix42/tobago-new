@@ -79,6 +79,8 @@ new class extends Component
         return Product::query()
             ->with(['images'])
             ->where('status', 'active')
+            ->where('is_out_of_stock', false)
+            ->where('stock', '>', 0)
             ->latest()
             ->take(4)
             ->get();
