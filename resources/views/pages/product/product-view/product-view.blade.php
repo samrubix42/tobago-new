@@ -151,20 +151,9 @@
             <div class="hidden lg:block rounded-3xl border border-subtle bg-[#0b0d0f] p-5 sm:p-7 lg:p-8">
                 <div class="space-y-6 text-sm text-muted leading-relaxed">
                     <section>
-                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features</h3>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features &amp; Specifications</h3>
                         <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
-                            @if($product->short_description)
-                            {!! nl2br(e($product->short_description)) !!}
-                            @else
-                            <p>Product highlights will be updated soon.</p>
-                            @endif
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Specification</h3>
-                        <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
-                            {!! $product->feature_and_specifications ?: '<p>Detailed specifications are not available yet.</p>' !!}
+                            {!! $product->feature_and_specifications ?: '<p>Detailed features and specifications are not available yet.</p>' !!}
                         </div>
                     </section>
                 </div>
@@ -214,20 +203,9 @@
             <div class="lg:hidden rounded-3xl border border-subtle bg-[#0b0d0f] p-5">
                 <div class="space-y-6 text-sm text-muted leading-relaxed">
                     <section>
-                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features</h3>
+                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Features &amp; Specifications</h3>
                         <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
-                            @if($product->short_description)
-                            {!! nl2br(e($product->short_description)) !!}
-                            @else
-                            <p>Product highlights will be updated soon.</p>
-                            @endif
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 class="text-xs uppercase tracking-[0.22em] text-white/80 mb-3">Specification</h3>
-                        <div class="rounded-2xl border border-white/10 bg-white/3 p-4 overflow-x-auto overflow-y-hidden no-scrollbar [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1 [&_li]:mb-1 [&_a]:text-cyan-300 [&_a]:underline [&_strong]:text-white [&_em]:text-white/90 [&_h1]:text-white [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:mb-3 [&_h2]:text-white [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:text-white [&_h3]:font-semibold [&_h3]:mb-2 [&_blockquote]:border-l-2 [&_blockquote]:border-white/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_table]:w-full [&_table]:min-w-180 [&_table]:border-collapse [&_table]:text-sm [&_thead]:bg-white/5 [&_th]:text-left [&_th]:text-white [&_th]:font-semibold [&_th]:px-3 [&_th]:py-2 [&_th]:border [&_th]:border-white/10 [&_td]:px-3 [&_td]:py-2 [&_td]:border [&_td]:border-white/10 [&_img]:max-w-full [&_img]:h-auto [&_hr]:border-white/10 [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded">
-                            {!! $product->feature_and_specifications ?: '<p>Detailed specifications are not available yet.</p>' !!}
+                            {!! $product->feature_and_specifications ?: '<p>Detailed features and specifications are not available yet.</p>' !!}
                         </div>
                     </section>
                 </div>
