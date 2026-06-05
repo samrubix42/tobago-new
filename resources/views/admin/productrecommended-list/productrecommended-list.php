@@ -3,43 +3,31 @@
 use App\Models\Product;
 use App\Models\ProductRecommendation;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 new #[Layout('layouts::admin')] class extends Component
 {
-    use WithPagination;
-
-    #[Url(history: true)]
-    public string $search = '';
-
     public ?int $baseProductId = null;
     public $recommendedProductIds = [];
-    public $recommendationTitles = [];
     
-    // For selecting recommended products in the modal
-    public string $modalSearch = '';
-    public int $perPage = 10;
+    public string $searchQuery = '';
 
     public function mount(): void
     {
-        // Check if product_id is passed in the URL query string
         $urlProductId = request()->query('product_id');
         if ($urlProductId) {
             $product = Product::find($urlProductId);
             if ($product) {
-                $this->openRecommendModal((int) $urlProductId);
+                $this->editRecommendations((int) $urlProductId);
+                return;
             }
         }
+
+        // Redirect to products list if no product ID is supplied
+        $this->redirect(route('admin.products.index'), navigate: true);
     }
 
-    public function updatingSearch(): void
-    {
-        $this->resetPage();
-    }
-
-    public function openRecommendModal(int $productId): void
+    public function editRecommendations(int $productId): void
     {
         $this->resetForm();
         
@@ -54,14 +42,6 @@ new #[Layout('layouts::admin')] class extends Component
             ->pluck('recommended_product_id')
             ->map(fn ($id) => (int) $id)
             ->all();
-
-        $this->recommendationTitles = $recommendations
-            ->mapWithKeys(fn ($rec) => [
-                (int) $rec->recommended_product_id => (string) ($rec->title ?? ''),
-            ])
-            ->all();
-
-        $this->dispatch('open-recommend-modal');
     }
 
     public function resetForm(): void
@@ -69,8 +49,27 @@ new #[Layout('layouts::admin')] class extends Component
         $this->resetValidation();
         $this->baseProductId = null;
         $this->recommendedProductIds = [];
-        $this->recommendationTitles = [];
-        $this->modalSearch = '';
+        $this->searchQuery = '';
+    }
+
+    public function cancelEdit()
+    {
+        $this->redirect(route('admin.products.index'), navigate: true);
+    }
+
+    public function addProduct(int $productId): void
+    {
+        $productId = (int) $productId;
+        if (!in_array($productId, $this->recommendedProductIds, true)) {
+            $this->recommendedProductIds[] = $productId;
+        }
+        $this->searchQuery = ''; // Clear search query
+    }
+
+    public function removeProduct(int $productId): void
+    {
+        $productId = (int) $productId;
+        $this->recommendedProductIds = array_diff($this->recommendedProductIds, [$productId]);
     }
 
     public function updatedRecommendedProductIds(): void
@@ -83,10 +82,6 @@ new #[Layout('layouts::admin')] class extends Component
             ->all();
 
         $this->recommendedProductIds = $selectedIds;
-        $this->recommendationTitles = collect($this->recommendationTitles)
-            ->filter(fn ($_title, $productId) => in_array((int) $productId, $selectedIds, true))
-            ->map(fn ($title) => trim((string) $title))
-            ->all();
     }
 
     public function saveRecommendations(): void
@@ -95,8 +90,6 @@ new #[Layout('layouts::admin')] class extends Component
             'baseProductId' => ['required', 'integer', 'exists:products,id'],
             'recommendedProductIds' => ['array'],
             'recommendedProductIds.*' => ['integer', 'exists:products,id', 'distinct'],
-            'recommendationTitles' => ['array'],
-            'recommendationTitles.*' => ['nullable', 'string', 'max:255'],
         ]);
 
         $productId = (int) $this->baseProductId;
@@ -118,7 +111,6 @@ new #[Layout('layouts::admin')] class extends Component
                 $selectedIds->map(fn ($recId) => [
                     'product_id' => $productId,
                     'recommended_product_id' => $recId,
-                    'title' => trim((string) ($this->recommendationTitles[$recId] ?? '')) ?: null,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ])->all()
@@ -131,49 +123,38 @@ new #[Layout('layouts::admin')] class extends Component
             'position' => 'top-right',
         ]);
 
-        $this->dispatch('close-recommend-modal');
-        $this->resetForm();
-    }
-
-    public function deleteRecommendations(int $productId): void
-    {
-        ProductRecommendation::query()
-            ->where('product_id', $productId)
-            ->delete();
-
-        $this->dispatch('toast-show', [
-            'message' => 'All recommendations removed for this product.',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
+        $this->redirect(route('admin.products.index'), navigate: true);
     }
 
     public function render()
     {
-        $products = Product::query()
-            ->with(['category', 'images', 'recommendedProducts'])
-            ->when($this->search !== '', function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('slug', 'like', '%' . $this->search . '%');
-            })
-            ->latest()
-            ->paginate($this->perPage);
+        $selectedProducts = collect();
+        if (!empty($this->recommendedProductIds)) {
+            $selectedProducts = Product::query()
+                ->whereIn('id', $this->recommendedProductIds)
+                ->with(['images', 'category'])
+                ->get();
+        }
 
-        $recommendationOptions = Product::query()
-            ->when($this->baseProductId, fn ($q) => $q->where('id', '!=', $this->baseProductId))
-            ->when($this->modalSearch !== '', function ($query) {
-                $query->where('name', 'like', '%' . $this->modalSearch . '%')
-                      ->orWhere('slug', 'like', '%' . $this->modalSearch . '%');
-            })
-            ->orderBy('name')
-            ->get(['id', 'name', 'sku']);
+        $searchResults = collect();
+        if ($this->searchQuery !== '') {
+            $searchResults = Product::query()
+                ->where('id', '!=', $this->baseProductId)
+                ->whereNotIn('id', $this->recommendedProductIds)
+                ->where(function ($query) {
+                    $query->where('name', 'like', '%' . $this->searchQuery . '%')
+                          ->orWhere('sku', 'like', '%' . $this->searchQuery . '%');
+                })
+                ->limit(6)
+                ->get();
+        }
 
         $selectedBaseProduct = $this->baseProductId ? Product::find($this->baseProductId) : null;
 
         return view('admin::productrecommended-list.productrecommended-list', [
-            'products' => $products,
-            'recommendationOptions' => $recommendationOptions,
+            'searchResults' => $searchResults,
+            'selectedProducts' => $selectedProducts,
             'selectedBaseProduct' => $selectedBaseProduct,
         ]);
     }
-};
+}

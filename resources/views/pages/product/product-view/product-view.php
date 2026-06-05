@@ -3,7 +3,6 @@
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-use App\Models\RecommendedCategory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,7 +12,6 @@ new class extends Component
     public Product $product;
 
     public Collection $relatedProducts;
-    public Collection $recommendedSections;
 
     public array $galleryImages = [];
 
@@ -45,70 +43,22 @@ new class extends Component
             ]];
         }
 
-        $this->relatedProducts = Product::query()
-            ->with(['images', 'category'])
-            ->where('status', 'active')
-            ->whereKeyNot($this->product->id)
-            ->when($this->product->category_id, fn ($query) => $query->where('category_id', $this->product->category_id))
-            ->latest('id')
-            ->limit(4)
-            ->get();
+        $hasCustomRecommendations = \App\Models\ProductRecommendation::where('product_id', $this->product->id)->exists();
 
-        if ($this->relatedProducts->count() < 4) {
-            $existingIds = $this->relatedProducts
-                ->pluck('id')
-                ->push($this->product->id)
-                ->all();
-
-            $remaining = Product::query()
+        if ($hasCustomRecommendations) {
+            $this->relatedProducts = $this->product->recommendedProducts()
                 ->with(['images', 'category'])
                 ->where('status', 'active')
-                ->whereNotIn('id', $existingIds)
+                ->get();
+        } else {
+            $this->relatedProducts = Product::query()
+                ->with(['images', 'category'])
+                ->where('status', 'active')
+                ->where('id', '!=', $this->product->id)
+                ->when($this->product->category_id, fn ($query) => $query->where('category_id', $this->product->category_id))
                 ->latest('id')
-                ->limit(4 - $this->relatedProducts->count())
+                ->limit(4)
                 ->get();
-
-            $this->relatedProducts = $this->relatedProducts->concat($remaining)->values();
-        }
-
-        $this->recommendedSections = collect();
-
-        if ($this->product->category_id) {
-            $recommendations = RecommendedCategory::query()
-                ->with(['recommendedCategory.parent'])
-                ->where('category_id', $this->product->category_id)
-                ->get();
-
-            $this->recommendedSections = $recommendations
-                ->map(function (RecommendedCategory $recommendation) {
-                    $recommendedCategory = $recommendation->recommendedCategory;
-
-                    if (! $recommendedCategory) {
-                        return null;
-                    }
-
-                    $products = Product::query()
-                        ->with(['images', 'category'])
-                        ->where('status', 'active')
-                        ->where('category_id', $recommendedCategory->id)
-                        ->whereKeyNot($this->product->id)
-                        ->latest('id')
-                        ->limit(4)
-                        ->get();
-
-                    if ($products->isEmpty()) {
-                        return null;
-                    }
-
-                    return [
-                        'id' => $recommendedCategory->id,
-                        'title' => trim((string) ($recommendation->title ?? '')) ?: $recommendedCategory->title,
-                        'category' => $recommendedCategory,
-                        'products' => $products,
-                    ];
-                })
-                ->filter()
-                ->values();
         }
     }
 

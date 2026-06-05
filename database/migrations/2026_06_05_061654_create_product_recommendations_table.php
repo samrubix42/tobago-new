@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('recommended_product_id')->constrained('products')->cascadeOnDelete();
-            $table->string('title')->nullable();
             $table->timestamps();
         });
     }

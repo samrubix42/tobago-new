@@ -11,7 +11,6 @@ class ProductRecommendation extends Model
     protected $fillable = [
         'product_id',
         'recommended_product_id',
-        'title',
     ];
 
     public function product(): BelongsTo

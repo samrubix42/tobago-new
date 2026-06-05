@@ -80,7 +80,6 @@ class Product extends Model
     public function recommendedProducts(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'product_recommendations', 'product_id', 'recommended_product_id')
-            ->withPivot('title')
             ->withTimestamps();
     }
 
