@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'techonika.com@gmail.com'],
             [
                 'name' => 'Tobac-Go Admin',
-                'password' => Hash::make('tobacgo!@#$%!'),
+                'password' => Hash::make('password'),
                 'is_admin' => true,
             ]
         );
