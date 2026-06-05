@@ -21,14 +21,14 @@ test('category pages routing behavior', function () {
     ]);
 
     // 1. Parent category slug on single-tier URL should return 200
-    $response = $this->get('/parent-cat');
+    $response = $this->get('/shop/parent-cat');
     $response->assertStatus(200);
 
     // 2. Subcategory slug on double-tier URL should return 200
-    $response = $this->get('/parent-cat/sub-cat');
+    $response = $this->get('/shop/parent-cat/sub-cat');
     $response->assertStatus(200);
 
     // 3. Subcategory slug on single-tier URL should return 404
-    $response = $this->get('/sub-cat');
+    $response = $this->get('/shop/sub-cat');
     $response->assertStatus(404);
 });

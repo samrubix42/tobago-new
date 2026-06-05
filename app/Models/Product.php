@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -69,6 +70,18 @@ class Product extends Model
     public function inventoryLogs(): HasMany
     {
         return $this->hasMany(InventoryLog::class);
+    }
+
+    public function recommendations(): HasMany
+    {
+        return $this->hasMany(ProductRecommendation::class);
+    }
+
+    public function recommendedProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_recommendations', 'product_id', 'recommended_product_id')
+            ->withPivot('title')
+            ->withTimestamps();
     }
 
     public static function generateSkuFromName(string $name, ?int $ignoreId = null): string

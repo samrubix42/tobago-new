@@ -158,6 +158,13 @@
 
                         <td class="px-6 py-5 text-right">
                             <div class="flex justify-end gap-2">
+                                <a href="{{ route('admin.products.recommendations', ['product_id' => $product->id]) }}"
+                                   class="h-8 w-8 inline-flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition duration-200 shadow-sm"
+                                   title="Recommend Products"
+                                >
+                                    <i class="ri-git-merge-line text-sm"></i>
+                                </a>
+
                                 <a href="{{ route('admin.products.edit', $product->id) }}"
                                    class="h-8 w-8 inline-flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition duration-200 shadow-sm"
                                    title="Edit Product"
@@ -248,6 +255,12 @@
                         </select>
 
                         <div class="flex gap-2">
+                        <a href="{{ route('admin.products.recommendations', ['product_id' => $product->id]) }}"
+                           class="h-10 w-10 flex items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition shadow-sm active:scale-95"
+                           title="Recommend Products"
+                        >
+                            <i class="ri-git-merge-line"></i>
+                        </a>
                         <a href="{{ route('admin.products.edit', $product->id) }}"
                            class="h-10 w-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm active:scale-95"
                         >
