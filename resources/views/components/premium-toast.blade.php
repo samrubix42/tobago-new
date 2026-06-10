@@ -314,14 +314,14 @@
                     }
                 });
             "
-            class="fixed block w-full px-4 sm:px-0 group z-[99999] sm:max-w-sm"
+            class="fixed block w-full px-0 group z-[99999] sm:max-w-sm"
             :class="{ 
-                'right-0 top-4 sm:top-0 sm:mt-6 sm:mr-6': position=='top-right', 
-                'left-0 top-4 sm:top-0 sm:mt-6 sm:ml-6': position=='top-left', 
-                'left-1/2 -translate-x-1/2 top-4 sm:top-0 sm:mt-6': position=='top-center', 
-                'right-0 bottom-4 sm:bottom-0 sm:mr-6 sm:mb-6': position=='bottom-right', 
-                'left-0 bottom-4 sm:bottom-0 sm:ml-6 sm:mb-6': position=='bottom-left', 
-                'left-1/2 -translate-x-1/2 bottom-4 sm:bottom-0 sm:mb-6': position=='bottom-center' 
+                'right-0 top-0 sm:top-0 sm:mt-6 sm:mr-6': position=='top-right', 
+                'left-0 top-0 sm:top-0 sm:mt-6 sm:ml-6': position=='top-left', 
+                'left-1/2 -translate-x-1/2 top-0 sm:top-0 sm:mt-6': position=='top-center', 
+                'right-0 bottom-0 sm:bottom-0 sm:mr-6 sm:mb-6': position=='bottom-right', 
+                'left-0 bottom-0 sm:bottom-0 sm:ml-6 sm:mb-6': position=='bottom-left', 
+                'left-1/2 -translate-x-1/2 bottom-0 sm:mb-6': position=='bottom-center' 
             }"
             x-cloak>
 
@@ -373,7 +373,7 @@
                     :class="{ 'toast-no-description': !toast.description }">
                     
                     <span
-                        class="relative flex flex-col shadow-2xl shadow-black/60 w-full transition-all duration-300 ease-out bg-[#0d0f11]/95 backdrop-blur-xl border border-white/10 sm:rounded-2xl sm:max-w-sm group overflow-hidden"
+                        class="relative flex flex-col shadow-2xl shadow-black/60 w-full transition-all duration-300 ease-out bg-[#0d0f11]/95 backdrop-blur-xl border-y border-white/10 border-x-0 rounded-none sm:rounded-2xl sm:border sm:border-white/10 sm:max-w-sm group overflow-hidden"
                         :class="{ 'p-4' : !toast.html, 'p-0' : toast.html }">
                         
                         <!-- Top glowing dynamic brand line -->
