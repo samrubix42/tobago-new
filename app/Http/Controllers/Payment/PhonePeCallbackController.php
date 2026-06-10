@@ -205,15 +205,15 @@ class PhonePeCallbackController extends Controller
 
             // Send order copy/notification to the admin email using the new AdminOrderNotificationMail
             try {
-                Mail::to('saumyanand42@gmail.com')->send(new AdminOrderNotificationMail($order));
+                Mail::to('hardik_rmi@ymail.com')->send(new AdminOrderNotificationMail($order));
                 Log::info('PhonePe admin order notification email sent successfully to admin', [
                     'order_id' => $order->id,
-                    'email' => 'saumyanand42@gmail.com',
+                    'email' => 'hardik_rmi@ymail.com',
                 ]);
             } catch (\Throwable $e) {
                 Log::error('PhonePe admin order notification email failed to send to admin', [
                     'order_id' => $order->id,
-                    'email' => 'saumyanand42@gmail.com',
+                    'email' => 'hardik_rmi@ymail.com',
                     'error' => $e->getMessage(),
                 ]);
             }
