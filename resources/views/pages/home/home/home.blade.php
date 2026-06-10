@@ -462,7 +462,7 @@
             <template x-for="(item, index) in items" :key="index">
                 <a
                     data-cat-card
-                    :href="'/shop/' + item.slug"
+                    :href="item.url"
                     wire:navigate
                     class="snap-center shrink-0 w-[55vw] max-w-[200px] sm:w-[40vw] md:w-[28vw] lg:w-[16vw] group rounded-[2rem] border bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center transition-all duration-500 hover:border-purple-500/30"
                     x-bind:class="active === index ? 'scale-[1.08] border-purple-500/30 shadow-[0_15px_40px_rgba(168,85,247,0.15)] bg-white/[0.07] z-20' : 'scale-95 border-white/5 opacity-50 hover:opacity-80'"

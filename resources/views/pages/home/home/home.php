@@ -90,6 +90,7 @@ new class extends Component
     public function categories(): Collection
     {
         return Category::query()
+            ->with('parent')
             ->where('is_active', true)
             ->orderBy('order')
             ->take(8)
@@ -137,10 +138,23 @@ new class extends Component
                 ? asset('storage/' . ltrim($category->image, '/'))
                 : asset('images/hero.png');
 
+            if ($category->parent_id) {
+                $parentSlug = $category->parent?->slug ?: Category::find($category->parent_id)?->slug;
+                $url = route('products.category.subcategory', [
+                    'category' => $parentSlug,
+                    'subcategory' => $category->slug,
+                ]);
+            } else {
+                $url = route('products.category', [
+                    'category' => $category->slug,
+                ]);
+            }
+
             return [
                 'title' => $category->title,
                 'image' => $image,
                 'slug' => $category->slug,
+                'url' => $url,
             ];
         })->values()->all();
 
@@ -149,10 +163,10 @@ new class extends Component
         }
 
         return [
-            ['title' => 'Hookahs', 'image' => asset('images/hero.png'), 'slug' => 'hookahs'],
-            ['title' => 'Charcoal', 'image' => asset('images/hero.png'), 'slug' => 'charcoal'],
-            ['title' => 'Accessories', 'image' => asset('images/hero.png'), 'slug' => 'accessories'],
-            ['title' => 'Vapes', 'image' => asset('images/hero.png'), 'slug' => 'vapes'],
+            ['title' => 'Hookahs', 'image' => asset('images/hero.png'), 'slug' => 'premium-hookah', 'url' => route('products.category', ['category' => 'premium-hookah'])],
+            ['title' => 'Charcoal', 'image' => asset('images/hero.png'), 'slug' => 'charcoal', 'url' => route('products.category', ['category' => 'charcoal'])],
+            ['title' => 'Accessories', 'image' => asset('images/hero.png'), 'slug' => 'smoking-accessories', 'url' => route('products.category', ['category' => 'smoking-accessories'])],
+            ['title' => 'Vapes', 'image' => asset('images/hero.png'), 'slug' => 'vapes', 'url' => route('products.category', ['category' => 'vapes'])],
         ];
     }
 

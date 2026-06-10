@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
 use App\Mail\OrderBillMail;
+use App\Mail\AdminOrderNotificationMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,9 +17,7 @@ use Illuminate\Support\Str;
 
 class PhonePeCallbackController extends Controller
 {
-    public function __construct(private readonly PaymentGatewayInterface $paymentGateway)
-    {
-    }
+    public function __construct(private readonly PaymentGatewayInterface $paymentGateway) {}
 
     public function handleReturn(Request $request, string $orderNumber): RedirectResponse
     {
@@ -191,17 +190,32 @@ class PhonePeCallbackController extends Controller
             if ($order->customer_email) {
                 try {
                     Mail::to($order->customer_email)->send(new OrderBillMail($order));
-                    Log::info('PhonePe order bill email sent successfully', [
+                    Log::info('PhonePe order bill email sent successfully to customer', [
                         'order_id' => $order->id,
                         'email' => $order->customer_email,
                     ]);
                 } catch (\Throwable $e) {
-                    Log::error('PhonePe order bill email failed to send', [
+                    Log::error('PhonePe order bill email failed to send to customer', [
                         'order_id' => $order->id,
                         'email' => $order->customer_email,
                         'error' => $e->getMessage(),
                     ]);
                 }
+            }
+
+            // Send order copy/notification to the admin email using the new AdminOrderNotificationMail
+            try {
+                Mail::to('saumyanand42@gmail.com')->send(new AdminOrderNotificationMail($order));
+                Log::info('PhonePe admin order notification email sent successfully to admin', [
+                    'order_id' => $order->id,
+                    'email' => 'saumyanand42@gmail.com',
+                ]);
+            } catch (\Throwable $e) {
+                Log::error('PhonePe admin order notification email failed to send to admin', [
+                    'order_id' => $order->id,
+                    'email' => 'saumyanand42@gmail.com',
+                    'error' => $e->getMessage(),
+                ]);
             }
 
             Log::info('PhonePe payment marked paid', [
