@@ -26,6 +26,7 @@ new #[Layout('layouts::admin')] class extends Component
 
 
     public string $title = '';
+    public ?string $h2 = null;
     public string $slug = '';
     public ?string $description = null;
     public $image = null;
@@ -85,6 +86,7 @@ new #[Layout('layouts::admin')] class extends Component
 
         $this->categoryId = null;
         $this->title = '';
+        $this->h2 = null;
         $this->slug = '';
         $this->description = null;
         $this->image = null;
@@ -108,6 +110,7 @@ new #[Layout('layouts::admin')] class extends Component
         $this->resetValidation();
         $this->categoryId = $category->id;
         $this->title = $category->title;
+        $this->h2 = $category->h2;
         $this->slug = $category->slug;
         $this->description = $category->description;
         $this->image = null;
@@ -212,6 +215,7 @@ new #[Layout('layouts::admin')] class extends Component
     {
         $validated = $this->validate([
             'title' => ['required', 'string', 'max:255'],
+            'h2' => ['nullable', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', 'unique:categories,slug,' . ($this->categoryId ?? 'NULL') . ',id'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
@@ -234,6 +238,7 @@ new #[Layout('layouts::admin')] class extends Component
         $category->fill([
             'parent_id' => $this->isSubcategory ? $this->parentId : null,
             'title' => $validated['title'],
+            'h2' => $validated['h2'],
             'slug' => Str::slug($validated['slug']),
             'description' => $validated['description'],
             'image' => $imagePath,

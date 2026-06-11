@@ -73,6 +73,12 @@
                     <h1 class="text-2xl sm:text-4xl mb-4 font-semibold text-white mt-1 leading-tight">
                         {{ $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
                     </h1>
+                    @if($activeSubcategory?->h2 || $activeCategory?->h2)
+                        <h2 class="text-sm sm:text-base font-normal text-cyan-200/80 -mt-2 mb-4 leading-normal">
+                            {{ $activeSubcategory?->h2 ?? $activeCategory?->h2 }}
+                        </h2>
+                    @endif
+                  
                     <p class="text-sm  text-white/70 mt-3 max-w-2xl">Showing {{ $products->count() }} products</p>
                 </div>
                 <div class="flex items-center gap-2 self-start sm:self-auto">
