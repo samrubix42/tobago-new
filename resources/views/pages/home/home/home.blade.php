@@ -781,10 +781,12 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         @forelse($this->latestBlogs as $post)
         <article class="group rounded-2xl border border-subtle bg-[#0b0d0f] overflow-hidden transition hover:-translate-y-1 hover:border-white/20">
-            <div class="relative h-44 bg-white/[0.03] flex items-center justify-center overflow-hidden">
-                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(106,92,255,0.16), transparent 60%);"></div>
-                <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('images/hero.png') }}" alt="{{ $post->title }}" class="relative h-36 object-contain transition duration-300 group-hover:scale-105">
-            </div>
+            <a href="{{ route('blog.view', $post->slug) }}" wire:navigate class="block">
+                <div class="relative h-48 bg-white/[0.03] overflow-hidden">
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(106,92,255,0.16), transparent 60%);"></div>
+                    <img src="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('images/hero.png') }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                </div>
+            </a>
 
             <div class="p-5">
                 <div class="flex items-center justify-between gap-3 mb-3">
@@ -799,7 +801,9 @@
                 </div>
 
                 <h3 class="text-white text-base font-semibold leading-snug">
-                    {{ $post->title }}
+                    <a href="{{ route('blog.view', $post->slug) }}" wire:navigate class="hover:text-indigo-300 transition">
+                        {{ $post->title }}
+                    </a>
                 </h3>
                 <p class="text-muted text-sm mt-2 leading-6">
                     {{ \Illuminate\Support\Str::limit(strip_tags((string) $post->content), 110) }}

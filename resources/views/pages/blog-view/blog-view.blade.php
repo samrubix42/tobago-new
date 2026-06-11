@@ -4,47 +4,45 @@
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
 
-    <section class="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_12%_16%,rgba(45,212,191,0.18),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(56,189,248,0.16),transparent_32%),#0b0d0f]">
-        <div class="absolute inset-0 opacity-70 pointer-events-none" style="background: linear-gradient(145deg, rgba(255,255,255,0.03), transparent 45%, rgba(34,211,238,0.08));"></div>
-        <div class="relative grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-0">
-            <div class="p-6 sm:p-8 lg:p-10 xl:p-12">
-                <div class="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-slate-400">
-                    <a href="{{ route('blogs') }}" wire:navigate class="transition hover:text-white">Blog</a>
-                    <span>/</span>
-                    @if($this->blog->category)
-                        <a href="{{ route('blogs', ['cat' => $this->blog->category->slug]) }}" wire:navigate class="text-cyan-200 transition hover:text-cyan-100">
-                            {{ $this->blog->category->title }}
-                        </a>
-                    @endif
-                </div>
+    <!-- Breadcrumbs & Category -->
+    <div class="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-slate-400 mb-4">
+        <a href="{{ route('blogs') }}" wire:navigate class="transition hover:text-white">Blog</a>
+        <span>/</span>
+        @if($this->blog->category)
+            <a href="{{ route('blogs', ['cat' => $this->blog->category->slug]) }}" wire:navigate class="text-cyan-200 transition hover:text-cyan-100">
+                {{ $this->blog->category->title }}
+            </a>
+        @endif
+    </div>
 
-                <h1 class="mt-5 max-w-4xl text-3xl sm:text-4xl xl:text-5xl font-semibold leading-tight text-white">
-                    {{ $this->blog->title }}
-                </h1>
+    <!-- Title Design -->
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] text-white tracking-tight mb-6">
+        {{ $this->blog->title }}
+    </h1>
 
-                <div class="mt-6 flex flex-wrap items-center gap-2.5 text-xs sm:text-sm text-slate-300">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                        <i class="ri-user-3-line"></i>{{ $this->blog->author?->name ?? 'Tobac-Go Team' }}
-                    </span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                        <i class="ri-calendar-line"></i>{{ optional($this->blog->created_at)->format('d M Y') }}
-                    </span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                        <i class="ri-time-line"></i>{{ $this->readingTime($this->blog->content) }}
-                    </span>
-                </div>
-            </div>
-
-            <div class="relative min-h-[260px] lg:min-h-full border-t lg:border-t-0 lg:border-l border-white/10">
-                <img
-                    src="{{ $this->blog->featured_image ? asset('storage/' . ltrim($this->blog->featured_image, '/')) : asset('images/hero.png') }}"
-                    alt="{{ $this->blog->title }}"
-                    class="h-full w-full object-cover"
-                >
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0b0d0f] via-transparent to-transparent lg:bg-gradient-to-l lg:from-transparent lg:to-[#0b0d0f]/35"></div>
-            </div>
+    <!-- Meta Details -->
+    <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-400 mb-8 border-b border-white/10 pb-6">
+        <div class="flex items-center gap-2.5">
+            <span class="h-7 w-7 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-[10px] font-bold text-black uppercase">
+                {{ substr($this->blog->author?->name ?? 'T', 0, 1) }}
+            </span>
+            <span class="text-slate-300 font-medium">{{ $this->blog->author?->name ?? 'Tobac-Go Team' }}</span>
         </div>
-    </section>
+        <span class="h-1.5 w-1.5 rounded-full bg-white/20"></span>
+        <span class="inline-flex items-center gap-2 text-slate-300">
+            <i class="ri-time-line text-cyan-300/80"></i>{{ $this->readingTime($this->blog->content) }}
+        </span>
+    </div>
+
+    <!-- Separate Featured Image on Top -->
+    <div class="relative w-full h-[250px] sm:h-[380px] md:h-[480px] lg:h-[550px] overflow-hidden rounded-[2.2rem] border border-white/10 shadow-2xl mb-10">
+        <img
+            src="{{ $this->blog->featured_image ? asset('storage/' . ltrim($this->blog->featured_image, '/')) : asset('images/hero.png') }}"
+            alt="{{ $this->blog->title }}"
+            class="h-full w-full object-cover"
+        >
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0d0f]/60 to-transparent"></div>
+    </div>
 
     <section class="mt-8 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 xl:gap-8 items-start">
         <article class="rounded-[2rem] border border-white/10 bg-[#0b0d0f] p-6 sm:p-8 lg:p-10">
