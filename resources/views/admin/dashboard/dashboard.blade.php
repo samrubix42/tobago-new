@@ -10,7 +10,7 @@
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 Store Live
             </span>
-            <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
+            <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">
                 <i class="ri-external-link-line"></i>
                 View Storefront
             </a>
