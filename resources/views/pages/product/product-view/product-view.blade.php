@@ -186,7 +186,7 @@
                 </h1>
 
                 <p class="text-muted text-sm mt-3 leading-6 max-w-xl">
-                    {{ $this->shortText($product->short_description, 180) }}
+                    {!! nl2br(e($product->short_description)) !!}
                 </p>
 
                 @if($this->shouldShowLowStock())
