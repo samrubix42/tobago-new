@@ -1,3 +1,8 @@
+<IfModule mod_security.c>
+    SecFilterEngine Off
+    SecFilterScanPOST Off
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews
@@ -5,14 +10,23 @@
 
     RewriteEngine On
 
+    # FORCE HTTPS + WWW
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} !^www\.tobacgo\.in$ [NC]
+    RewriteRule ^(.*)$ https://www.tobacgo.in/$1 [L,R=301]
+
+    # HANDLE EXISTING FILES/FOLDERS
     RewriteCond %{REQUEST_FILENAME} -d [OR]
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ ^$1 [N]
 
+    # REDIRECT TO PUBLIC FOLDER
+    RewriteCond %{REQUEST_URI} !^/public/
     RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
-    RewriteRule ^(.*)$ public/$1
+    RewriteRule ^(.*)$ public/$1 [L]
 
+    # LARAVEL ROUTING
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ server.php
+    RewriteRule ^ server.php [L]
 </IfModule>
