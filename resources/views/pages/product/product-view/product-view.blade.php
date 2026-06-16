@@ -2,6 +2,12 @@
 @section('meta_description', $this->product->meta_description ?? \Illuminate\Support\Str::limit(strip_tags((string) $this->product->short_description), 155))
 @section('meta_keywords', $this->product->meta_keywords ?? ($this->product->name . ', premium hookah, ' . ($this->product->category?->title ?? 'shisha')))
 
+@section('og_title', $this->product->meta_title ?? ($this->product->name . ' | Tobac-Go Hookah Store'))
+@section('og_description', $this->product->meta_description ?? \Illuminate\Support\Str::limit(strip_tags((string) $this->product->short_description), 155))
+@section('og_image', $this->productImageUrl($product))
+@section('og_image_alt', $this->product->name)
+
+
 <div x-data="productPage(@js($galleryImages), {{ max(1, (int) $product->stock) }}, @js($this->isOutOfStock()))" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 overflow-x-hidden">
 
     <!-- Breadcrumb -->

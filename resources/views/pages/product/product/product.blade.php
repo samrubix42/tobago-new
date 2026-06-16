@@ -30,7 +30,14 @@
     @section('meta_title', $metaTitle)
     @section('meta_description', $metaDescription)
     @section('meta_keywords', $metaKeywords)
+
+    @section('og_title', $metaTitle)
+    @section('og_description', $metaDescription)
 @endif
+
+@section('og_image', $products->first() ? $this->productImage($products->first()) : asset('og-cover.webp'))
+@section('og_image_alt', $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'Premium Hookah Collection by Tobac-Go')
+
 
 @php
     $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 99));

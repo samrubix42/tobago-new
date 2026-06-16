@@ -28,6 +28,19 @@
         $canonicalUrl = rtrim($canonicalBase, '/') . '/' . ltrim($canonicalPath, '/');
     @endphp
     <link rel="canonical" href="{{ $canonicalUrl }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')" />
+    <meta property="og:url" content="{{ $canonicalUrl }}" />
+    <meta property="og:site_name" content="Tobac-Go" />
+    <meta property="og:title" content="@yield('og_title', $seoContent && !empty($seoContent->meta_title) ? $seoContent->meta_title : ($title ?? 'Buy Hookah Online in India | Premium Hookahs at Best Prices'))" />
+    <meta property="og:description" content="@yield('og_description', $seoContent && !empty($seoContent->meta_description) ? $seoContent->meta_description : ($metaDescription ?? 'Shop premium hookahs, bongs, and accessories at Tobac-Go. 100% original products, free shipping above ₹3000, and fast delivery across India.'))" />
+    <meta property="og:image" content="@yield('og_image', asset('og-cover.webp'))" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="@yield('og_image_alt', 'Premium Hookah Collection by Tobac-Go')" />
+    <meta property="og:locale" content="en_IN" />
+
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 
     <title>@yield('meta_title', $seoContent && !empty($seoContent->meta_title) ? $seoContent->meta_title : ($title ?? 'Tobac-Go | Premium Hookah Store India'))</title>
