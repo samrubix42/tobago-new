@@ -49,7 +49,7 @@
                 <li><a href="{{ route('products') }}" class="hover:text-white transition">Shop</a></li>
                 <li><a href="{{ route('category') }}" class="hover:text-white transition">Collection</a></li>
                 <li><a href="{{ route('about') }}" class="hover:text-white transition">About Us</a></li>
-                <li><a href="{{ route('contact') }}" class="hover:text-white transition">Contact Us</a></li>
+                <li><a href="{{ route('contact') }}" wire:navigate class="hover:text-white transition">Contact Us</a></li>
                 <li><a href="{{ route('blogs') }}" class="hover:text-white transition">Blogs</a></li>
                 <li><a href="{{ route('location.noida') }}" class="hover:text-white transition">Location</a></li>
             </ul>

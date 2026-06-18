@@ -301,6 +301,7 @@ $headerCartCount = current_cart_items_count();
                     <a href="{{ route('blogs') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
                     <a href="{{ route('location.noida') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Noida Store</a>
                     <a href="{{ route('about') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">About</a>
+                    <a href="{{ route('contact') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Contact</a>
 
                 </nav>
             </div>
@@ -503,6 +504,9 @@ $headerCartCount = current_cart_items_count();
             <a href="{{ route('about') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 About
             </a>
+            <a href="{{ route('contact') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+                Contact
+            </a>
 
         </div>
 
@@ -569,5 +573,4 @@ $headerCartCount = current_cart_items_count();
     </div>
 
 </div>
-
 
