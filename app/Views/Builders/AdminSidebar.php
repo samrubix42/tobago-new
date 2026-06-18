@@ -64,6 +64,13 @@ class AdminSidebar
                 'submenu' => [],
             ],
             (object)[
+                'title' => 'Contacts',
+                'icon' => 'ri-contacts-book-3-line',
+                'url' => route('admin.contacts'),
+                'hasSubmenu' => false,
+                'submenu' => [],
+            ],
+            (object)[
                 'title' => 'Orders',
                 'icon' => 'ri-shopping-cart-2-line',
                 'url' => route('admin.orders'),

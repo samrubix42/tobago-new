@@ -15,6 +15,7 @@ Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');
 Route::livewire('/categories', 'pages::category')->name('category');
 Route::livewire('/blogs', 'pages::blog')->name('blogs');
 Route::livewire('/about', 'pages::about')->name('about');
+Route::livewire('/contact', 'pages::contact')->name('contact');
 Route::livewire('/return-refund', 'pages::return-refund')->name('return-refund');
 Route::livewire('/shipping-policy', 'pages::shipping-policy')->name('shipping-policy');
 Route::livewire('/terms-conditions', 'pages::term-condition')->name('terms-conditions');
@@ -91,6 +92,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     //testimonial
 
     Route::livewire('/testimonials','admin::testimonial-list')->name('testimonials');
+    Route::livewire('/contacts','admin::contact-list')->name('contacts');
     Route::livewire('/users','admin::user.user-list')->name('users');
 
     //blog
