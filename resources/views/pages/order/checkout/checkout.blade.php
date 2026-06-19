@@ -42,6 +42,39 @@
         <p class="text-sm text-emerald-200 mt-2">Order Number: <span class="font-semibold">{{ $placedOrderNumber }}</span></p>
         <a href="{{ route('home') }}" wire:navigate class="mt-4 inline-flex rounded-md bg-white text-black px-4 py-2 text-sm font-semibold">Go to Home</a>
     </div>
+
+    @if($placedOrderNumber)
+        @php
+            $placedOrder = \App\Models\Order::with('items')->where('order_number', $placedOrderNumber)->first();
+        @endphp
+        @if($placedOrder)
+        <script>
+            (function() {
+                window.dataLayer = window.dataLayer || [];
+                dataLayer.push({
+                    event: 'purchase',
+                    ecommerce: {
+                        transaction_id: '{{ $placedOrder->order_number }}',
+                        value: {{ (float) $placedOrder->total }},
+                        tax: 0,
+                        shipping: {{ (float) $placedOrder->shipping_amount }},
+                        currency: 'INR',
+                        items: [
+                            @foreach($placedOrder->items as $item)
+                            {
+                                item_id: '{{ $item->sku ?: $item->product_id }}',
+                                item_name: '{{ addslashes($item->product_name) }}',
+                                price: {{ (float) $item->price }},
+                                quantity: {{ (int) $item->quantity }}
+                            }{{ !$loop->last ? ',' : '' }}
+                            @endforeach
+                        ]
+                    }
+                });
+            })();
+        </script>
+        @endif
+    @endif
     @elseif($showFailure)
     <div class="rounded-2xl border border-rose-400/30 bg-rose-500/10 p-6">
         <div class="flex items-start gap-3">
@@ -456,5 +489,28 @@
         </div>
     </div>
     @endif
+
+    <script>
+        (function() {
+            window.dataLayer = window.dataLayer || [];
+            dataLayer.push({
+                event: 'begin_checkout',
+                ecommerce: {
+                    currency: 'INR',
+                    value: {{ (float) ($cart->total ?? 0) }},
+                    items: [
+                        @foreach($items as $item)
+                        {
+                            item_id: '{{ $item->sku ?: $item->product_id }}',
+                            item_name: '{{ addslashes($item->product_name) }}',
+                            price: {{ (float) $item->price }},
+                            quantity: {{ (int) $item->quantity }}
+                        }{{ !$loop->last ? ',' : '' }}
+                        @endforeach
+                    ]
+                }
+            });
+        })();
+    </script>
     @endif
 </div>

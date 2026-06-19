@@ -8,6 +8,23 @@
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-WWM6LWR8');</script>
+
+    <script>
+        (function() {
+            let isInitial = true;
+            document.addEventListener('livewire:navigated', () => {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'livewire_navigated',
+                    'is_initial': isInitial,
+                    'page_path': window.location.pathname + window.location.search,
+                    'page_url': window.location.href,
+                    'page_title': document.title
+                });
+                isInitial = false;
+            });
+        })();
+    </script>
     <!-- End Google Tag Manager -->
 
     @php

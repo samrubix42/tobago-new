@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty); window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $product->selling_price }} * qty, items: [{ item_id: '{{ $product->sku ?: $product->id }}', item_name: '{{ addslashes($product->name) }}', price: {{ (float) $product->selling_price }}, quantity: qty }] } })" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
                             <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart"></i>
                             <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart"></i>
                             <span wire:loading.remove wire:target="addToCart">
@@ -256,7 +256,7 @@
                     </div>
 
                     <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty)" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
+                        <button type="button" class="flex-1 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/90 transition duration-300 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/5 disabled:hover:text-white/90 disabled:hover:border-white/10 inline-flex items-center justify-center gap-2" x-bind:disabled="isOutOfStock" @disabled($this->isOutOfStock()) x-on:click="$wire.addToCart(qty); window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $product->selling_price }} * qty, items: [{ item_id: '{{ $product->sku ?: $product->id }}', item_name: '{{ addslashes($product->name) }}', price: {{ (float) $product->selling_price }}, quantity: qty }] } })" wire:loading.attr="disabled" wire:target="addToCart,buyNow">
                             <i class="ri-shopping-cart-line" wire:loading.remove wire:target="addToCart"></i>
                             <i class="ri-loader-4-line animate-spin" wire:loading wire:target="addToCart"></i>
                             <span wire:loading.remove wire:target="addToCart">
@@ -360,9 +360,9 @@
                     @php
                         $isRelOut = $relatedProduct->is_out_of_stock || (int) $relatedProduct->stock <= 0;
                     @endphp
-                    <button
+                     <button
                         type="button"
-                        x-on:click.stop.prevent="$wire.addToCartById({{ $relatedProduct->id }})"
+                        x-on:click.stop.prevent="$wire.addToCartById({{ $relatedProduct->id }}); window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $relatedProduct->selling_price }}, items: [{ item_id: '{{ $relatedProduct->sku ?: $relatedProduct->id }}', item_name: '{{ addslashes($relatedProduct->name) }}', price: {{ (float) $relatedProduct->selling_price }}, quantity: 1 }] } })"
                         wire:loading.attr="disabled"
                         wire:target="addToCartById({{ $relatedProduct->id }})"
                         @disabled($isRelOut)
@@ -444,6 +444,25 @@
                 },
             }
         }
+    </script>
+    
+    <script>
+        (function() {
+            window.dataLayer = window.dataLayer || [];
+            dataLayer.push({
+                event: "view_item",
+                ecommerce: {
+                    currency: "INR",
+                    value: {{ (float) $product->selling_price }},
+                    items: [{
+                        item_id: "{{ $product->sku ?: $product->id }}",
+                        item_name: "{{ addslashes($product->name) }}",
+                        price: {{ (float) $product->selling_price }},
+                        quantity: 1
+                    }]
+                }
+            });
+        })();
     </script>
 
 </div>

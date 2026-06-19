@@ -214,6 +214,7 @@
         <button
             type="button"
             wire:click="addToCart({{ $product->id }})"
+            onclick="window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $product->selling_price }}, items: [{ item_id: '{{ $product->sku ?: $product->id }}', item_name: '{{ addslashes($product->name) }}', price: {{ (float) $product->selling_price }}, quantity: 1 }] } })"
             wire:loading.attr="disabled"
             wire:target="addToCart({{ $product->id }})"
             @disabled($isOut)
@@ -327,6 +328,7 @@
     <button
         type="button"
         wire:click="addToCart({{ $product->id }})"
+        onclick="window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $product->selling_price }}, items: [{ item_id: '{{ $product->sku ?: $product->id }}', item_name: '{{ addslashes($product->name) }}', price: {{ (float) $product->selling_price }}, quantity: 1 }] } })"
         wire:loading.attr="disabled"
         wire:target="addToCart({{ $product->id }})"
         @disabled($isOut)
@@ -732,6 +734,7 @@
             <button
                 type="button"
                 wire:click="addToCart({{ $product->id }})"
+                onclick="window.dataLayer = window.dataLayer || []; dataLayer.push({ event: 'add_to_cart', ecommerce: { currency: 'INR', value: {{ (float) $product->selling_price }}, items: [{ item_id: '{{ $product->sku ?: $product->id }}', item_name: '{{ addslashes($product->name) }}', price: {{ (float) $product->selling_price }}, quantity: 1 }] } })"
                 wire:loading.attr="disabled"
                 wire:target="addToCart({{ $product->id }})"
                 @disabled($isOut)
