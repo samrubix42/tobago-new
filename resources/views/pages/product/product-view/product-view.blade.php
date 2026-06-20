@@ -457,6 +457,7 @@
                     items: [{
                         item_id: "{{ $product->sku ?: $product->id }}",
                         item_name: "{{ addslashes($product->name) }}",
+                        item_category: "{{ addslashes($product->category?->title ?? '') }}",
                         price: {{ (float) $product->selling_price }},
                         quantity: 1
                     }]
