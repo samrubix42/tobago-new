@@ -56,7 +56,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="@yield('og_image_alt', 'Premium Hookah Collection by Tobac-Go')" />
-    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale" content="en_IN" /> 
 
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 
