@@ -12,7 +12,7 @@
 
     <!-- Breadcrumb -->
     <nav class="text-xs text-muted mb-6 flex flex-wrap items-center gap-2">
-        <a href="{{ route('home') }}" wire:navigate class="hover:text-white transition">Home</a>
+        <a href="{{ route('home') }}"   class="hover:text-white transition">Home</a>
         <i class="ri-arrow-right-s-line text-base"></i>
         <span class="text-white/70 break-words">{{ $product->name }}</span>
     </nav>
@@ -312,7 +312,7 @@
                 href="{{ !empty($product->category?->parent?->slug)
                     ? route('products.category.subcategory', ['category' => $product->category->parent->slug, 'subcategory' => $product->category->slug])
                     : (!empty($product->category?->slug) ? route('products.category', ['category' => $product->category->slug]) : route('products')) }}"
-                wire:navigate
+                 
                 class="text-sm text-muted hover:text-white transition hidden sm:inline-flex items-center gap-2"
             >
                 View all <i class="ri-arrow-right-line"></i>
@@ -321,7 +321,7 @@
 
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
             @forelse($relatedProducts as $relatedProduct)
-                <a href="{{ route('product', $relatedProduct->slug) }}" wire:navigate class="group block rounded-2xl border border-subtle bg-[#0b0d0f] p-3 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 sm:p-4 relative {{ ($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
+                <a href="{{ route('product', $relatedProduct->slug) }}"   class="group block rounded-2xl border border-subtle bg-[#0b0d0f] p-3 transition hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl hover:shadow-black/30 sm:p-4 relative {{ ($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0) ? 'opacity-70 grayscale-[0.5]' : '' }}">
                     <div class="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-white sm:h-32">
                         @if($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0)
                         <div class="absolute top-2 left-2 z-20">
@@ -388,7 +388,7 @@
                 href="{{ !empty($product->category?->parent?->slug)
                     ? route('products.category.subcategory', ['category' => $product->category->parent->slug, 'subcategory' => $product->category->slug])
                     : (!empty($product->category?->slug) ? route('products.category', ['category' => $product->category->slug]) : route('products')) }}"
-                wire:navigate
+                 
                 class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white/80 transition hover:border-white/20 hover:text-white"
             >
                 View more <i class="ri-arrow-right-line"></i>

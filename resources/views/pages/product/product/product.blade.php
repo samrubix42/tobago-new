@@ -110,7 +110,7 @@
                             $isOut = $product->is_out_of_stock || (int) $product->stock <= 0;
                         @endphp
                         <article wire:key="product-card-{{ $product->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20 relative {{ $isOut ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                            <a href="{{ route('product', $product->slug) }}" wire:navigate class="block">
+                            <a href="{{ route('product', $product->slug) }}"   class="block">
                                 <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white">
                                     @if($isOut)
                                     <div class="absolute top-2 left-2 z-20">
@@ -179,7 +179,7 @@
                             href="{{ !empty($section['category']->parent?->slug)
                                 ? route('products.category.subcategory', ['category' => $section['category']->parent->slug, 'subcategory' => $section['category']->slug])
                                 : (!empty($section['category']->slug) ? route('products.category', ['category' => $section['category']->slug]) : route('products')) }}"
-                            wire:navigate
+                             
                             class="text-sm text-white/70 hover:text-white transition hidden sm:inline-flex items-center gap-2"
                         >
                             View all <i class="ri-arrow-right-line"></i>
@@ -192,7 +192,7 @@
                                 $isRecOut = $recommendedProduct->is_out_of_stock || (int) $recommendedProduct->stock <= 0;
                             @endphp
                             <article wire:key="recommended-product-card-{{ $recommendedProduct->id }}" class="group rounded-2xl border border-white/10 bg-[#0b0d0f] p-3.5 transition hover:-translate-y-1 hover:border-white/20 relative {{ $isRecOut ? 'opacity-70 grayscale-[0.5]' : '' }}">
-                                <a href="{{ route('product', $recommendedProduct->slug) }}" wire:navigate class="block">
+                                <a href="{{ route('product', $recommendedProduct->slug) }}"   class="block">
                                     <div class="relative flex h-32 items-center justify-center overflow-hidden rounded-xl bg-white">
                                         @if($isRecOut)
                                         <div class="absolute top-2 left-2 z-20">
@@ -240,7 +240,7 @@
                             href="{{ !empty($section['category']->parent?->slug)
                                 ? route('products.category.subcategory', ['category' => $section['category']->parent->slug, 'subcategory' => $section['category']->slug])
                                 : (!empty($section['category']->slug) ? route('products.category', ['category' => $section['category']->slug]) : route('products')) }}"
-                            wire:navigate
+                             
                             class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white/80 transition hover:border-white/20 hover:text-white"
                         >
                             View more <i class="ri-arrow-right-line"></i>
@@ -325,13 +325,13 @@
                         <div>
                             <h4 class="text-xs text-white/60 uppercase tracking-wider">Categories</h4>
                             <div class="mt-2 space-y-1.5 pr-1">
-                                <a href="{{ route('products') }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ !$activeCategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">All Products</a>
+                                <a href="{{ route('products') }}"   class="block rounded-lg border px-3 py-2 text-sm transition {{ !$activeCategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">All Products</a>
                                 @foreach($categories as $category)
-                                    <a href="{{ route('products.category', ['category' => $category->slug]) }}" wire:navigate class="block rounded-lg border px-3 py-2 text-sm transition {{ $activeCategory?->id === $category->id && !$activeSubcategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">{{ $category->title }}</a>
+                                    <a href="{{ route('products.category', ['category' => $category->slug]) }}"   class="block rounded-lg border px-3 py-2 text-sm transition {{ $activeCategory?->id === $category->id && !$activeSubcategory ? 'border-cyan-300/40 bg-cyan-400/10 text-cyan-200' : 'border-white/10 text-white/70 hover:border-white/20 hover:text-white' }}">{{ $category->title }}</a>
                                     @if($activeCategory?->id === $category->id && $category->children->isNotEmpty())
                                         <div class="ml-3 mt-1 space-y-1">
                                             @foreach($category->children as $child)
-                                                <a href="{{ route('products.category.subcategory', ['category' => $category->slug, 'subcategory' => $child->slug]) }}" wire:navigate class="block rounded-md border px-2.5 py-1.5 text-xs transition {{ $activeSubcategory?->id === $child->id ? 'border-blue-300/50 bg-blue-400/10 text-blue-200' : 'border-white/10 text-white/60 hover:border-white/20 hover:text-white' }}">{{ $child->title }}</a>
+                                                <a href="{{ route('products.category.subcategory', ['category' => $category->slug, 'subcategory' => $child->slug]) }}"   class="block rounded-md border px-2.5 py-1.5 text-xs transition {{ $activeSubcategory?->id === $child->id ? 'border-blue-300/50 bg-blue-400/10 text-blue-200' : 'border-white/10 text-white/60 hover:border-white/20 hover:text-white' }}">{{ $child->title }}</a>
                                             @endforeach
                                         </div>
                                     @endif

@@ -52,7 +52,7 @@ $headerCartCount = current_cart_items_count();
         {{-- Main row --}}
         <div class="max-w-7xl mx-auto px-4 lg:px-6 h-16 flex items-center gap-4 lg:gap-6">
 
-            <a href="{{ route('home') }}" wire:navigate class="relative inline-block">
+            <a href="{{ route('home') }}" class="relative inline-block">
                 <!-- Glow Effect -->
                 <span
                     class="pointer-events-none absolute -inset-x-3 -inset-y-3 rounded-full opacity-90 blur-2xl"
@@ -93,7 +93,7 @@ $headerCartCount = current_cart_items_count();
                             @else
                             <div wire:loading.remove wire:target="search">
                                 @foreach($desktopResults as $item)
-                                <a href="{{ route('product', $item->slug) }}" wire:navigate
+                                <a href="{{ route('product', $item->slug) }}"
                                     class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
                                     <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
                                     <div class="min-w-0 flex-1">
@@ -120,14 +120,14 @@ $headerCartCount = current_cart_items_count();
                 @php $user = auth()->user(); @endphp
 
                 @guest
-                <a href="{{ route('login') }}" wire:navigate
+                <a href="{{ route('login') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-white/70 hover:text-white hover:bg-white/6 border border-white/8 hover:border-white/15 transition-all">
                     <i class="ri-user-line text-base"></i> Sign In
                 </a>
                
                 @else
                 @if ($user?->is_admin)
-                <a href="{{ route('admin.dashboard') }}" wire:navigate aria-label="Admin"
+                <a href="{{ route('admin.dashboard') }}" aria-label="Admin"
                     class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all">
                     <i class="ri-settings-3-line text-base"></i>
                 </a>
@@ -150,15 +150,15 @@ $headerCartCount = current_cart_items_count();
                             <p class="text-xs text-white/40 truncate">{{ $user?->email }}</p>
                         </div>
                         <div class="h-px bg-white/6 mx-1 mb-1"></div>
-                        <a href="{{ route('user.profile') }}" wire:navigate
+                        <a href="{{ route('user.profile') }}"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                             <i class="ri-user-3-line text-white/40"></i> My Profile
                         </a>
-                        <a href="{{ route('user.address') }}" wire:navigate
+                        <a href="{{ route('user.address') }}"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                             <i class="ri-map-pin-line text-white/40"></i> My Addresses
                         </a>
-                        <a href="{{ route('user.orders') }}" wire:navigate
+                        <a href="{{ route('user.orders') }}"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                             <i class="ri-shopping-bag-3-line text-white/40"></i> My Orders
                         </a>
@@ -175,7 +175,7 @@ $headerCartCount = current_cart_items_count();
                 @endguest
 
                 {{-- Cart --}}
-                <a href="/cart" wire:navigate class="relative" aria-label="Cart">
+                <a href="/cart" class="relative" aria-label="Cart">
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70 hover:text-white hover:border-white/20 transition-all">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
@@ -186,7 +186,7 @@ $headerCartCount = current_cart_items_count();
 
             {{-- MOBILE RIGHT ICONS --}}
             <div class="flex lg:hidden items-center gap-2">
-                <a href="/cart" wire:navigate class="relative" aria-label="Cart">
+                <a href="/cart" class="relative" aria-label="Cart">
                     <div class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70">
                         <i class="ri-shopping-cart-line text-base"></i>
                     </div>
@@ -205,7 +205,7 @@ $headerCartCount = current_cart_items_count();
             <div class="max-w-7xl mx-auto px-4 lg:px-6 h-12 flex items-center">
                 <nav class="flex items-center gap-1 text-sm font-medium text-white/60">
 
-                    <a href="{{ route('home') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
+                    <a href="{{ route('home') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">
                         Home
                     </a>
 
@@ -217,20 +217,20 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='hookah'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-56 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5 z-50">
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-hookah']) }}" class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Exclusive Hookah</a>
                             <div class="h-px bg-white/5 mx-2 my-1"></div>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'vg-france-foggit-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">VG France Foggit Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'thugs-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Thugs Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'mya-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mya Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'whiskey-bottle-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Whiskey Bottle Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'enrolando-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Enrolando Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'dum-hookahs']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">DUM Hookahs</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'digital-smoke-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Digital Smoke Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'deja-vu-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Deja Vu Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'cocoyaya-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Cocoyaya Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-car-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Car Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'alshan-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Alshan Hookah</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'al-akbar-hookah']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Al Akbar Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'vg-france-foggit-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">VG France Foggit Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'thugs-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Thugs Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'mya-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Mya Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'whiskey-bottle-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Whiskey Bottle Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'enrolando-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Enrolando Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'dum-hookahs']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">DUM Hookahs</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'digital-smoke-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Digital Smoke Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'deja-vu-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Deja Vu Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'cocoyaya-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Cocoyaya Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-car-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Tobac-Go Car Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'alshan-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Alshan Hookah</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'al-akbar-hookah']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Al Akbar Hookah</a>
                         </div>
                     </div>
 
@@ -242,9 +242,9 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='budget'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5">
-                            <a href="{{ route('seo.hookah-under-3000') }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
-                            <a href="{{ route('seo.hookah-under-5000') }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
-                            <a href="{{ route('seo.hookah-above-7000') }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
+                            <a href="{{ route('seo.hookah-under-3000') }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 3000</a>
+                            <a href="{{ route('seo.hookah-under-5000') }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah under 5000</a>
+                            <a href="{{ route('seo.hookah-above-7000') }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Above ₹7000</a>
                         </div>
                     </div>
 
@@ -256,8 +256,8 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='bongs'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5 z-50">
-                            <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'acrylic-bongs']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Acrylic Bongs</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'glass-percolator-bongs']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass Percolator Bongs</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'acrylic-bongs']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Acrylic Bongs</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'glass-percolator-bongs']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass Percolator Bongs</a>
                         </div>
                     </div>
 
@@ -269,18 +269,18 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='acc'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-56 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5 z-50">
-                            <a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" wire:navigate class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Accessories</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'wooden-smoking-pipe']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Wooden Smoking Pipe</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'smoking-glass-pipe']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Glass Pipe</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'metal-shooter']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Metal Shooter</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'glass-bong-shooter']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass Bong Shooter</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'filter-screens']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Filter Screens</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'crusher']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Crusher</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'cleaning-brush']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Cleaning Brush</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'baba-chillum']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Baba Chillum</a>
-                            <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Accessories</a>
-                            <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Chillum</a>
-                            <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Pipe and Handle</a>
+                            <a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" class="block px-3.5 py-2 text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Accessories</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'wooden-smoking-pipe']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Wooden Smoking Pipe</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'smoking-glass-pipe']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Glass Pipe</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'metal-shooter']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Metal Shooter</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'glass-bong-shooter']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Glass Bong Shooter</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'filter-screens']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Filter Screens</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'crusher']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Crusher</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'cleaning-brush']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Cleaning Brush</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'baba-chillum']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Baba Chillum</a>
+                            <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Accessories</a>
+                            <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Hookah Chillum</a>
+                            <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Pipe and Handle</a>
                         </div>
                     </div>
 
@@ -292,16 +292,16 @@ $headerCartCount = current_cart_items_count();
                         </button>
                         <div x-show="dropdown==='combos'" x-transition.origin.top.left
                             class="absolute top-full left-0 mt-2 w-56 rounded-xl border border-white/8 bg-[#0d0f11] shadow-2xl py-1.5 z-50">
-                            <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'smoking-glass-pipe-combo']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Glass Pipe Combo</a>
-                            <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'wooden-smoking-pipes-combo']) }}" wire:navigate class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Wooden Smoking Pipes Combo</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'smoking-glass-pipe-combo']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Smoking Glass Pipe Combo</a>
+                            <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'wooden-smoking-pipes-combo']) }}" class="block px-3.5 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all rounded-lg mx-1">Wooden Smoking Pipes Combo</a>
                         </div>
                     </div>
-                    <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Lighters</a>
-                    <a href="{{ route('products.category', ['category' => 'ashtray']) }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Ashtray</a>
-                    <a href="{{ route('blogs') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
-                    <a href="{{ route('location.noida') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Noida Store</a>
-                    <a href="{{ route('about') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">About</a>
-                    <a href="{{ route('contact') }}" wire:navigate class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Contact</a>
+                    <a href="{{ route('products.category', ['category' => 'lighters']) }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Lighters</a>
+                    <a href="{{ route('products.category', ['category' => 'ashtray']) }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Ashtray</a>
+                    <a href="{{ route('blogs') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Blogs</a>
+                    <a href="{{ route('location.noida') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Noida Store</a>
+                    <a href="{{ route('about') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">About</a>
+                    <a href="{{ route('contact') }}" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Contact</a>
 
                 </nav>
             </div>
@@ -335,7 +335,7 @@ $headerCartCount = current_cart_items_count();
                         @else
                         <div wire:loading.remove wire:target="search">
                             @foreach($mobileResults as $item)
-                            <a href="{{ route('product', $item->slug) }}" wire:navigate
+                            <a href="{{ route('product', $item->slug) }}"
                                 class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-all border-b border-white/5 last:border-b-0">
                                 <img src="{{ $this->searchImage($item) }}" alt="{{ $item->name }}" class="w-10 h-10 rounded-lg object-cover border border-white/10 bg-white/5">
                                 <div class="min-w-0 flex-1">
@@ -386,7 +386,7 @@ $headerCartCount = current_cart_items_count();
 
         {{-- Drawer header --}}
         <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 shrink-0">
-            <a href="{{ route('home') }}" wire:navigate>
+            <a href="{{ route('home') }}">
                 <img src="{{ asset('logo.webp') }}" class="h-8" alt="Tobac-Go">
             </a>
             <button @click="mobileOpen=false" aria-label="Close menu"
@@ -398,7 +398,7 @@ $headerCartCount = current_cart_items_count();
         {{-- Drawer body --}}
         <div class="flex-1 px-4 py-5 space-y-1 overflow-y-auto">
 
-            <a href="{{ route('home') }}" wire:navigate
+            <a href="{{ route('home') }}"
                 class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Home
             </a>
@@ -411,19 +411,19 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Tobac-Go Exclusive</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'vg-france-foggit-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">VG France Foggit</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'thugs-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Thugs Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'mya-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mya Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'whiskey-bottle-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Whiskey Bottle</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'enrolando-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Enrolando Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'dum-hookahs']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">DUM Hookahs</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'digital-smoke-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Digital Smoke</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'deja-vu-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Deja Vu Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'cocoyaya-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Cocoyaya Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-car-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Tobac-Go Car</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'alshan-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Alshan Hookah</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'al-akbar-hookah']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Al Akbar Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Tobac-Go Exclusive</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'vg-france-foggit-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">VG France Foggit</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'thugs-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Thugs Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'mya-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Mya Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'whiskey-bottle-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Whiskey Bottle</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'enrolando-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Enrolando Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'dum-hookahs']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">DUM Hookahs</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'digital-smoke-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Digital Smoke</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'deja-vu-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Deja Vu Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'cocoyaya-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Cocoyaya Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'tobac-go-car-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Tobac-Go Car</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'alshan-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Alshan Hookah</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'premium-hookah', 'subcategory' => 'al-akbar-hookah']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Al Akbar Hookah</a>
                 </div>
             </div>
 
@@ -435,9 +435,9 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('seo.hookah-under-3000') }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 3000</a>
-                    <a href="{{ route('seo.hookah-under-5000') }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 5000</a>
-                    <a href="{{ route('seo.hookah-above-7000') }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Above ₹7000</a>
+                    <a href="{{ route('seo.hookah-under-3000') }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 3000</a>
+                    <a href="{{ route('seo.hookah-under-5000') }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah under 5000</a>
+                    <a href="{{ route('seo.hookah-above-7000') }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Above ₹7000</a>
                 </div>
             </div>
 
@@ -449,8 +449,8 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'acrylic-bongs']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Acrylic Bongs</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'glass-percolator-bongs']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass Percolator Bongs</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'acrylic-bongs']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Acrylic Bongs</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'bongs', 'subcategory' => 'glass-percolator-bongs']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass Percolator Bongs</a>
                 </div>
             </div>
 
@@ -462,18 +462,18 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Smoking Accessories</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'wooden-smoking-pipe']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Wooden Smoking Pipe</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'smoking-glass-pipe']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Smoking Glass Pipe</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'metal-shooter']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Metal Shooter</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'glass-bong-shooter']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass Bong Shooter</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'filter-screens']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Filter Screens</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'crusher']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Crusher</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'cleaning-brush']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Cleaning Brush</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'baba-chillum']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Baba Chillum</a>
-                    <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Accessories</a>
-                    <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Chillum</a>
-                    <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Pipe and Handle</a>
+                    <a href="{{ route('products.category', ['category' => 'smoking-accessories']) }}" class="block px-3 py-2.5 rounded-lg text-sm font-bold text-orange-400 hover:text-orange-300 hover:bg-white/5 transition-all">Smoking Accessories</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'wooden-smoking-pipe']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Wooden Smoking Pipe</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'smoking-glass-pipe']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Smoking Glass Pipe</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'metal-shooter']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Metal Shooter</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'glass-bong-shooter']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Glass Bong Shooter</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'filter-screens']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Filter Screens</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'crusher']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Crusher</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'cleaning-brush']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Cleaning Brush</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'smoking-accessories', 'subcategory' => 'baba-chillum']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Baba Chillum</a>
+                    <a href="{{ route('products.category', ['category' => 'hookah-accessories']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Accessories</a>
+                    <a href="{{ route('products.category', ['category' => 'hookah-chillum']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Hookah Chillum</a>
+                    <a href="{{ route('products.category', ['category' => 'pipe-and-handle']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Pipe and Handle</a>
                 </div>
             </div>
 
@@ -485,26 +485,26 @@ $headerCartCount = current_cart_items_count();
                     <i class="ri-arrow-down-s-line text-white/40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''"></i>
                 </button>
                 <div x-show="sub" x-transition class="ml-4 mt-0.5 space-y-0.5 border-l border-white/8 pl-3">
-                    <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'smoking-glass-pipe-combo']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Smoking Glass Pipe Combo</a>
-                    <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'wooden-smoking-pipes-combo']) }}" wire:navigate class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Wooden Smoking Pipes Combo</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'smoking-glass-pipe-combo']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Smoking Glass Pipe Combo</a>
+                    <a href="{{ route('products.category.subcategory', ['category' => 'combos', 'subcategory' => 'wooden-smoking-pipes-combo']) }}" class="block px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all">Wooden Smoking Pipes Combo</a>
                 </div>
             </div>
-            <a href="{{ route('products.category', ['category' => 'lighters']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('products.category', ['category' => 'lighters']) }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Lighters
             </a>
-            <a href="{{ route('products.category', ['category' => 'ashtray']) }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('products.category', ['category' => 'ashtray']) }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Ashtrays
             </a>
-            <a href="{{ route('blogs') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('blogs') }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Blogs
             </a>
-            <a href="{{ route('location.noida') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('location.noida') }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Noida Store
             </a>
-            <a href="{{ route('about') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('about') }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 About
             </a>
-            <a href="{{ route('contact') }}" wire:navigate class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
+            <a href="{{ route('contact') }}" class="flex items-center justify-between px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-[15px]">
                 Contact
             </a>
 
@@ -514,11 +514,11 @@ $headerCartCount = current_cart_items_count();
         <div class="shrink-0 px-4 py-5 border-t border-white/10 space-y-2.5">
 
             @guest
-            <a href="{{ route('login') }}" wire:navigate
+            <a href="{{ route('login') }}"
                 class="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-all">
                 <i class="ri-user-line"></i> Sign In
             </a>
-            <a href="{{ route('register') }}" wire:navigate
+            <a href="{{ route('register') }}"
                 class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all">
                 Create Account
             </a>
@@ -538,22 +538,22 @@ $headerCartCount = current_cart_items_count();
             </div>
 
             @if(auth()->user()?->is_admin)
-            <a href="{{ route('admin.dashboard') }}" wire:navigate
+            <a href="{{ route('admin.dashboard') }}"
                 class="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/80 hover:text-white transition-all">
                 <i class="ri-settings-3-line"></i> Admin Dashboard
             </a>
             @endif
 
             <div class="grid grid-cols-2 gap-2">
-                <a href="{{ route('user.profile') }}" wire:navigate
+                <a href="{{ route('user.profile') }}"
                     class="flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                     <i class="ri-user-3-line text-sm"></i> My Profile
                 </a>
-                <a href="{{ route('user.address') }}" wire:navigate
+                <a href="{{ route('user.address') }}"
                     class="flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                     <i class="ri-map-pin-line text-sm"></i> Addresses
                 </a>
-                <a href="{{ route('user.orders') }}" wire:navigate
+                <a href="{{ route('user.orders') }}"
                     class="col-span-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-white/5 text-sm text-white/70 hover:text-white transition-all">
                     <i class="ri-shopping-bag-3-line text-sm"></i> My Orders
                 </a>
