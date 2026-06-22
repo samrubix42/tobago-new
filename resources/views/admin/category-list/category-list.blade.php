@@ -9,13 +9,13 @@
             </p>
         </div>
 
-        <button
-            @click="$dispatch('open-modal'); $wire.resetForm()"
+        <a
+            href="{{ route('admin.categories.add') }}"
             class="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 transition"
         >
             <i class="ri-add-line text-base"></i>
             Add Category
-        </button>
+        </a>
     </div>
 
     <div class="relative w-full sm:w-80">
@@ -99,12 +99,12 @@
 
                         <td class="px-6 py-5 text-right">
                             <div class="flex justify-end gap-2">
-                                <button
-                                    @click="$dispatch('open-modal'); $wire.openEditModal({{ $category->id }})"
-                                    class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md text-xs"
+                                <a
+                                    href="{{ route('admin.categories.edit', $category->id) }}"
+                                    class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md text-xs inline-flex items-center"
                                 >
                                     Edit
-                                </button>
+                                </a>
 
                                 <button
                                     @click="$dispatch('open-delete-modal'); $wire.confirmDelete({{ $category->id }})"
@@ -176,12 +176,12 @@
                     @endif
 
                     <div class="flex gap-2">
-                        <button
-                            @click="$dispatch('open-modal'); $wire.openEditModal({{ $category->id }})"
-                            class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md text-xs font-medium"
+                        <a
+                            href="{{ route('admin.categories.edit', $category->id) }}"
+                            class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-md text-xs font-medium inline-flex items-center"
                         >
                             Edit
-                        </button>
+                        </a>
 
                         <button
                             @click="$dispatch('open-delete-modal'); $wire.confirmDelete({{ $category->id }})"
@@ -207,7 +207,6 @@
         @endforelse
     </div>
 
-    @include('livewire.category.category-modal')
     @include('livewire.category.delete')
     @include('livewire.category.recommend-modal')
 </div>

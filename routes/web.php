@@ -74,6 +74,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::redirect('/', '/admin/dashboard');
     Route::livewire('/dashboard', 'admin::dashboard')->name('dashboard');
     Route::livewire('/categories', 'admin::category-list')->name('categories');
+    Route::livewire('/categories/add', 'admin::addcategory')->name('categories.add');
+    Route::livewire('/categories/edit/{id}', 'admin::updatecategory')->name('categories.edit');
 
 
     //product

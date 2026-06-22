@@ -2,49 +2,35 @@
 
 use App\Models\Category;
 use App\Models\RecommendedCategory;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 new #[Layout('layouts::admin')] class extends Component
 {
-    use WithFileUploads;
-
     public string $search = '';
-    public ?int $categoryId = null;
     public ?int $deleteId = null;
     public ?int $recommendationCategoryId = null;
     public $categories = [];
-    public $parentCategories = [];
     public $recommendationOptions = [];
     public array $recommendedCategoryIds = [];
     public array $recommendationTitles = [];
-
-
-
-    public string $title = '';
-    public ?string $h2 = null;
-    public string $slug = '';
-    public ?string $description = null;
-    public $image = null;
-    public ?string $existingImage = null;
-
-    public bool $isSubcategory = false;
-    public ?int $parentId = null;
-    public bool $status = true;
-
-    public ?string $meta_title = null;
-    public ?string $meta_description = null;
-    public ?string $meta_keywords = null;
 
     #[On('refresh-category-list')]
     public function mount(): void
     {
         $this->resetForm();
-        $categories = Category::query()
+        $this->loadCategories();
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->loadCategories();
+    }
+
+    public function loadCategories(): void
+    {
+        $this->categories = Category::query()
             ->with('parent')
             ->when($this->search !== '', function ($query) {
                 $query->where(function ($nested) {
@@ -56,14 +42,6 @@ new #[Layout('layouts::admin')] class extends Component
             ->orderBy('title')
             ->get();
 
-        $parentCategories = Category::query()
-            ->whereNull('parent_id')
-            ->when($this->categoryId, fn($query) => $query->where('id', '!=', $this->categoryId))
-            ->orderBy('title')
-            ->get();
-
-        $this->categories = $categories;
-        $this->parentCategories = $parentCategories;
         $this->recommendationOptions = Category::query()
             ->with(['children' => fn ($query) => $query->orderBy('title')])
             ->whereNull('parent_id')
@@ -71,56 +49,13 @@ new #[Layout('layouts::admin')] class extends Component
             ->get(['id', 'title']);
     }
 
-
-
-    public function updatedTitle(string $value): void
-    {
-        if ($this->slug === '' || $this->categoryId === null) {
-            $this->slug = Str::slug($value);
-        }
-    }
-
     public function resetForm(): void
     {
         $this->resetValidation();
-
-        $this->categoryId = null;
-        $this->title = '';
-        $this->h2 = null;
-        $this->slug = '';
-        $this->description = null;
-        $this->image = null;
-        $this->existingImage = null;
-        $this->isSubcategory = false;
-        $this->parentId = null;
-        $this->status = true;
-        $this->meta_title = null;
-        $this->meta_description = null;
-        $this->meta_keywords = null;
         $this->deleteId = null;
         $this->recommendationCategoryId = null;
         $this->recommendedCategoryIds = [];
         $this->recommendationTitles = [];
-    }
-
-    public function openEditModal(int $categoryId): void
-    {
-        $category = Category::findOrFail($categoryId);
-
-        $this->resetValidation();
-        $this->categoryId = $category->id;
-        $this->title = $category->title;
-        $this->h2 = $category->h2;
-        $this->slug = $category->slug;
-        $this->description = $category->description;
-        $this->image = null;
-        $this->existingImage = $category->image;
-        $this->isSubcategory = $category->parent_id !== null;
-        $this->parentId = $category->parent_id;
-        $this->status = (bool) $category->is_active;
-        $this->meta_title = $category->meta_title;
-        $this->meta_description = $category->meta_description;
-        $this->meta_keywords = $category->meta_keywords;
     }
 
     public function confirmDelete(int $categoryId): void
@@ -211,58 +146,6 @@ new #[Layout('layouts::admin')] class extends Component
         $this->dispatch('close-recommend-modal');
     }
 
-    public function save(): void
-    {
-        $validated = $this->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'h2' => ['nullable', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:categories,slug,' . ($this->categoryId ?? 'NULL') . ',id'],
-            'description' => ['nullable', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
-            'parentId' => ['nullable', 'exists:categories,id'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string'],
-            'meta_keywords' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $category = $this->categoryId ? Category::findOrFail($this->categoryId) : new Category();
-
-        $imagePath = $category->image;
-        if ($this->image) {
-            if ($imagePath && Storage::disk('public')->exists($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
-            }
-            $imagePath = $this->image->store('categories', 'public');
-        }
-
-        $category->fill([
-            'parent_id' => $this->isSubcategory ? $this->parentId : null,
-            'title' => $validated['title'],
-            'h2' => $validated['h2'],
-            'slug' => Str::slug($validated['slug']),
-            'description' => $validated['description'],
-            'image' => $imagePath,
-            'is_active' => $this->status,
-            'meta_title' => $validated['meta_title'],
-            'meta_description' => $validated['meta_description'],
-            'meta_keywords' => $validated['meta_keywords'],
-        ]);
-
-        // no ordering field used for categories in this deployment
-
-        $category->save();
-
-        $this->dispatch('toast-show', [
-            'message' => 'Category saved successfully!',
-            'type' => 'success',
-            'position' => 'top-right',
-        ]);
-
-        $this->dispatch('close-modal');
-        $this->dispatch('refresh-category-list');
-        $this->resetForm();
-    }
-
     public function delete(?int $categoryId = null): void
     {
         $id = $categoryId ?? $this->deleteId;
@@ -293,11 +176,9 @@ new #[Layout('layouts::admin')] class extends Component
             'position' => 'top-right',
         ]);
 
-        $this->dispatch('refresh-category-list');
+        $this->loadCategories();
 
         $this->dispatch('close-delete-modal');
         $this->deleteId = null;
     }
-
-    // ordering removed — no sort handler
 };
