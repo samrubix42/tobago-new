@@ -1,4 +1,3 @@
-
 @php
     $phone = app_setting('phone_number', '+91 78384 49604') ?: '+91 78384 49604';
     $whatsapp = app_setting('whatsapp_number', $phone) ?: $phone;
@@ -7,7 +6,20 @@
         ?: 'Shop No. 38-39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City, Sector 76, Noida, Uttar Pradesh 201316';
     $phoneHref = preg_replace('/[^0-9+]/', '', $phone);
     $whatsappHref = preg_replace('/[^0-9]/', '', $whatsapp);
+
+    $seoPage = \App\Models\SeoContent::where('page_slug', 'contact')->first();
+    $metaTitle = $seoPage?->meta_title ?? 'Contact Us | Tobac-Go Hookah Store Noida';
+    $metaDescription = $seoPage?->meta_description ?? 'Contact Tobac-Go hookah store in Noida. Get in touch with us for premium hookahs, accessories, bongs, flavours, and online support. Call or WhatsApp +91 78384 49604.';
+    $metaKeywords = $seoPage?->meta_keywords ?? 'contact tobac-go, hookah shop noida, buy hookah online, contact hookah store, whatsapp support hookah, tobac-go phone number';
 @endphp
+
+@section('meta_title', $metaTitle)
+@section('meta_description', $metaDescription)
+@section('meta_keywords', $metaKeywords)
+
+@section('og_title', $metaTitle)
+@section('og_description', $metaDescription)
+
 
 <div class="relative overflow-hidden">
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -204,4 +216,14 @@
             </div>
         </div>
     </section>
+
+    @if(!empty($seoPage?->content))
+        <section class="relative max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+            <div class="rounded-2xl border border-subtle bg-[#0b0d0f] p-5 sm:p-8">
+                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
+                    {!! $seoPage->content !!}
+                </div>
+            </div>
+        </section>
+    @endif
 </div>

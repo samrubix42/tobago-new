@@ -49,6 +49,14 @@ class SeoContentSeeder extends Seeder
                 'page_slug' => 'about',
             ],
             [
+                'name' => 'Contact Us',
+                'meta_title' => 'Contact Us | Tobac-Go Hookah Store Noida',
+                'meta_description' => 'Contact Tobac-Go hookah store in Noida. Get in touch with us for premium hookahs, accessories, bongs, flavours, and online support. Call or WhatsApp +91 78384 49604.',
+                'meta_keywords' => 'contact tobac-go, hookah shop noida, buy hookah online, contact hookah store, whatsapp support hookah, tobac-go phone number',
+                'page_slug' => 'contact',
+                'content' => '<h2>Premium Hookah & Accessories Store Noida – Contact Tobac-Go</h2><p>At Tobac-Go, we are committed to providing the ultimate hookah and shisha experience for enthusiasts across Noida and India. Whether you are looking for premium hookahs, organic coconut charcoal, durable clay/silicone chillums, or the latest hookah accessories, our Noida store is fully stocked with 100% genuine products.</p><p>If you have any questions about hookah setups, replacement parts, or delivery across India, feel free to reach out to us. Our store in Sector 76, Noida (located at Amarpali Silicon City) is open daily from 11:00 AM to 11:00 PM for in-person shopping, consultation, and product demos. You can also contact us via phone or WhatsApp at +91 78384 49604 for instant guidance and ordering.</p>',
+            ],
+            [
                 'name' => 'Return & Refund Policy',
                 'meta_title' => 'Easy Returns & Refund Policy - Tobac-Go Hookah Store',
                 'meta_description' => 'Read our customer-friendly return and refund policy. Learn how to return products or claim refunds for damaged shisha accessories.',

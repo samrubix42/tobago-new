@@ -5,6 +5,12 @@ use Livewire\Component;
 
 new class extends Component
 {
+    public string $title = 'Contact Us | Tobac-Go Hookah Store Noida';
+
+    public string $metaDescription = 'Contact Tobac-Go, the leading premium hookah and accessories store. Get store directions in Sector 76 Noida, call us at +91 78384 49604, or message us on WhatsApp.';
+
+    public string $metaKeywords = 'contact tobac-go, hookah shop noida, hookah store noida, tobac-go phone number, whatsapp support hookah, buy hookah online';
+
     public string $name = '';
 
     public string $email = '';
