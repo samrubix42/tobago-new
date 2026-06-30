@@ -181,11 +181,17 @@
                 <a href="{{ route('product', $product->slug) }}" wire:navigate class="absolute inset-0 z-10 rounded-2xl" aria-label="{{ $product->name }}"></a>
                 @if($product->is_out_of_stock || $product->stock <= 0)
                     <div class="absolute top-5 left-5 z-20">
-                    <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                        Out of Stock
-                    </span>
-        </div>
-        @endif
+                        <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                            Stock Out
+                        </span>
+                    </div>
+                @else
+                    <div class="absolute top-5 left-5 z-20">
+                        <span class="px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                            In Stock
+                        </span>
+                    </div>
+                @endif
         <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/5">
             <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(0,198,255,0.18), transparent 60%);"></div>
             <img src="{{ $image ? asset('storage/' . $image) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
@@ -298,11 +304,17 @@
             <a href="{{ route('product', $product->slug) }}" wire:navigate class="absolute inset-0 z-10 rounded-2xl" aria-label="{{ $product->name }}"></a>
             @if($product->is_out_of_stock || $product->stock <= 0)
                 <div class="absolute top-5 left-5 z-20">
-                <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                    Out of Stock
-                </span>
-    </div>
-    @endif
+                    <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                        Stock Out
+                    </span>
+                </div>
+            @else
+                <div class="absolute top-5 left-5 z-20">
+                    <span class="px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                        In Stock
+                    </span>
+                </div>
+            @endif
     <div class="relative flex h-36 sm:h-44 items-center justify-center rounded-xl bg-white mb-4 overflow-hidden border border-white/5">
         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition" style="background: radial-gradient(circle at center, rgba(255,0,204,0.14), transparent 60%);"></div>
         <img src="{{ $arrivalImage ? asset('storage/' . $arrivalImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
@@ -704,11 +716,17 @@
                     <a href="{{ route('product', $product->slug) }}" wire:navigate class="absolute inset-0 z-10 rounded-2xl" aria-label="{{ $product->name }}"></a>
                     @if($product->is_out_of_stock || $product->stock <= 0)
                         <div class="absolute top-5 left-5 z-20">
-                        <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                            Out of Stock
-                        </span>
-            </div>
-            @endif
+                            <span class="px-2 py-1 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
+                                Stock Out
+                            </span>
+                        </div>
+                    @else
+                        <div class="absolute top-5 left-5 z-20">
+                            <span class="px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                                In Stock
+                            </span>
+                        </div>
+                    @endif
             <div class="relative flex h-36 sm:h-44 items-center justify-center overflow-hidden rounded-xl bg-white mb-4 border border-white/10">
                 <img src="{{ $sectionImage ? asset('storage/' . $sectionImage) : asset('images/hero.png') }}" alt="{{ $product->name }}" class="relative h-28 sm:h-36 object-contain transition duration-300 group-hover:scale-105">
             </div>

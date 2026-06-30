@@ -112,9 +112,13 @@
                     </div>
                 </div>
 
-                @if($this->shouldShowLowStock())
-                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                    <i class="ri-alarm-warning-line"></i> Only {{ $this->fomoStockValue() }} items available
+                @if($this->isOutOfStock())
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-400">
+                    <i class="ri-close-circle-line"></i> Stock Out
+                </p>
+                @else
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400">
+                    <i class="ri-checkbox-circle-line"></i> In Stock
                 </p>
                 @endif
 
@@ -195,10 +199,16 @@
                     {!! nl2br(e($product->short_description)) !!}
                 </p>
 
-                @if($this->shouldShowLowStock())
+                @if($this->isOutOfStock())
                 <div class="mt-4">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                        <i class="ri-alarm-warning-line text-base"></i> Only {{ $this->fomoStockValue() }} items available
+                    <span class="inline-flex items-center gap-2 rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-400">
+                        <i class="ri-close-circle-line text-base"></i> Stock Out
+                    </span>
+                </div>
+                @else
+                <div class="mt-4">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400">
+                        <i class="ri-checkbox-circle-line text-base"></i> In Stock
                     </span>
                 </div>
                 @endif
@@ -270,9 +280,13 @@
                     </div>
                 </div>
 
-                @if($this->shouldShowLowStock())
-                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-xs font-semibold text-rose-200 animate-pulse">
-                    <i class="ri-alarm-warning-line"></i> Only {{ $this->fomoStockValue() }} items available
+                @if($this->isOutOfStock())
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-400">
+                    <i class="ri-close-circle-line"></i> Stock Out
+                </p>
+                @else
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400">
+                    <i class="ri-checkbox-circle-line"></i> In Stock
                 </p>
                 @endif
 
@@ -326,7 +340,13 @@
                         @if($relatedProduct->is_out_of_stock || $relatedProduct->stock <= 0)
                         <div class="absolute top-2 left-2 z-20">
                             <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                                Out of Stock
+                                Stock Out
+                            </span>
+                        </div>
+                        @else
+                        <div class="absolute top-2 left-2 z-20">
+                            <span class="px-2 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                                In Stock
                             </span>
                         </div>
                         @endif

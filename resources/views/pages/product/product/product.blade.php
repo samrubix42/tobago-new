@@ -119,7 +119,13 @@
                                     @if($isOut)
                                     <div class="absolute top-2 left-2 z-20">
                                         <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                                            Out of Stock
+                                            Stock Out
+                                        </span>
+                                    </div>
+                                    @else
+                                    <div class="absolute top-2 left-2 z-20">
+                                        <span class="px-2 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                                            In Stock
                                         </span>
                                     </div>
                                     @endif
@@ -201,7 +207,13 @@
                                         @if($isRecOut)
                                         <div class="absolute top-2 left-2 z-20">
                                             <span class="px-2 py-0.5 rounded-lg bg-red-500/20 border border-red-500/30 text-[9px] font-bold text-red-400 uppercase tracking-widest backdrop-blur-md">
-                                                Out of Stock
+                                                Stock Out
+                                            </span>
+                                        </div>
+                                        @else
+                                        <div class="absolute top-2 left-2 z-20">
+                                            <span class="px-2 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[9px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md">
+                                                In Stock
                                             </span>
                                         </div>
                                         @endif
