@@ -10,7 +10,9 @@ Disallow: /payment/
 Disallow: /clear-cache
 Disallow: /logout
 Disallow: /up
+Disallow: /search
 Disallow: /*?search=
+Disallow: /*?q=
 Disallow: /*?sort=
 Disallow: /*?filter=
 Disallow: /*?page=

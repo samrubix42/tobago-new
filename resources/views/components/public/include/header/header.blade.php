@@ -66,15 +66,20 @@ $headerCartCount = current_cart_items_count();
 
             {{-- DESKTOP SEARCH --}}
             <div class="hidden lg:flex lg:w-80 xl:w-96 lg:shrink-0">
-                <div class="relative w-full" @click.outside="closeSearch()">
+                <form action="{{ route('search') }}" method="GET" class="relative w-full" @click.outside="closeSearch()">
                     <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                     <input type="text"
+                        name="q"
                         wire:model.live.debounce.300ms="search"
                         wire:key="desktop-search-input"
                         @focus="searchOpen = true"
                         @keydown.escape="closeSearch()"
                         placeholder="Search by product or SKU..."
-                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 focus:bg-white/7 transition-all">
+                        class="w-full pl-9 pr-24 py-2 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 focus:bg-white/7 transition-all">
+                    <button type="submit" class="absolute right-1 top-1 bottom-1 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white text-xs font-semibold uppercase transition-all flex items-center justify-center gap-1.5">
+                        <i class="ri-search-line text-sm text-white/40"></i>
+                        <span>Search</span>
+                    </button>
 
                     <div x-cloak x-show="searchOpen"
                         x-transition
@@ -111,7 +116,7 @@ $headerCartCount = current_cart_items_count();
                             @endif
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
 
             {{-- DESKTOP ACTIONS --}}
@@ -308,15 +313,20 @@ $headerCartCount = current_cart_items_count();
         </div>
         {{-- MOBILE SEARCH BAR (always visible below header on phones) --}}
         <div class="lg:hidden border-t border-white/5 px-4 py-2.5 bg-[#07080a]/90">
-            <div class="relative" @click.outside="closeSearch()">
+            <form action="{{ route('search') }}" method="GET" class="relative" @click.outside="closeSearch()">
                 <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
                 <input type="text"
+                    name="q"
                     wire:model.live.debounce.300ms="search"
                     wire:key="mobile-search-input"
                     @focus="searchOpen = true"
                     @keydown.escape="closeSearch()"
                     placeholder="Search by product or SKU..."
-                    class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all">
+                    class="w-full pl-9 pr-24 py-2.5 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-all">
+                <button type="submit" class="absolute right-1 top-1 bottom-1 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white text-xs font-semibold uppercase transition-all flex items-center justify-center gap-1.5">
+                    <i class="ri-search-line text-sm text-white/40"></i>
+                    <span>Search</span>
+                </button>
 
                 <div x-cloak x-show="searchOpen"
                     x-transition
@@ -353,7 +363,7 @@ $headerCartCount = current_cart_items_count();
                         @endif
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
 
     </header>

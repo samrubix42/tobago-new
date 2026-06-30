@@ -8,6 +8,7 @@ use App\Models\RecommendedCategory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 new #[Layout('layouts::app')] class extends Component
@@ -15,6 +16,7 @@ new #[Layout('layouts::app')] class extends Component
     private const PRICE_MIN_BOUND = 9;
     private const PRICE_MAX_BOUND = 40000;
 
+    #[Url(as: 'q')]
     public string $search = '';
     public string $sort = 'latest';
     public ?float $minPrice = self::PRICE_MIN_BOUND;
@@ -77,7 +79,6 @@ new #[Layout('layouts::app')] class extends Component
         }
 
         return [
-            'search' => ['except' => ''],
             'sort' => ['except' => 'latest'],
             'minPrice' => ['except' => $defaultMin],
             'maxPrice' => ['except' => $defaultMax],

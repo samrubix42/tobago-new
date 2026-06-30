@@ -8,6 +8,11 @@ new class extends Component
 {
     public string $search = '';
 
+    public function mount(): void
+    {
+        $this->search = (string) request()->query('q', '');
+    }
+
     public function updatedSearch(): void
     {
         $this->search = trim($this->search);

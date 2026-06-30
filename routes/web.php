@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::home')->name('home');
 Route::livewire('/shop', 'pages::product.product')->name('products');
+Route::livewire('/search', 'pages::product.product')->name('search');
 Route::livewire('/product/{slug}', 'pages::product.product-view')->name('product');
 Route::livewire('/cart', 'pages::cart')->name('cart');
 Route::livewire('/checkout', 'pages::order.checkout')->name('order.checkout');

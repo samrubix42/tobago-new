@@ -78,7 +78,11 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h1 class="text-2xl sm:text-4xl mb-4 font-semibold text-white mt-1 leading-tight">
-                        {{ $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
+                        @if($search)
+                            Search Results for "{{ $search }}"
+                        @else
+                            {{ $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'All Products' }}
+                        @endif
                     </h1>
                     @if($activeSubcategory?->h2 || $activeCategory?->h2)
                         <h2 class="text-sm sm:text-base font-normal text-cyan-200/80 -mt-2 mb-4 leading-normal">
