@@ -89,6 +89,7 @@
             animation: float-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
+    @yield('schema')
 </head>
 
 <body class="min-h-screen bg-[#060707] text-white">

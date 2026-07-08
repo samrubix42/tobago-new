@@ -38,6 +38,14 @@
 @section('og_image', $products->first() ? $this->productImage($products->first()) : asset('og-cover.webp'))
 @section('og_image_alt', $seoPage?->name ?? $activeSubcategory?->title ?? $activeCategory?->title ?? 'Premium Hookah Collection by Tobac-Go')
 
+@section('schema')
+@if(!empty(trim($this->schemaJson())))
+<script type="application/ld+json">
+{!! $this->schemaJson() !!}
+</script>
+@endif
+@endsection
+
 
 @php
     $priceMinBound = (int) floor((float) ($priceLimits->min_price ?? 99));

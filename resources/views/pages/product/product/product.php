@@ -498,4 +498,86 @@ new #[Layout('layouts::app')] class extends Component
             'recommendedSections' => $recommendedSections,
         ]);
     }
+
+    public function schemaJson(): string
+    {
+        $activeCategory = $this->activeCategory();
+        $activeSubcategory = $this->activeSubcategory($activeCategory);
+
+        if (!$activeCategory && !$activeSubcategory) {
+            return '';
+        }
+
+        $domain = 'https://www.tobacgo.in';
+
+        // Resolve title, description, and canonical URL dynamically
+        $canonicalPath = request()->path();
+        $canonicalUrl = $domain . '/' . ltrim($canonicalPath, '/');
+
+        // Check if there is an SEO content matching the page slug
+        $seoSlug = ($canonicalPath === '/') ? '/' : trim($canonicalPath, '/');
+        $seoContent = \App\Models\SeoContent::where('page_slug', $seoSlug)->first();
+
+        // 1. Resolve Category Name
+        if ($activeSubcategory) {
+            $categoryName = $activeSubcategory->title;
+        } elseif ($activeCategory) {
+            $categoryName = $activeCategory->title;
+        } else {
+            $categoryName = $seoContent?->name ?? 'Shop';
+        }
+
+        // 2. Resolve Meta Title
+        $metaTitle = $seoContent?->meta_title
+            ?? $activeSubcategory?->meta_title
+            ?? ($activeSubcategory ? ($activeSubcategory->title . ' | Tobac-Go') : null)
+            ?? $activeCategory?->meta_title
+            ?? ($activeCategory ? ($activeCategory->title . ' Hookah Collection | Tobac-Go') : null)
+            ?? ($this->search ? 'Search: ' . $this->search . ' | Tobac-Go' : null) 
+            ?? 'Shop Premium Hookahs & Shisha | Tobac-Go';
+
+        // 3. Resolve Meta Description / Category Description fallback
+        $metaContextName = $activeSubcategory?->title ?? $activeCategory?->title ?? null;
+        $metaDescription = $seoContent?->meta_description
+            ?? $activeSubcategory?->meta_description
+            ?? $activeCategory?->meta_description
+            ?? ($metaContextName
+                ? 'Browse our ' . $metaContextName . ' collection at Tobac-Go. Premium hookahs, shisha flavors, and accessories with fast delivery across India.'
+                : 'Explore the full range of premium hookahs, flavors, and accessories at Tobac-Go. Shop curated hookah products delivered across India.');
+
+        // Fallback specifically for Category Description if Meta Description is unavailable
+        $categoryDescription = null;
+        if ($activeSubcategory) {
+            $categoryDescription = $activeSubcategory->meta_description ?: ($activeSubcategory->description ? strip_tags($activeSubcategory->description) : null);
+        } elseif ($activeCategory) {
+            $categoryDescription = $activeCategory->meta_description ?: ($activeCategory->description ? strip_tags($activeCategory->description) : null);
+        }
+
+        if (empty($categoryDescription)) {
+            $categoryDescription = $metaDescription;
+        }
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'CollectionPage',
+                    '@id' => $canonicalUrl . '#collectionpage',
+                    'name' => $categoryName,
+                    'url' => $canonicalUrl,
+                    'description' => $categoryDescription,
+                ],
+                [
+                    '@type' => 'WebPage',
+                    '@id' => $canonicalUrl . '#webpage',
+                    'name' => $metaTitle,
+                    'description' => $metaDescription,
+                    'url' => $canonicalUrl,
+                    'inLanguage' => 'en-IN',
+                ]
+            ]
+        ];
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
 };

@@ -7,6 +7,12 @@
 @section('og_image', $this->productImageUrl($product))
 @section('og_image_alt', $this->product->name)
 
+@section('schema')
+<script type="application/ld+json">
+{!! $this->schemaJson() !!}
+</script>
+@endsection
+
 
 <div x-data="productPage(@js($galleryImages), {{ max(1, (int) $product->stock) }}, @js($this->isOutOfStock()))" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 overflow-x-hidden">
 

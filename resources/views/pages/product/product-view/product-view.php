@@ -287,4 +287,74 @@ new class extends Component
             'total' => $total,
         ]);
     }
+
+    public function schemaJson(): string
+    {
+        $domain = 'https://www.tobacgo.in';
+        $productUrl = $domain . '/product/' . $this->product->slug;
+
+        $images = $this->product->images
+            ->sortByDesc('is_primary')
+            ->map(fn($img) => $domain . '/storage/' . ltrim((string) $img->image, '/'))
+            ->values()
+            ->all();
+
+        if (empty($images)) {
+            $images = [$domain . '/images/hero.png'];
+        }
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Product',
+            '@id' => $productUrl . '#product',
+            'name' => $this->product->name,
+            'description' => $this->product->meta_description ?? strip_tags($this->product->short_description),
+            'image' => $images,
+            'sku' => $this->product->sku ?: 'N/A',
+            'brand' => [
+                '@type' => 'Brand',
+                'name' => 'Tobac-Go',
+            ],
+            'offers' => [
+                '@type' => 'Offer',
+                'url' => $productUrl,
+                'priceCurrency' => 'INR',
+                'price' => number_format((float) $this->product->selling_price, 2, '.', ''),
+                'availability' => $this->isOutOfStock() ? 'https://www.tobacgo.in/OutOfStock' : 'https://www.tobacgo.in/InStock',
+                'shippingDetails' => [
+                    '@type' => 'OfferShippingDetails',
+                    'shippingRate' => [
+                        '@type' => 'MonetaryAmount',
+                        'value' => 0,
+                        'currency' => 'INR',
+                    ],
+                    'shippingDestination' => [
+                        '@type' => 'DefinedRegion',
+                        'addressCountry' => 'IN',
+                    ],
+                    'deliveryTime' => [
+                        '@type' => 'ShippingDeliveryTime',
+                        'handlingTime' => [
+                            '@type' => 'QuantitativeValue',
+                            'minValue' => 1,
+                            'maxValue' => 3,
+                            'unitCode' => 'DAY',
+                        ],
+                        'transitTime' => [
+                            '@type' => 'QuantitativeValue',
+                            'minValue' => 3,
+                            'maxValue' => 7,
+                            'unitCode' => 'DAY',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        if ($this->product->category) {
+            $schema['category'] = $this->product->category->title;
+        }
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
 };
