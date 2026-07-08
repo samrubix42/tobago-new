@@ -2,6 +2,12 @@
 @section('meta_description', $this->blog->meta_description ?? \Illuminate\Support\Str::limit(strip_tags((string) $this->blog->content), 155))
 @section('meta_keywords', $this->blog->meta_keywords ?? ($this->blog->tags ? implode(', ', (array) $this->blog->tags) : 'hookah blog, shisha news, Tobac-Go journal'))
 
+@section('schema')
+<script type="application/ld+json">
+{!! $this->schemaJson() !!}
+</script>
+@endsection
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
 
     <!-- Breadcrumbs & Category -->

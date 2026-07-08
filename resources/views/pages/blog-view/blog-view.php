@@ -70,4 +70,55 @@ new class extends Component
 
         return $minutes . ' min read';
     }
+
+    public function schemaJson(): string
+    {
+        $domain = 'https://www.tobacgo.in';
+        $blog = $this->blog;
+        $canonicalUrl = $domain . '/blog/' . $blog->slug;
+
+        $metaDescription = $blog->meta_description ?? \Illuminate\Support\Str::limit(strip_tags((string) $blog->content), 155);
+
+        $featuredImageUrl = $blog->featured_image
+            ? $domain . '/storage/' . ltrim($blog->featured_image, '/')
+            : $domain . '/images/hero.png';
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BlogPosting',
+            '@id' => $canonicalUrl . '#blogposting',
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => $canonicalUrl,
+            ],
+            'headline' => $blog->title,
+            'description' => $metaDescription,
+            'image' => [
+                '@type' => 'ImageObject',
+                'url' => $featuredImageUrl,
+            ],
+            'author' => [
+                '@type' => 'Organization',
+                'name' => $blog->author?->name ?? 'Tobac-Go Team',
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Tobac-Go',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => $domain . '/logo.webp',
+                ],
+            ],
+            'datePublished' => $blog->created_at?->toIso8601String() ?? $blog->created_at?->toIso8601String(),
+            'dateModified' => $blog->updated_at?->toIso8601String() ?? $blog->created_at?->toIso8601String(),
+            'url' => $canonicalUrl,
+            'inLanguage' => 'en',
+        ];
+
+        if ($blog->category) {
+            $schema['articleSection'] = $blog->category->title;
+        }
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
 };

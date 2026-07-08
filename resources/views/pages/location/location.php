@@ -100,4 +100,71 @@ new class extends Component
         ['src' => 'images/1 6.webp', 'alt' => 'Tobac-Go products and setup'],
         ['src' => 'images/1 7.webp', 'alt' => 'Tobac-Go store gallery image'],
     ];
+
+    public function schemaJson(): string
+    {
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'LocalBusiness',
+            'name' => 'Tobac-go',
+            'description' => 'Premium hookah store in Noida selling hookahs, bongs, smoking accessories, and chillums. In-store shopping at Sector 76, Noida with online delivery across India.',
+            'url' => 'https://www.tobacgo.in/hookah-shop-in-noida',
+            'image' => 'https://www.tobacgo.in/logo.webp',
+            'telephone' => '+91-78384-49604',
+            'email' => 'info@tobacgo.in',
+            'priceRange' => '₹499 - ₹10,000',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'Shop No. 38, 39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City, Sector 76',
+                'addressLocality' => 'Noida',
+                'addressRegion' => 'Uttar Pradesh',
+                'postalCode' => '201316',
+                'addressCountry' => 'IN',
+            ],
+            'geo' => [
+                '@type' => 'GeoCoordinates',
+                'latitude' => '28.568409',
+                'longitude' => '77.382895',
+            ],
+            'openingHoursSpecification' => [
+                [
+                    '@type' => 'OpeningHoursSpecification',
+                    'dayOfWeek' => [
+                        'Monday',
+                        'Tuesday',
+                        'Wednesday',
+                        'Thursday',
+                        'Friday',
+                        'Saturday',
+                        'Sunday',
+                    ],
+                    'opens' => '11 am',
+                    'closes' => '11 pm',
+                ],
+            ],
+            'hasMap' => 'https://maps.app.goo.gl/WZnmV94iYiBrBFxt8',
+            'currenciesAccepted' => 'INR',
+            'paymentAccepted' => 'Cash, UPI, Credit Card, Debit Card, Net Banking',
+            'areaServed' => [
+                '@type' => 'City',
+                'name' => 'Noida',
+            ],
+            'sameAs' => [
+                'https://www.instagram.com/tobacgonoida',
+                'https://www.facebook.com/noidatobacgo',
+                'https://in.pinterest.com/tobacgonoida/',
+                'https://www.youtube.com/@tobac-go-noida/',
+            ],
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'telephone' => '+91-78384-49604',
+                'contactType' => 'customer service',
+                'contactOption' => 'TollFree',
+                'areaServed' => 'IN',
+                'availableLanguage' => ['English', 'Hindi'],
+            ],
+        ];
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
 };

@@ -1,3 +1,9 @@
+@section('schema')
+<script type="application/ld+json">
+{!! $this->schemaJson() !!}
+</script>
+@endsection
+
 <div class="relative overflow-hidden"
     x-data="{
         lightboxOpen: false,
