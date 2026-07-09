@@ -49,14 +49,19 @@ new class extends Component
             $this->relatedProducts = $this->product->recommendedProducts()
                 ->with(['images', 'category'])
                 ->where('status', 'active')
+                ->where('is_out_of_stock', false)
+                ->where('stock', '>', 0)
+                ->inRandomOrder()
                 ->get();
         } else {
             $this->relatedProducts = Product::query()
                 ->with(['images', 'category'])
                 ->where('status', 'active')
+                ->where('is_out_of_stock', false)
+                ->where('stock', '>', 0)
                 ->where('id', '!=', $this->product->id)
                 ->when($this->product->category_id, fn ($query) => $query->where('category_id', $this->product->category_id))
-                ->latest('id')
+                ->inRandomOrder()
                 ->limit(4)
                 ->get();
         }

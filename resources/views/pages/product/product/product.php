@@ -466,8 +466,10 @@ new #[Layout('layouts::app')] class extends Component
                     $products = Product::query()
                         ->with(['images', 'category'])
                         ->where('status', 'active')
+                        ->where('is_out_of_stock', false)
+                        ->where('stock', '>', 0)
                         ->where('category_id', $recommendedCategory->id)
-                        ->latest('id')
+                        ->inRandomOrder()
                         ->limit(4)
                         ->get();
 
