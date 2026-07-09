@@ -40,8 +40,13 @@
 
 @section('schema')
 @if(!empty(trim($this->schemaJson())))
-<script type="application/ld+json">
+<script type="application/ld+json" id="category-schema-script">
 {!! $this->schemaJson() !!}
+</script>
+@endif
+@if(!empty(trim($this->webpageSchemaJson())))
+<script type="application/ld+json" id="webpage-schema-script">
+{!! $this->webpageSchemaJson() !!}
 </script>
 @endif
 @endsection
@@ -78,6 +83,31 @@
             document.body.style.overflow = '';
         }
     }"
+    @schema-updated.window="
+        let script = document.getElementById('category-schema-script');
+        if (script) {
+            script.textContent = $event.detail.schema;
+        } else {
+            script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.id = 'category-schema-script';
+            script.textContent = $event.detail.schema;
+            document.head.appendChild(script);
+        }
+
+        let webpageScript = document.getElementById('webpage-schema-script');
+        if ($event.detail.webpageSchema) {
+            if (webpageScript) {
+                webpageScript.textContent = $event.detail.webpageSchema;
+            } else {
+                webpageScript = document.createElement('script');
+                webpageScript.type = 'application/ld+json';
+                webpageScript.id = 'webpage-schema-script';
+                webpageScript.textContent = $event.detail.webpageSchema;
+                document.head.appendChild(webpageScript);
+            }
+        }
+    "
 >
 
 

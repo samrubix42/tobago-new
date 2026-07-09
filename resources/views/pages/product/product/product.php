@@ -486,6 +486,8 @@ new #[Layout('layouts::app')] class extends Component
                 ->values();
         }
 
+        $this->dispatch('schema-updated', schema: $this->schemaJson(), webpageSchema: $this->webpageSchemaJson());
+
         return view('pages.product.product.product', [
             'products' => $products,
             'hasMore' => $this->hasMoreProducts(),
@@ -504,14 +506,15 @@ new #[Layout('layouts::app')] class extends Component
         $activeCategory = $this->activeCategory();
         $activeSubcategory = $this->activeSubcategory($activeCategory);
 
-        if (!$activeCategory && !$activeSubcategory) {
+        $canonicalPath = request()->path();
+        $isPriceSeoRoute = in_array($canonicalPath, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
+        $isShopRoute = ($canonicalPath === 'shop');
+
+        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute && !$isShopRoute) {
             return '';
         }
 
         $domain = 'https://www.tobacgo.in';
-
-        // Resolve title, description, and canonical URL dynamically
-        $canonicalPath = request()->path();
         $canonicalUrl = $domain . '/' . ltrim($canonicalPath, '/');
 
         // Check if there is an SEO content matching the page slug
@@ -557,24 +560,92 @@ new #[Layout('layouts::app')] class extends Component
             $categoryDescription = $metaDescription;
         }
 
+        // 4. Resolve products matching current query and current pagination/infinite scroll limit
+        $productsQuery = $this->productsQuery();
+        $totalProducts = (clone $productsQuery)->count();
+        $products = (clone $productsQuery)->limit($this->loadedCount)->get();
+
+        $itemListElement = [];
+        $position = 1;
+        foreach ($products as $product) {
+            $itemListElement[] = [
+                '@type' => 'ListItem',
+                'position' => $position++,
+                'url' => route('product', $product->slug),
+            ];
+        }
+
         $schema = [
             '@context' => 'https://schema.org',
-            '@graph' => [
-                [
-                    '@type' => 'CollectionPage',
-                    '@id' => $canonicalUrl . '#collectionpage',
-                    'name' => $categoryName,
-                    'url' => $canonicalUrl,
-                    'description' => $categoryDescription,
-                ],
-                [
-                    '@type' => 'WebPage',
-                    '@id' => $canonicalUrl . '#webpage',
-                    'name' => $metaTitle,
-                    'description' => $metaDescription,
-                    'url' => $canonicalUrl,
-                    'inLanguage' => 'en-IN',
-                ]
+            '@type' => 'CollectionPage',
+            '@id' => $canonicalUrl . '#collectionpage',
+            'url' => $canonicalUrl,
+            'name' => $categoryName,
+            'description' => $categoryDescription,
+            'isPartOf' => [
+                '@type' => 'WebPage',
+                '@id' => $canonicalUrl
+            ],
+            'mainEntity' => [
+                '@type' => 'ItemList',
+                '@id' => $canonicalUrl . '#itemlist',
+                'name' => $categoryName . ' Products',
+                'numberOfItems' => (string) $totalProducts,
+                'itemListElement' => $itemListElement
+            ]
+        ];
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
+
+    public function webpageSchemaJson(): string
+    {
+        $activeCategory = $this->activeCategory();
+        $activeSubcategory = $this->activeSubcategory($activeCategory);
+
+        $canonicalPath = request()->path();
+        $isPriceSeoRoute = in_array($canonicalPath, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
+        $isShopRoute = ($canonicalPath === 'shop');
+
+        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute && !$isShopRoute) {
+            return '';
+        }
+
+        $domain = 'https://www.tobacgo.in';
+        $canonicalUrl = $domain . '/' . ltrim($canonicalPath, '/');
+
+        // Check if there is an SEO content matching the page slug
+        $seoSlug = ($canonicalPath === '/') ? '/' : trim($canonicalPath, '/');
+        $seoContent = \App\Models\SeoContent::where('page_slug', $seoSlug)->first();
+
+        // Resolve Meta Title
+        $metaTitle = $seoContent?->meta_title
+            ?? $activeSubcategory?->meta_title
+            ?? ($activeSubcategory ? ($activeSubcategory->title . ' | Tobac-Go') : null)
+            ?? $activeCategory?->meta_title
+            ?? ($activeCategory ? ($activeCategory->title . ' Hookah Collection | Tobac-Go') : null)
+            ?? ($this->search ? 'Search: ' . $this->search . ' | Tobac-Go' : null) 
+            ?? 'Shop Premium Hookahs & Shisha | Tobac-Go';
+
+        // Resolve Meta Description
+        $metaContextName = $activeSubcategory?->title ?? $activeCategory?->title ?? null;
+        $metaDescription = $seoContent?->meta_description
+            ?? $activeSubcategory?->meta_description
+            ?? $activeCategory?->meta_description
+            ?? ($metaContextName
+                ? 'Browse our ' . $metaContextName . ' collection at Tobac-Go. Premium hookahs, shisha flavors, and accessories with fast delivery across India.'
+                : 'Explore the full range of premium hookahs, flavors, and accessories at Tobac-Go. Shop curated hookah products delivered across India.');
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebPage',
+            '@id' => $canonicalUrl . '#webpage',
+            'url' => $canonicalUrl,
+            'name' => $metaTitle,
+            'description' => $metaDescription,
+            'inLanguage' => 'en-IN',
+            'isPartOf' => [
+                '@id' => $domain . '/#website'
             ]
         ];
 

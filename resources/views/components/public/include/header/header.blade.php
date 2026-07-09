@@ -60,7 +60,7 @@ $headerCartCount = current_cart_items_count();
                 </span>
 
                 <!-- Logo -->
-                <img src="{{ asset('logo.webp') }}" class="relative h-9 lg:h-10" alt="Tobac-Go">
+                <img src="{{ asset('logo.webp') }}" class="relative w-auto h-12  lg:h-14" alt="Tobac-Go">
             </a>
             <div class="flex-1"></div>
 
@@ -397,7 +397,7 @@ $headerCartCount = current_cart_items_count();
         {{-- Drawer header --}}
         <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 shrink-0">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('logo.webp') }}" class="h-8" alt="Tobac-Go">
+                <img src="{{ asset('logo.webp') }}" class="h-9" alt="Tobac-Go">
             </a>
             <button @click="mobileOpen=false" aria-label="Close menu"
                 class="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-white/70 hover:text-white transition-all">
