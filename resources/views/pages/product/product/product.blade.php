@@ -49,6 +49,46 @@
 {!! $this->webpageSchemaJson() !!}
 </script>
 @endif
+<script>
+    if (!window.schemaUpdatedListenerRegistered) {
+        window.schemaUpdatedListenerRegistered = true;
+        document.addEventListener('schema-updated', function(e) {
+            let detail = e.detail;
+            if (Array.isArray(detail)) {
+                detail = detail[0] || {};
+            }
+
+            let schema = detail.schema;
+            let webpageSchema = detail.webpageSchema;
+
+            if (schema) {
+                let script = document.getElementById('category-schema-script');
+                if (script) {
+                    script.textContent = schema;
+                } else {
+                    script = document.createElement('script');
+                    script.type = 'application/ld+json';
+                    script.id = 'category-schema-script';
+                    script.textContent = schema;
+                    document.head.appendChild(script);
+                }
+            }
+
+            if (webpageSchema) {
+                let webpageScript = document.getElementById('webpage-schema-script');
+                if (webpageScript) {
+                    webpageScript.textContent = webpageSchema;
+                } else {
+                    webpageScript = document.createElement('script');
+                    webpageScript.type = 'application/ld+json';
+                    webpageScript.id = 'webpage-schema-script';
+                    webpageScript.textContent = webpageSchema;
+                    document.head.appendChild(webpageScript);
+                }
+            }
+        });
+    }
+</script>
 @endsection
 
 
@@ -83,31 +123,6 @@
             document.body.style.overflow = '';
         }
     }"
-    @schema-updated.window="
-        let script = document.getElementById('category-schema-script');
-        if (script) {
-            script.textContent = $event.detail.schema;
-        } else {
-            script = document.createElement('script');
-            script.type = 'application/ld+json';
-            script.id = 'category-schema-script';
-            script.textContent = $event.detail.schema;
-            document.head.appendChild(script);
-        }
-
-        let webpageScript = document.getElementById('webpage-schema-script');
-        if ($event.detail.webpageSchema) {
-            if (webpageScript) {
-                webpageScript.textContent = $event.detail.webpageSchema;
-            } else {
-                webpageScript = document.createElement('script');
-                webpageScript.type = 'application/ld+json';
-                webpageScript.id = 'webpage-schema-script';
-                webpageScript.textContent = $event.detail.webpageSchema;
-                document.head.appendChild(webpageScript);
-            }
-        }
-    "
 >
 
 
@@ -215,6 +230,20 @@
             @endif
         </section>
 
+        @if($seoPage?->content)
+            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
+                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
+                    {!! $seoPage->content !!}
+                </div>
+            </section>
+        @elseif($activeSubcategory?->description || $activeCategory?->description)
+            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
+                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
+                    {!! $activeSubcategory?->description ?? $activeCategory?->description !!}
+                </div>
+            </section>
+        @endif
+
         @if($recommendedSections && $recommendedSections->isNotEmpty())
             @foreach($recommendedSections as $section)
                 <section class="mt-14 sm:mt-20 space-y-6">
@@ -302,20 +331,6 @@
                     </div>
                 </section>
             @endforeach
-        @endif
-
-        @if($seoPage?->content)
-            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
-                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
-                    {!! $seoPage->content !!}
-                </div>
-            </section>
-        @elseif($activeSubcategory?->description || $activeCategory?->description)
-            <section class="mt-8 rounded-2xl border border-white/10 bg-[#0b0d0f] p-5 sm:p-8">
-                <div class="prose prose-invert max-w-none prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
-                    {!! $activeSubcategory?->description ?? $activeCategory?->description !!}
-                </div>
-            </section>
         @endif
     </div>
 

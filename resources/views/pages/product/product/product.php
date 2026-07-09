@@ -508,9 +508,8 @@ new #[Layout('layouts::app')] class extends Component
 
         $canonicalPath = request()->path();
         $isPriceSeoRoute = in_array($canonicalPath, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
-        $isShopRoute = ($canonicalPath === 'shop');
 
-        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute && !$isShopRoute) {
+        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute) {
             return '';
         }
 
@@ -605,9 +604,8 @@ new #[Layout('layouts::app')] class extends Component
 
         $canonicalPath = request()->path();
         $isPriceSeoRoute = in_array($canonicalPath, ['hookah-under-3000', 'hookah-under-5000', 'hookah-above-7000']);
-        $isShopRoute = ($canonicalPath === 'shop');
 
-        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute && !$isShopRoute) {
+        if (!$activeCategory && !$activeSubcategory && !$isPriceSeoRoute) {
             return '';
         }
 
