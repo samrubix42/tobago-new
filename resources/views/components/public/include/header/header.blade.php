@@ -60,7 +60,7 @@ $headerCartCount = current_cart_items_count();
                 </span>
 
                 <!-- Logo -->
-                <img src="{{ asset('logo.webp') }}" class="relative w-auto h-12  lg:h-14" alt="Tobac-Go">
+                <img src="{{ asset('logo.webp') }}" class="relative w-auto h-12 pb-1  lg:h-12" alt="Tobac-Go">
             </a>
             <div class="flex-1"></div>
 
