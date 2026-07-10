@@ -1,3 +1,78 @@
+@section('schema')
+<!-- SCHEMA 1: Organization --> 
+<script type="application/ld+json"> 
+{ 
+  "@@context": "https://schema.org", 
+  "@@type": "Organization", 
+  "name": "Tobac-go", 
+  "legalName": "Tobac-go", 
+  "url": "https://www.tobacgo.in", 
+  "logo": { 
+    "@@type": "ImageObject", 
+    "url": "https://www.tobacgo.in/tobac-go-logo.png", 
+    "width": 500, 
+    "height": 500 
+  }, 
+  "description": "India's premium online hookah store. We sell hookahs, bongs, chillums, and smoking accessories with delivery across India and in-store shopping at Sector 76, Noida.", 
+  "foundingLocation": { 
+    "@@type": "Place", 
+    "name": "Noida, Uttar Pradesh, India" 
+  }, 
+  "address": { 
+    "@@type": "PostalAddress", 
+    "streetAddress": "Shop No. 38, 39, Lower Ground Floor, Street 76 Market, Amarpali Silicon City", 
+    "addressLocality": "Noida", 
+    "addressRegion": "Uttar Pradesh", 
+    "postalCode": "201316", 
+    "addressCountry": "IN" 
+  }, 
+  "contactPoint": [ 
+    { 
+      "@@type": "ContactPoint", 
+ 
+      "telephone": "+91-78384-49604", 
+      "contactType": "customer service", 
+      "areaServed": "IN", 
+      "availableLanguage": ["English", "Hindi"] 
+    } 
+  ], 
+  "sameAs": [ 
+    "https://www.instagram.com/tobacgonoida", 
+    "https://www.facebook.com/noidatobacgo", 
+    "https://in.pinterest.com/tobacgonoida/", 
+    "https://www.youtube.com/@@tobac-go-noida/" 
+  ] 
+} 
+</script> 
+ 
+ 
+<!-- SCHEMA 2: WebSite --> 
+ 
+<script type="application/ld+json"> 
+{ 
+  "@@context": "https://schema.org", 
+  "@@type": "WebSite", 
+  "name": "Tobac-go", 
+  "url": "https://www.tobacgo.in", 
+  "description": "Buy premium hookahs, bongs, chillums, and smoking accessories online. Fast delivery across India.", 
+  "inLanguage": ["en-IN", "hi-IN"], 
+  "publisher": { 
+    "@@type": "Organization", 
+    "name": "Tobac-Go", 
+    "url": "https://www.tobacgo.in" 
+  }, 
+  "potentialAction": { 
+    "@@type": "SearchAction", 
+    "target": { 
+      "@@type": "EntryPoint", 
+      "urlTemplate": "https://www.tobacgo.in/search?q={search_term_string}" 
+    }, 
+    "query-input": "required name=search_term_string" 
+  } 
+} 
+</script>
+@endsection
+
 <div>
 
     <section class="relative overflow-hidden">

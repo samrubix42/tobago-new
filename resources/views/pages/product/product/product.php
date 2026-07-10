@@ -29,6 +29,8 @@ new #[Layout('layouts::app')] class extends Component
     public int $perPage = 12;
     public int $loadedCount = 12;
 
+    private bool $isLoadMoreAction = false;
+
     public function mount(?string $category = null, ?string $subcategory = null): void
     {
         $this->routeCategorySlug = $category;
@@ -121,6 +123,7 @@ new #[Layout('layouts::app')] class extends Component
         }
 
         $this->loadedCount += $this->perPage;
+        $this->isLoadMoreAction = true;
     }
 
     public function clearFilters(): void
@@ -488,7 +491,9 @@ new #[Layout('layouts::app')] class extends Component
                 ->values();
         }
 
-        $this->dispatch('schema-updated', schema: $this->schemaJson(), webpageSchema: $this->webpageSchemaJson());
+        if (! $this->isLoadMoreAction) {
+            $this->dispatch('schema-updated', schema: $this->schemaJson(), webpageSchema: $this->webpageSchemaJson());
+        }
 
         return view('pages.product.product.product', [
             'products' => $products,
@@ -561,10 +566,10 @@ new #[Layout('layouts::app')] class extends Component
             $categoryDescription = $metaDescription;
         }
 
-        // 4. Resolve products matching current query and current pagination/infinite scroll limit
+        // 4. Resolve products matching current query (without pagination/infinite scroll limit)
         $productsQuery = $this->productsQuery();
         $totalProducts = (clone $productsQuery)->count();
-        $products = (clone $productsQuery)->limit($this->loadedCount)->get();
+        $products = $productsQuery->get();
 
         $itemListElement = [];
         $position = 1;

@@ -312,6 +312,7 @@ new class extends Component
             '@context' => 'https://schema.org',
             '@type' => 'Product',
             '@id' => $productUrl . '#product',
+            'url' => $productUrl,
             'name' => $this->product->name,
             'description' => $this->product->meta_description ?? strip_tags($this->product->short_description),
             'image' => $images,
@@ -325,7 +326,7 @@ new class extends Component
                 'url' => $productUrl,
                 'priceCurrency' => 'INR',
                 'price' => number_format((float) $this->product->selling_price, 2, '.', ''),
-                'availability' => $this->isOutOfStock() ? 'https://www.tobacgo.in/OutOfStock' : 'https://www.tobacgo.in/InStock',
+                'availability' => $this->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
                 'shippingDetails' => [
                     '@type' => 'OfferShippingDetails',
                     'shippingRate' => [
