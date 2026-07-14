@@ -491,6 +491,30 @@ new #[Layout('layouts::app')] class extends Component
                 ->values();
         }
 
+        if ($isPriceSeoRoute) {
+            $tobacGoCategory = Category::where('slug', 'tobac-go-hookah')->first();
+            if ($tobacGoCategory) {
+                $tobacGoProducts = Product::query()
+                    ->with(['images', 'category'])
+                    ->where('status', 'active')
+                    ->where('is_out_of_stock', false)
+                    ->where('stock', '>', 0)
+                    ->where('category_id', $tobacGoCategory->id)
+                    ->inRandomOrder()
+                    ->limit(4)
+                    ->get();
+
+                if ($tobacGoProducts->isNotEmpty()) {
+                    $recommendedSections->push([
+                        'id' => $tobacGoCategory->id,
+                        'title' => 'Tobac-Go Exclusive Hookah',
+                        'category' => $tobacGoCategory,
+                        'products' => $tobacGoProducts,
+                    ]);
+                }
+            }
+        }
+
         if (! $this->isLoadMoreAction) {
             $this->dispatch('schema-updated', schema: $this->schemaJson(), webpageSchema: $this->webpageSchemaJson());
         }

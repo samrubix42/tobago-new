@@ -9,6 +9,7 @@ test('product detail page shows custom recommendations', function () {
         'name' => 'Base Product',
         'slug' => 'base-product',
         'status' => 'active',
+        'stock' => 10,
     ]);
 
     // Create recommended product
@@ -16,6 +17,7 @@ test('product detail page shows custom recommendations', function () {
         'name' => 'Recommended Product 1',
         'slug' => 'recommended-product-1',
         'status' => 'active',
+        'stock' => 10,
     ]);
 
     // Create inactive recommendation
@@ -23,6 +25,7 @@ test('product detail page shows custom recommendations', function () {
         'name' => 'Recommended Product 2',
         'slug' => 'recommended-product-2',
         'status' => 'inactive',
+        'stock' => 10,
     ]);
 
     // Save recommendations
@@ -54,4 +57,32 @@ test('product detail page shows custom recommendations', function () {
     // Verify recommendations
     $response->assertSee('Recommended Product 1');
     $response->assertDontSee('Recommended Product 2');
+});
+
+test('price SEO pages show random tobac-go recommendations', function () {
+    // Create Tobac-Go category
+    $category = \App\Models\Category::create([
+        'title' => 'Tobac Go Hookah',
+        'slug' => 'tobac-go-hookah',
+        'is_active' => true,
+        'order' => 1,
+    ]);
+
+    // Create an active product in that category
+    $tobacGoProduct = Product::create([
+        'category_id' => $category->id,
+        'name' => 'Exclusive TobacGo Hookah Pro',
+        'slug' => 'exclusive-tobacgo-hookah-pro',
+        'status' => 'active',
+        'stock' => 5,
+        'selling_price' => 2500.00,
+    ]);
+
+    // Navigate to a price page
+    $response = $this->get('/hookah-under-3000');
+    $response->assertStatus(200);
+
+    // Verify recommendations
+    $response->assertSee('Tobac-Go Exclusive Hookah');
+    $response->assertSee('Exclusive TobacGo Hookah Pro');
 });
