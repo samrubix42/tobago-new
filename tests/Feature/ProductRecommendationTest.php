@@ -57,6 +57,12 @@ test('product detail page shows custom recommendations', function () {
     // Verify recommendations
     $response->assertSee('Recommended Product 1');
     $response->assertDontSee('Recommended Product 2');
+
+    // Verify MerchantReturnPolicy schema elements
+    $response->assertSee('hasMerchantReturnPolicy', false);
+    $response->assertSee('"merchantReturnDays": 2', false);
+    $response->assertSee('https://schema.org/ReturnByMail', false);
+    $response->assertSee('https://schema.org/FreeReturn', false);
 });
 
 test('price SEO pages show random tobac-go recommendations', function () {

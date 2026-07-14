@@ -26,7 +26,7 @@
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                     <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Return Window</p>
-                    <p class="mt-3 text-lg font-semibold text-white">2 days after delivery</p>
+                    <p class="mt-3 text-lg font-semibold text-white">10 days after delivery</p>
                 </div>
                 <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                     <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Refund Time</p>
@@ -120,7 +120,7 @@
                 <div class="mt-6 grid gap-4 sm:grid-cols-2">
                     <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                         <p class="text-sm font-semibold text-white">Return timeline</p>
-                        <p class="mt-2 text-slate-300">Return the Goods within 2 days of receipt, or within 2 days after a third party not being the carrier takes possession.</p>
+                        <p class="mt-2 text-slate-300">Return the Goods within 10 days of receipt, or within 10 days after a third party not being the carrier takes possession.</p>
                     </div>
                     <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                         <p class="text-sm font-semibold text-white">Refund timeline</p>

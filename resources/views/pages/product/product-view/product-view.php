@@ -327,6 +327,14 @@ new class extends Component
                 'priceCurrency' => 'INR',
                 'price' => number_format((float) $this->product->selling_price, 2, '.', ''),
                 'availability' => $this->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+                'hasMerchantReturnPolicy' => [
+                    '@type' => 'MerchantReturnPolicy',
+                    'applicableCountry' => 'IN',
+                    'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                    'merchantReturnDays' => 2,
+                    'returnMethod' => 'https://schema.org/ReturnByMail',
+                    'returnFees' => 'https://schema.org/FreeReturn',
+                ],
                 'shippingDetails' => [
                     '@type' => 'OfferShippingDetails',
                     'shippingRate' => [
