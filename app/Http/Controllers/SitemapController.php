@@ -21,13 +21,13 @@ class SitemapController extends Controller
             '/sitemap-pages.xml',
             '/sitemap-products.xml',
             '/sitemap-categories.xml',
-            '/sitemap-blogs.xml',
+            '/sitemap-blog.xml',
         ];
 
         foreach ($sitemaps as $sitemap) {
             $xml .= '  <sitemap>';
             $xml .= '    <loc>' . url($sitemap) . '</loc>';
-            $xml .= '    <lastmod>' . now()->toAtomString() . '</lastmod>';
+            $xml .= '    <lastmod>' . now()->toDateString() . '</lastmod>';
             $xml .= '  </sitemap>';
         }
 
@@ -41,31 +41,32 @@ class SitemapController extends Controller
      */
     public function pages(): Response
     {
-        $urls = [
-            '/',
-            '/shop',
-            '/categories',
-            '/about',
-            '/blogs',
-            '/terms-conditions',
-            '/privacy-policy',
-            '/shipping-policy',
-            '/return-refund',
-            '/hookah-shop-in-noida',
-            '/hookah-under-3000',
-            '/hookah-under-5000',
-            '/hookah-above-7000',
+        $pages = [
+            ['loc' => '/', 'changefreq' => 'daily', 'priority' => '1.0'],
+            ['loc' => '/shop', 'changefreq' => 'weekly', 'priority' => '0.9'],
+            ['loc' => '/categories', 'changefreq' => 'weekly', 'priority' => '0.9'],
+            ['loc' => '/hookah-shop-in-noida', 'changefreq' => 'weekly', 'priority' => '0.8'],
+            ['loc' => '/hookah-under-3000', 'changefreq' => 'weekly', 'priority' => '0.8'],
+            ['loc' => '/hookah-under-5000', 'changefreq' => 'weekly', 'priority' => '0.8'],
+            ['loc' => '/hookah-above-7000', 'changefreq' => 'weekly', 'priority' => '0.8'],
+            ['loc' => '/blogs', 'changefreq' => 'weekly', 'priority' => '0.7'],
+            ['loc' => '/about', 'changefreq' => 'yearly', 'priority' => '0.5'],
+            ['loc' => '/contact', 'changefreq' => 'yearly', 'priority' => '0.5'],
+            ['loc' => '/privacy-policy', 'changefreq' => 'yearly', 'priority' => '0.3'],
+            ['loc' => '/terms-conditions', 'changefreq' => 'yearly', 'priority' => '0.3'],
+            ['loc' => '/shipping-policy', 'changefreq' => 'yearly', 'priority' => '0.3'],
+            ['loc' => '/return-refund', 'changefreq' => 'yearly', 'priority' => '0.3'],
         ];
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-        foreach ($urls as $url) {
+        foreach ($pages as $page) {
             $xml .= '  <url>';
-            $xml .= '    <loc>' . url($url) . '</loc>';
+            $xml .= '    <loc>' . url($page['loc']) . '</loc>';
             $xml .= '    <lastmod>' . now()->toDateString() . '</lastmod>';
-            $xml .= '    <changefreq>' . ($url === '/' || $url === '/shop' ? 'daily' : 'weekly') . '</changefreq>';
-            $xml .= '    <priority>' . ($url === '/' ? '1.0' : ($url === '/shop' ? '0.8' : '0.5')) . '</priority>';
+            $xml .= '    <changefreq>' . $page['changefreq'] . '</changefreq>';
+            $xml .= '    <priority>' . $page['priority'] . '</priority>';
             $xml .= '  </url>';
         }
 
@@ -85,10 +86,11 @@ class SitemapController extends Controller
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
         foreach ($products as $product) {
+            $lastmod = $product->updated_at ? $product->updated_at->toDateString() : now()->toDateString();
             $xml .= '  <url>';
             $xml .= '    <loc>' . url('/product/' . $product->slug) . '</loc>';
-            $xml .= '    <lastmod>' . ($product->updated_at ? $product->updated_at->toDateString() : now()->toDateString()) . '</lastmod>';
-            $xml .= '    <changefreq>daily</changefreq>';
+            $xml .= '    <lastmod>' . $lastmod . '</lastmod>';
+            $xml .= '    <changefreq>weekly</changefreq>';
             $xml .= '    <priority>0.9</priority>';
             $xml .= '  </url>';
         }
@@ -114,11 +116,13 @@ class SitemapController extends Controller
                 $path = '/shop/' . $category->parent->slug . '/' . $category->slug;
             }
 
+            $lastmod = $category->updated_at ? $category->updated_at->toDateString() : now()->toDateString();
+
             $xml .= '  <url>';
             $xml .= '    <loc>' . url($path) . '</loc>';
-            $xml .= '    <lastmod>' . ($category->updated_at ? $category->updated_at->toDateString() : now()->toDateString()) . '</lastmod>';
+            $xml .= '    <lastmod>' . $lastmod . '</lastmod>';
             $xml .= '    <changefreq>weekly</changefreq>';
-            $xml .= '    <priority>0.8</priority>';
+            $xml .= '    <priority>0.9</priority>';
             $xml .= '  </url>';
         }
 
@@ -138,11 +142,13 @@ class SitemapController extends Controller
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
         foreach ($blogs as $blog) {
+            $lastmod = $blog->updated_at ? $blog->updated_at->toDateString() : now()->toDateString();
+
             $xml .= '  <url>';
             $xml .= '    <loc>' . url('/blog/' . $blog->slug) . '</loc>';
-            $xml .= '    <lastmod>' . ($blog->updated_at ? $blog->updated_at->toDateString() : now()->toDateString()) . '</lastmod>';
-            $xml .= '    <changefreq>weekly</changefreq>';
-            $xml .= '    <priority>0.6</priority>';
+            $xml .= '    <lastmod>' . $lastmod . '</lastmod>';
+            $xml .= '    <changefreq>monthly</changefreq>';
+            $xml .= '    <priority>0.7</priority>';
             $xml .= '  </url>';
         }
 

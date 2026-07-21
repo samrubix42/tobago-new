@@ -16,3 +16,5 @@ Disallow: /*?q=
 Disallow: /*?sort=
 Disallow: /*?filter=
 Disallow: /*?page=
+
+Sitemap: https://www.tobacgo.in/sitemap.xml
