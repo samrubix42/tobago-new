@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\PaymentGatewayInterface;
+use App\Mail\FailedOrderNotificationMail;
 use App\Models\Cart;
 use App\Models\InventoryLog;
 use App\Models\Order;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -21,31 +23,51 @@ new class extends Component
     public string $paymentMethod = 'online';
 
     public ?int $selectedAddressId = null;
+
     public bool $useNewAddress = false;
+
     public bool $editSelectedAddress = false;
+
     public bool $saveAddressForLater = true;
 
     public string $fullName = '';
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $addressLine1 = '';
+
     public string $addressLine2 = '';
+
     public string $landmark = '';
+
     public string $addressType = 'home';
+
     public string $city = '';
+
     public string $state = '';
+
     public string $country = 'India';
+
     public string $pincode = '';
+
     public string $customerNote = '';
 
     public bool $isPincodeLoading = false;
+
     public ?string $pincodeHint = null;
 
     public bool $showSuccess = false;
+
     public ?string $placedOrderNumber = null;
+
     public bool $showConfirmationSlide = false;
+
     public bool $showFailure = false;
+
     public ?string $failedOrderNumber = null;
+
     public ?string $failedPaymentMessage = null;
 
     public function mount(): void
@@ -64,12 +86,14 @@ new class extends Component
                 $this->fillFromAddress($defaultAddress);
                 $this->useNewAddress = false;
                 $this->editSelectedAddress = false;
+
                 return;
             }
 
             $this->fullName = (string) ($user?->name ?? '');
             $this->email = (string) ($user?->email ?? '');
             $this->useNewAddress = true;
+
             return;
         }
 
@@ -153,6 +177,7 @@ new class extends Component
         if (! Auth::check()) {
             $this->useNewAddress = true;
             $this->editSelectedAddress = false;
+
             return;
         }
 
@@ -165,6 +190,7 @@ new class extends Component
             $this->fillFromAddress($defaultAddress);
             $this->useNewAddress = false;
             $this->editSelectedAddress = false;
+
             return;
         }
 
@@ -200,6 +226,7 @@ new class extends Component
 
         if (strlen($pin) !== 6) {
             $this->pincodeHint = null;
+
             return;
         }
 
@@ -258,6 +285,7 @@ new class extends Component
                 'type' => 'warning',
                 'position' => 'top-right',
             ]);
+
             return;
         }
 
@@ -271,7 +299,7 @@ new class extends Component
                 'payment_method' => $this->paymentMethod,
                 'total' => (float) $order->total,
             ]);
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             Log::warning('Checkout order creation failed', [
                 'user_id' => Auth::id(),
                 'session_id' => session()->getId(),
@@ -282,6 +310,7 @@ new class extends Component
                 'type' => 'warning',
                 'position' => 'top-right',
             ]);
+
             return;
         }
 
@@ -322,10 +351,24 @@ new class extends Component
                 'payment_failure_reason' => (string) ($paymentResponse['message'] ?? 'Unable to initiate PhonePe payment.'),
             ]);
 
+            try {
+                Mail::to('samcool3203@gmail.com')->send(new FailedOrderNotificationMail($order));
+                Log::info('Failed order notification email sent successfully to admin (initiation failure)', [
+                    'order_id' => $order->id,
+                    'email' => 'samcool3203@gmail.com',
+                ]);
+            } catch (Throwable $e) {
+                Log::error('Failed order notification email failed to send to admin (initiation failure)', [
+                    'order_id' => $order->id,
+                    'email' => 'samcool3203@gmail.com',
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
             OrderStatusLog::query()->create([
                 'order_id' => $order->id,
                 'status' => $order->status,
-                'note' => 'PhonePe payment initiation failed: ' . (string) ($paymentResponse['message'] ?? 'Unknown error'),
+                'note' => 'PhonePe payment initiation failed: '.(string) ($paymentResponse['message'] ?? 'Unknown error'),
                 'source' => 'system',
                 'logged_at' => now(),
             ]);
@@ -340,6 +383,7 @@ new class extends Component
                 'type' => 'error',
                 'position' => 'top-right',
             ]);
+
             return;
         }
 
@@ -367,7 +411,6 @@ new class extends Component
 
             $shippingAmount = $this->calculateShipping((float) $cart->total);
             $finalTotal = (float) $cart->total + $shippingAmount;
-
 
             $order = Order::query()->create([
                 'order_number' => $this->generateOrderNumber(),
@@ -413,7 +456,7 @@ new class extends Component
 
                 if (! $product || $product->is_out_of_stock || (int) $product->stock < (int) $requiredQty) {
                     $name = $product?->name ?? 'One or more products';
-                    throw new \RuntimeException($name . ' does not have enough stock.');
+                    throw new RuntimeException($name.' does not have enough stock.');
                 }
 
                 $product->stock = max(0, (int) $product->stock - (int) $requiredQty);
@@ -480,6 +523,7 @@ new class extends Component
                 'type' => 'warning',
                 'position' => 'top-right',
             ]);
+
             return;
         }
 
@@ -575,10 +619,11 @@ new class extends Component
     {
         try {
             $this->isPincodeLoading = true;
-            $response = Http::timeout(8)->get('https://api.postalpincode.in/pincode/' . $pin);
+            $response = Http::timeout(8)->get('https://api.postalpincode.in/pincode/'.$pin);
 
             if (! $response->ok()) {
                 $this->pincodeHint = 'Unable to validate pincode right now.';
+
                 return;
             }
 
@@ -588,6 +633,7 @@ new class extends Component
 
             if (! $postOffice) {
                 $this->pincodeHint = 'No location found for this pincode.';
+
                 return;
             }
 
@@ -599,7 +645,7 @@ new class extends Component
 
             $this->country = (string) ($postOffice['Country'] ?? 'India');
             $this->pincodeHint = 'State and city auto-filled from pincode.';
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->pincodeHint = 'Pincode lookup failed. Please fill state and city manually.';
         } finally {
             $this->isPincodeLoading = false;
@@ -609,7 +655,7 @@ new class extends Component
     protected function generateOrderNumber(): string
     {
         do {
-            $number = 'ORD-' . now()->format('Ymd') . '-' . Str::upper(Str::random(6));
+            $number = 'ORD-'.now()->format('Ymd').'-'.Str::upper(Str::random(6));
         } while (Order::query()->where('order_number', $number)->exists());
 
         return $number;

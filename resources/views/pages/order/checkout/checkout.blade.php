@@ -76,35 +76,70 @@
         @endif
     @endif
     @elseif($showFailure)
-    <div class="rounded-2xl border border-rose-400/30 bg-rose-500/10 p-6">
-        <div class="flex items-start gap-3">
-            <span class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full border border-rose-300/50 text-rose-200">
-                <i class="ri-error-warning-line"></i>
-            </span>
-            <div class="min-w-0 flex-1">
-                <h2 class="text-lg font-semibold text-rose-100">Payment initiation failed</h2>
-                <p class="text-sm text-rose-200/90 mt-1">{{ $failedPaymentMessage ?: 'We could not redirect to PhonePe right now.' }}</p>
-                @if($failedOrderNumber)
-                <p class="text-xs text-rose-100/80 mt-2">Order Number: <span class="font-semibold">{{ $failedOrderNumber }}</span></p>
-                @endif
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <button type="button" wire:click="openOrderConfirmation" class="inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-semibold hover:opacity-90 transition">
-                        <i class="ri-refresh-line"></i>
-                        Try Again
-                    </button>
-                    @if(auth()->check())
-                    <a href="{{ route('user.orders') }}" wire:navigate class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/5 transition">
-                        <i class="ri-file-list-3-line"></i>
-                        My Orders
-                    </a>
-                    @else
-                    <a href="{{ route('cart') }}" wire:navigate class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/5 transition">
-                        <i class="ri-shopping-cart-2-line"></i>
-                        Back To Cart
-                    </a>
-                    @endif
-                </div>
+    <div class="max-w-xl mx-auto rounded-3xl border border-rose-500/20 bg-gradient-to-b from-rose-500/10 to-transparent p-8 text-center backdrop-blur-md shadow-2xl relative overflow-hidden animate-fade-in my-6">
+        <!-- Glow decoration -->
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl"></div>
+
+        <!-- Warning Icon/Illustration -->
+        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-500 shadow-[0_0_20px_rgba(239,68,68,0.15)] animate-pulse">
+            <i class="ri-close-circle-line text-4xl"></i>
+        </div>
+
+        <!-- Content -->
+        <div class="mt-6 space-y-3">
+            <h2 class="text-2xl font-bold tracking-tight text-white">Payment Unsuccessful</h2>
+            <p class="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+                {{ $failedPaymentMessage ?: 'We could not complete your transaction with PhonePe. Please verify your details or try a different payment method.' }}
+            </p>
+            
+            @if($failedOrderNumber)
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300 font-mono mt-1">
+                <span class="text-slate-500 uppercase font-sans tracking-wider text-[10px]">Order No:</span>
+                <span class="font-semibold text-rose-400">{{ $failedOrderNumber }}</span>
             </div>
+            @endif
+        </div>
+
+        <!-- Cart Safeguard Notice -->
+        <div class="mt-6 p-4 rounded-2xl bg-white/3 border border-white/5 text-left flex items-start gap-3">
+            <i class="ri-shield-check-line text-emerald-400 text-lg mt-0.5 shrink-0"></i>
+            <div>
+                <h4 class="text-xs font-semibold text-white uppercase tracking-wider">Your cart is saved</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">The items in your cart have been preserved. You will not be charged twice. Try completing the checkout again.</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <button 
+                type="button" 
+                wire:click="openOrderConfirmation" 
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-black px-6 py-3 text-sm font-semibold hover:bg-slate-100 active:scale-[0.98] transition-all cursor-pointer"
+            >
+                <i class="ri-refresh-line"></i>
+                Try Checkout Again
+            </button>
+            
+            @if(auth()->check())
+            <a 
+                href="{{ route('user.orders') }}" 
+                wire:navigate 
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 active:scale-[0.98] transition-all"
+            >
+                <i class="ri-file-list-3-line"></i>
+                My Orders
+            </a>
+            @else
+            <a 
+                href="{{ route('cart') }}" 
+                wire:navigate 
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 active:scale-[0.98] transition-all"
+            >
+                <i class="ri-shopping-cart-2-line"></i>
+                Back To Cart
+            </a>
+            @endif
         </div>
     </div>
     @elseif(!$cart || $items->isEmpty())
