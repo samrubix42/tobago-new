@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6" x-data="{ showAddress: false }">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <h1 class="text-2xl font-semibold text-slate-900 tracking-tight">Order Details</h1>
@@ -197,6 +197,17 @@
                     <p class="text-slate-500">Customer</p>
                     <p class="text-slate-900 font-semibold mt-1">{{ $order->customer_name }}</p>
                     <p class="text-slate-600 mt-0.5">{{ $order->customer_phone }}</p>
+                    @if($order->customer_email)
+                        <p class="text-slate-600 mt-0.5">{{ $order->customer_email }}</p>
+                    @endif
+                    <button 
+                        type="button"
+                        @click="showAddress = true"
+                        class="mt-2.5 inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-medium transition cursor-pointer"
+                    >
+                        <i class="ri-map-pin-line text-sm"></i>
+                        View Address
+                    </button>
                 </div>
                 <div class="space-y-1.5 text-sm">
                     <div class="flex items-center justify-between text-slate-600"><span>Subtotal</span><span>Rs {{ number_format((float) $order->subtotal, 2) }}</span></div>
@@ -331,5 +342,108 @@
                 </button>
             </form>
         </aside>
+    </div>
+
+    {{-- Address Details Modal --}}
+    <div 
+        x-show="showAddress" 
+        class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+        x-cloak
+        @keydown.escape.window="showAddress = false"
+    >
+        <div 
+            @click.away="showAddress = false" 
+            class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden"
+        >
+            {{-- Modal Header --}}
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-2 text-blue-600">
+                    <i class="ri-map-pin-user-line text-lg"></i>
+                    <h3 class="text-base font-semibold text-slate-900 font-medium">Delivery Address Details</h3>
+                </div>
+                <button @click="showAddress = false" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="ri-close-line text-xl"></i>
+                </button>
+            </div>
+
+            {{-- Modal Body --}}
+            <div class="p-6 space-y-4 text-sm text-slate-600">
+                {{-- Customer Info --}}
+                <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-slate-500">Customer Name</span>
+                        <p class="font-medium text-slate-950 mt-0.5">{{ $order->customer_name ?: '-' }}</p>
+                    </div>
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-slate-500">Phone Number</span>
+                        <p class="font-medium text-slate-950 mt-0.5">{{ $order->customer_phone ?: '-' }}</p>
+                    </div>
+                    @if($order->customer_email)
+                        <div class="col-span-2">
+                            <span class="text-xs uppercase tracking-wider text-slate-500">Email Address</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->customer_email }}</p>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Address Info --}}
+                <div class="space-y-3.5">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-slate-500">Address Line 1</span>
+                        <p class="font-medium text-slate-950 mt-0.5">{{ $order->address_line1 ?: '-' }}</p>
+                    </div>
+                    @if($order->address_line2)
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">Address Line 2</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->address_line2 }}</p>
+                        </div>
+                    @endif
+                    @if($order->landmark)
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">Landmark</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->landmark }}</p>
+                        </div>
+                    @endif
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">City</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->city ?: '-' }}</p>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">State</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->state ?: '-' }}</p>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">Pincode</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->pincode ?: '-' }}</p>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-slate-500">Country</span>
+                            <p class="font-medium text-slate-950 mt-0.5">{{ $order->country ?: 'India' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Customer Note --}}
+                @if($order->customer_note)
+                    <div class="pt-4 border-t border-slate-100">
+                        <span class="text-xs uppercase tracking-wider text-slate-500">Customer Note</span>
+                        <div class="bg-amber-50/50 border border-amber-100 rounded-lg p-2.5 mt-1 text-amber-900 text-xs">
+                            {{ $order->customer_note }}
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Modal Footer --}}
+            <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button 
+                    @click="showAddress = false" 
+                    class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition"
+                >
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 </div>
