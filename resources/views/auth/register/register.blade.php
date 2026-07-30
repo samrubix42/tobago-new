@@ -78,6 +78,25 @@
             @enderror
         </div>
 
+        {{-- Phone --}}
+        <div>
+            <label class="block text-xs font-medium text-white/60 mb-1.5">Phone number</label>
+            <div class="relative">
+                <i class="ri-phone-line absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm"></i>
+                <input
+                    type="tel"
+                    wire:model.live="phone"
+                    id="register-phone"
+                    placeholder="10-digit mobile number"
+                    autocomplete="tel"
+                    class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/25 focus:outline-none focus:border-white/30 focus:bg-white/8 transition-all"
+                >
+            </div>
+            @error('phone')
+                <p class="text-xs text-red-400 mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         {{-- Password --}}
         <div x-data="{ show: false }">
             <label class="block text-xs font-medium text-white/60 mb-1.5">Password</label>
