@@ -352,15 +352,15 @@ new class extends Component
             ]);
 
             try {
-                Mail::to('samcool3203@gmail.com')->send(new FailedOrderNotificationMail($order));
+                Mail::to('hardik_rmi@ymail.com')->send(new FailedOrderNotificationMail($order));
                 Log::info('Failed order notification email sent successfully to admin (initiation failure)', [
                     'order_id' => $order->id,
-                    'email' => 'samcool3203@gmail.com',
+                    'email' => 'hardik_rmi@ymail.com',
                 ]);
             } catch (Throwable $e) {
                 Log::error('Failed order notification email failed to send to admin (initiation failure)', [
                     'order_id' => $order->id,
-                    'email' => 'samcool3203@gmail.com',
+                    'email' => 'hardik_rmi@ymail.com',
                     'error' => $e->getMessage(),
                 ]);
             }
