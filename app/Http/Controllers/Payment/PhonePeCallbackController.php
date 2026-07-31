@@ -169,25 +169,64 @@ class PhonePeCallbackController extends Controller
                 return;
             }
 
-            $order->update([
-                'payment_gateway' => 'phonepe',
-                'payment_gateway_order_id' => $gatewayOrderId !== '' ? $gatewayOrderId : $order->payment_gateway_order_id,
-                'payment_gateway_transaction_id' => $gatewayTransactionId !== '' ? $gatewayTransactionId : $order->payment_gateway_transaction_id,
-                'payment_status' => 'paid',
-                'payment_state' => $paymentState,
-                'payment_failure_reason' => null,
-                'payment_response_payload' => $verificationPayload ?: $order->payment_response_payload,
-                'payment_verified_at' => now(),
-                'status' => 'confirmed',
-            ]);
+            try {
+                \Illuminate\Support\Facades\DB::transaction(function () use ($order, $gatewayOrderId, $gatewayTransactionId, $paymentState, $verificationPayload) {
+                    /** @var Order $lockedOrder */
+                    $lockedOrder = Order::query()->lockForUpdate()->find($order->id);
 
-            OrderStatusLog::query()->create([
-                'order_id' => $order->id,
-                'status' => 'confirmed',
-                'note' => 'PhonePe payment verified successfully.',
-                'source' => 'system',
-                'logged_at' => now(),
-            ]);
+                    if ($lockedOrder->payment_status === 'paid') {
+                        return;
+                    }
+
+                    $lockedOrder->load('items');
+
+                    foreach ($lockedOrder->items as $item) {
+                        /** @var \App\Models\Product|null $product */
+                        $product = \App\Models\Product::query()->lockForUpdate()->find($item->product_id);
+                        if ($product) {
+                            $product->stock = max(0, (int) $product->stock - (int) $item->quantity);
+                            $product->save();
+
+                            \App\Models\InventoryLog::query()->create([
+                                'product_id' => $product->id,
+                                'type' => 'sale',
+                                'quantity' => (int) $item->quantity,
+                                'reference_type' => 'order',
+                                'reference_id' => $lockedOrder->id,
+                                'note' => 'Stock deducted when order payment was completed.',
+                            ]);
+                        }
+                    }
+
+                    $lockedOrder->update([
+                        'payment_gateway' => 'phonepe',
+                        'payment_gateway_order_id' => $gatewayOrderId !== '' ? $gatewayOrderId : $lockedOrder->payment_gateway_order_id,
+                        'payment_gateway_transaction_id' => $gatewayTransactionId !== '' ? $gatewayTransactionId : $lockedOrder->payment_gateway_transaction_id,
+                        'payment_status' => 'paid',
+                        'payment_state' => $paymentState,
+                        'payment_failure_reason' => null,
+                        'payment_response_payload' => $verificationPayload ?: $lockedOrder->payment_response_payload,
+                        'payment_verified_at' => now(),
+                        'status' => 'confirmed',
+                    ]);
+
+                    OrderStatusLog::query()->create([
+                        'order_id' => $lockedOrder->id,
+                        'status' => 'confirmed',
+                        'note' => 'PhonePe payment verified successfully and stock updated.',
+                        'source' => 'system',
+                        'logged_at' => now(),
+                    ]);
+                });
+
+                $order->refresh();
+            } catch (\Throwable $e) {
+                Log::error('PhonePe callback: transaction failed during payment confirmation', [
+                    'order_id' => $order->id,
+                    'error' => $e->getMessage(),
+                ]);
+                throw $e;
+            }
 
             $this->clearCartForOrder($order);
 

@@ -458,18 +458,6 @@ new class extends Component
                     $name = $product?->name ?? 'One or more products';
                     throw new RuntimeException($name.' does not have enough stock.');
                 }
-
-                $product->stock = max(0, (int) $product->stock - (int) $requiredQty);
-                $product->save();
-
-                InventoryLog::query()->create([
-                    'product_id' => $product->id,
-                    'type' => 'sale',
-                    'quantity' => (int) $requiredQty,
-                    'reference_type' => 'order',
-                    'reference_id' => $order->id,
-                    'note' => 'Stock deducted when order was placed.',
-                ]);
             }
 
             foreach ($cart->items as $item) {
