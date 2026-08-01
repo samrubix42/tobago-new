@@ -28,6 +28,10 @@ class AdminOrderNotificationMail extends Mailable
     {
         return new Envelope(
             subject: '🚨 New Paid Order Received: #' . $this->order->order_number . ' - Tobac-Go',
+            cc: [
+                'hkhandelwal907@gmail.com',
+                'techonikasolutions@gmail.com',
+            ],
         );
     }
 

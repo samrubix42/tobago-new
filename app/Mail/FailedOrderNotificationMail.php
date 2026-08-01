@@ -25,6 +25,10 @@ class FailedOrderNotificationMail extends Mailable
     {
         return new Envelope(
             subject: '⚠️ Failed Order Alert: #'.$this->order->order_number.' - Tobac-Go',
+            cc: [
+                'hkhandelwal907@gmail.com',
+                'techonikasolutions@gmail.com',
+            ],
         );
     }
 

@@ -28,6 +28,10 @@ class OrderBillMail extends Mailable
     {
         return new Envelope(
             subject: 'Invoice for Order #' . $this->order->order_number . ' - Tobac-Go Hookah Store',
+            cc: [
+                'hkhandelwal907@gmail.com',
+                'techonikasolutions@gmail.com',
+            ],
         );
     }
 
