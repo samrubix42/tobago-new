@@ -92,3 +92,52 @@ test('price SEO pages show random tobac-go recommendations', function () {
     $response->assertSee('Tobac-Go Exclusive Hookah');
     $response->assertSee('Exclusive TobacGo Hookah Pro');
 });
+
+test('product detail page does not show related products section when recommendations are empty', function () {
+    // Create base product
+    $baseProduct = Product::create([
+        'name' => 'Lonely Hookah',
+        'slug' => 'lonely-hookah',
+        'status' => 'active',
+        'stock' => 10,
+    ]);
+
+    // Navigate to product-view page
+    $response = $this->get('/product/lonely-hookah');
+    $response->assertStatus(200);
+
+    // Verify related products section is NOT shown
+    $response->assertDontSee('Related Products');
+});
+
+test('product detail page shows out of stock recommendations when no in-stock ones are available', function () {
+    // Create base product
+    $baseProduct = Product::create([
+        'name' => 'Base Product OutOfStock Test',
+        'slug' => 'base-product-outofstock-test',
+        'status' => 'active',
+        'stock' => 10,
+    ]);
+
+    // Create custom out of stock recommendation
+    $outOfStockProduct = Product::create([
+        'name' => 'Out of Stock Recommend',
+        'slug' => 'out-of-stock-recommend',
+        'status' => 'active',
+        'is_out_of_stock' => true,
+        'stock' => 0,
+    ]);
+
+    ProductRecommendation::create([
+        'product_id' => $baseProduct->id,
+        'recommended_product_id' => $outOfStockProduct->id,
+    ]);
+
+    // Navigate to product-view page
+    $response = $this->get('/product/base-product-outofstock-test');
+    $response->assertStatus(200);
+
+    // Verify related products section is shown and contains the out of stock product
+    $response->assertSee('Related Products');
+    $response->assertSee('Out of Stock Recommend');
+});

@@ -295,6 +295,7 @@
 
 
 
+    @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
     <!-- RELATED PRODUCTS -->
     <section class="mt-14 sm:mt-20">
         <div class="flex items-end justify-between gap-6 mb-8">
@@ -395,6 +396,7 @@
             </a>
         </div>
     </section>
+    @endif
 
     <style>
         .no-scrollbar {

@@ -53,6 +53,14 @@ new class extends Component
                 ->where('stock', '>', 0)
                 ->inRandomOrder()
                 ->get();
+
+            if ($this->relatedProducts->isEmpty()) {
+                $this->relatedProducts = $this->product->recommendedProducts()
+                    ->with(['images', 'category'])
+                    ->where('status', 'active')
+                    ->inRandomOrder()
+                    ->get();
+            }
         } else {
             $this->relatedProducts = Product::query()
                 ->with(['images', 'category'])
@@ -64,6 +72,17 @@ new class extends Component
                 ->inRandomOrder()
                 ->limit(4)
                 ->get();
+
+            if ($this->relatedProducts->isEmpty()) {
+                $this->relatedProducts = Product::query()
+                    ->with(['images', 'category'])
+                    ->where('status', 'active')
+                    ->where('id', '!=', $this->product->id)
+                    ->when($this->product->category_id, fn ($query) => $query->where('category_id', $this->product->category_id))
+                    ->inRandomOrder()
+                    ->limit(4)
+                    ->get();
+            }
         }
     }
 
