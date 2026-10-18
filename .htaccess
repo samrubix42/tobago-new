@@ -1,3 +1,4 @@
+
 <IfModule mod_security.c>
     SecFilterEngine Off
     SecFilterScanPOST Off
@@ -12,17 +13,17 @@
 
     # FORCE HTTPS + WWW
     RewriteCond %{HTTPS} off [OR]
-    RewriteCond %{HTTP_HOST} !^www\.tobacgo\.in$ [NC]
-    RewriteRule ^(.*)$ https://www.tobacgo.in/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} !^www\.farm2factory\.com$ [NC]
+    RewriteRule ^(.*)$ https://www.farm2factory.com/$1 [L,R=301]
 
     # HANDLE EXISTING FILES/FOLDERS
     RewriteCond %{REQUEST_FILENAME} -d [OR]
     RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^ ^$1 [N]
+    RewriteRule ^ - [L]
 
-    # REDIRECT TO PUBLIC FOLDER
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+    # REDIRECT FILE REQUESTS TO PUBLIC FOLDER
+    RewriteCond %{REQUEST_URI} !^/public/ [NC]
+    RewriteCond %{REQUEST_URI} \.\w+$ [NC]
     RewriteRule ^(.*)$ public/$1 [L]
 
     # LARAVEL ROUTING
